@@ -6,8 +6,8 @@ import 'dart:async';
 
 class SliderComponent extends Component {
   
-  var left = 0;
-  var right = 0;
+  var left;
+  var right;
   get barWidth => props['barWidth'];
   get sliderWidth => props['sliderWidth'];
   get minValue => props['minValue'];
@@ -27,6 +27,8 @@ class SliderComponent extends Component {
   }
   
   componentWillMount() {
+    left = 0;
+    right = 0;
     lowValue = minValue;
     highValue = maxValue;
   }
