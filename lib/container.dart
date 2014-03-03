@@ -5,10 +5,12 @@ import 'package:clean_data/clean_data.dart';
 import 'dart:html';
 import 'slider.dart';
 import 'dart:async';
+import 'scrollbar.dart';
 
 var itemList = registerComponent(() => new ComponentContainer());
 
 var sliderComponent = registerComponent(() => new SliderComponent());
+var scrollbarComponent = registerComponent(() => new ScrollbarComponent());
 
 class ComponentContainer extends Component {
 
@@ -23,9 +25,10 @@ class ComponentContainer extends Component {
   }
  
   render() { 
+    
     return div({'style' : {'position' : 'absolute', 'right' : 0, 'left' : 0, 'top' : 0,'bottom':0},
-      'onMouseMove': mouseEvent, 'onMouseUp': mouseEvent}, 
+      'onMouseMove': mouseEvent, 'onMouseUp': mouseEvent},[ 
       sliderComponent({'minValue':10, 'maxValue':50, 'sliderWidth' : 460,
-          'stream' : sc.stream,'barWidth' : 30},[])); 
+          'stream' : sc.stream,'barWidth' : 30},[])]); 
   }
 }
