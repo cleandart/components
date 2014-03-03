@@ -1,0 +1,6 @@
+packages
+.buildlog
+lib/docs/
+pubspec.lock
+build/
+*~

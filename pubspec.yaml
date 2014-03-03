@@ -1,0 +1,11 @@
+name: components
+description: A sample web application
+dependencies:
+  browser: any
+  clean_backend: any
+  clean_data: '>=0.3.8'
+  clean_sync: any
+  js: any
+  logging: any
+  react: any
+  unittest: any
