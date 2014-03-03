@@ -1,0 +1,4562 @@
+@import url(http://fonts.googleapis.com/css?family=Roboto:400,300);
+@import url(http://fonts.googleapis.com/css?family=Roboto:400,300,400italic,700,700italic&subset=latin,latin-ext);
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font: inherit;
+  font-size: 100%;
+  vertical-align: baseline; }
+
+html {
+  line-height: 1; }
+
+ol, ul {
+  list-style: none; }
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0; }
+
+caption, th, td {
+  text-align: left;
+  font-weight: normal;
+  vertical-align: middle; }
+
+q, blockquote {
+  quotes: none; }
+  q:before, q:after, blockquote:before, blockquote:after {
+    content: "";
+    content: none; }
+
+a img {
+  border: none; }
+
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section, summary {
+  display: block; }
+
+.button, .widget-toggle-visibility, .widget-title-information, .form-checkbox label, .form-range .left-handle, .form-range .right-handle, .buy-player, .player-points, .details-text, .widget-players-list .price.premium-player span:last-child, .pitch-player, .dragger, .round-selector .left-arrow, .round-selector .right-arrow,
+.round-selector .left-arrow-start, .round-selector .right-arrow-end, .round-list span {
+  cursor: pointer; }
+
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box; }
+
+body {
+  background-color: #7e8285;
+  color: #c9cacc;
+  font-family: "Roboto", sans-serif;
+  font-size: 16px;
+  line-height: 1.25em; }
+
+.wrap {
+  margin: 40px auto;
+  width: 1200px; }
+  .wrap::before, .wrap::after {
+    display: table;
+    content: " "; }
+  .wrap::after {
+    clear: both; }
+
+.column {
+  float: left;
+  width: 400px; }
+
+.row {
+  position: relative; }
+  .row::before, .row::after {
+    display: table;
+    content: " "; }
+  .row::after {
+    clear: both; }
+
+.text-xs {
+  font-size: 10px; }
+
+.text-s, .details-text, .widget-players-list .price.premium-player span:first-child {
+  font-size: 12px; }
+
+.text-xl {
+  font-size: 22px;
+  line-height: 1.5em; }
+
+.text-upcase, .text-subtitle, .widget-title-text, .list-header-text, .team-zone-hexa, .player-name-text .last-name, .widget-players-list .player-name-text .last-name, .club-name-text, .list .player-name-text .last-name, .list .club-name-text, .long-club-name-text, .pitch-team-performance-text, .pitch-player .player-performance-small-text, .switch span, .round-selector {
+  text-transform: uppercase; }
+
+.text-bold, .text-subtitle, .button, .widget-title-information, .match-information-score,
+.match-information-date, .list .match-information-score,
+.list .match-information-date, .pitch-team-performance-graph .player-position-text, .pitch-player .player-performance-text {
+  font-weight: bold; }
+
+.text-defualt-color {
+  color: #c9cacc; }
+
+.text-darker, .widget-table span:first-child, .list-header-text, .match-information-text,
+.match-information-time, .list .match-information-text,
+.list .match-information-time, .round-selector {
+  color: #8e8f93; }
+
+.text-dark, .widget-table .table-dark-row span {
+  color: #2c2d31; }
+
+.text-subtitle {
+  color: white;
+  display: inline-block; }
+
+.text-block {
+  display: block; }
+
+.text-align-left {
+  text-align: left; }
+
+.text-align-right, .round-selector .right-arrow, .round-selector .right-arrow-end {
+  text-align: right; }
+
+.text-small-width {
+  width: 60px;
+  display: inline-block;
+  line-height: 1.25em; }
+
+.text-long-width {
+  width: 100px;
+  display: inline-block;
+  line-height: 1.25em; }
+
+.text-snap-right-middle {
+  position: absolute;
+  right: 0;
+  line-height: 1em;
+  top: 4px; }
+
+.button {
+  -webkit-border-radius: 40px;
+  -moz-border-radius: 40px;
+  -ms-border-radius: 40px;
+  -o-border-radius: 40px;
+  border-radius: 40px;
+  background-color: #cecfd3;
+  color: #2c2d31;
+  display: block;
+  text-align: center;
+  width: 100%;
+  height: 40px;
+  padding-top: 12px;
+  line-height: 1em; }
+
+.snap-to-bottom {
+  position: absolute;
+  bottom: 0; }
+
+.widget {
+  background-color: #56575b;
+  width: 100%; }
+  .widget::before, .widget::after {
+    display: table;
+    content: " "; }
+  .widget::after {
+    clear: both; }
+
+.widget-dark {
+  background-color: #37383c; }
+
+.widget-title {
+  height: 50px;
+  position: relative;
+  border-bottom: 1px solid #2c2d31;
+  padding: 0 20px; }
+
+.widget-title-icon,
+.widget-toggle-visibility {
+  background-color: #7e8285;
+  height: 30px;
+  width: 30px;
+  display: inline-block;
+  position: relative;
+  top: 10px; }
+
+.widget-title-icon {
+  margin-right: 10px;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
+  border-radius: 50%; }
+
+.widget-toggle-visibility {
+  position: absolute;
+  right: 20px; }
+
+.widget-title-text {
+  color: white;
+  line-height: 50px;
+  vertical-align: middle; }
+
+.widget-title-information {
+  color: white;
+  background-color: #2c2d31;
+  font-size: 10px;
+  width: 13px;
+  height: 13px;
+  line-height: 16px;
+  display: inline-block;
+  text-align: center;
+  -webkit-border-radius: 15px;
+  -moz-border-radius: 15px;
+  -ms-border-radius: 15px;
+  -o-border-radius: 15px;
+  border-radius: 15px; }
+
+.widget-content {
+  padding: 10px 20px; }
+
+.widget-hide {
+  display: none; }
+
+.widget-row {
+  margin-bottom: 10px;
+  position: relative; }
+  .widget-row::before, .widget-row::after {
+    display: table;
+    content: " "; }
+  .widget-row::after {
+    clear: both; }
+  .widget-row:last-child {
+    margin-bottom: 0; }
+
+.widget-row-border {
+  border-bottom: 1px solid #7e8285;
+  margin-bottom: 10px;
+  padding-bottom: 10px; }
+
+.widget-column {
+  position: relative;
+  float: left;
+  padding: 0 6px; }
+  .widget-column:first-child {
+    padding-left: 0; }
+  .widget-column:last-child {
+    padding-right: 0; }
+  .widget-column.snapable-right-column, .widget-column.snapable-left-column {
+    position: absolute;
+    bottom: 0;
+    right: 0; }
+  .widget-column.snapable-left-column {
+    left: 0; }
+  .widget-column.snapable-right-column {
+    right: 0; }
+
+.col-1-1 {
+  width: 100%; }
+
+.col-1-2 {
+  width: 50%; }
+
+.col-1-4 {
+  width: 25%; }
+
+.widget-table span:first-child {
+  padding-right: 10px; }
+.widget-table .table-dark-row span {
+  padding-left: 20px; }
+  .widget-table .table-dark-row span:last-child {
+    padding-left: 0; }
+
+.form-text, .form-select, .form-checkbox label, .form-range {
+  background-color: #2c2d31;
+  border: none;
+  height: 40px;
+  font-size: 16px;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  padding: 0 20px;
+  line-height: 1em;
+  position: relative;
+  -webkit-border-radius: 40px;
+  -moz-border-radius: 40px;
+  -ms-border-radius: 40px;
+  -o-border-radius: 40px;
+  border-radius: 40px;
+  color: #c9cacc;
+  -webkit-transition: all 0.25s;
+  -moz-transition: all 0.25s;
+  -o-transition: all 0.25s;
+  transition: all 0.25s; }
+  .form-text:focus, .form-select:focus, .form-checkbox label:focus, .form-range:focus {
+    outline: none; }
+
+.form-select {
+  overflow: hidden; }
+  .form-select select {
+    background: rgba(0, 0, 0, 0);
+    border: none;
+    color: #c9cacc;
+    width: 125%;
+    padding-top: 9px;
+    font-size: 16px; }
+    .form-select select:focus {
+      outline: none; }
+    .form-select select option {
+      color: black; }
+
+.form-checkbox input {
+  display: none; }
+.form-checkbox label {
+  display: block;
+  padding: 0;
+  text-align: center;
+  padding-top: 10px;
+  border: 2px solid #202123;
+  color: #8e8f93; }
+.form-checkbox input:checked + label {
+  border: 2px solid #5f6064;
+  color: #c9cacc; }
+
+.form-range {
+  position:relative;
+  margin-bottom: 16px;
+  width:500px; }
+  .form-range .rail {
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+    border-radius: 10px;
+    height: 10px;
+    background-color: #202123;
+    position: absolute;
+    width: auto;
+    left: 20px;
+    right: 20px;
+    top: 15px; }
+  .form-range .rail-selected {
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    -ms-border-radius: 6px;
+    -o-border-radius: 6px;
+    border-radius: 6px;
+    background-color: #5d6162;
+    position: absolute;
+    height: 6px;
+    top: 2px; }
+  .form-range .left-handle, .form-range .right-handle {
+    border-radius: 30px;
+    height: 30px;
+    width: 30px;
+    background-color: #5d6162;
+    position: absolute;
+    top: -12px; }
+  .form-range .left-handle {
+    left: -15px; }
+  .form-range .right-handle {
+    right: -15px; }
+   .form-range .left-handle:focus {
+    outline:0;
+   }
+   .form-range .right-handle:focus {
+    outline:0;
+   }
+
+.form-range-legend {
+  position: absolute;
+  font-size: 12px;
+  bottom: -16px;
+  left: 0;
+  right: 0; }
+
+.form-range-min-value {
+  position: absolute;
+  left: 0;
+  top: -10px; }
+
+.form-range-max-value {
+  position: absolute;
+  right: 0;
+  top: -10px; }
+
+.input-small {
+  height: 30px;
+  -webkit-border-radius: 30px;
+  -moz-border-radius: 30px;
+  -ms-border-radius: 30px;
+  -o-border-radius: 30px;
+  border-radius: 30px;
+  padding: 0; }
+  .input-small.form-checkbox label {
+    height: 30px;
+    -webkit-border-radius: 30px;
+    -moz-border-radius: 30px;
+    -ms-border-radius: 30px;
+    -o-border-radius: 30px;
+    border-radius: 30px;
+    padding: 0;
+    line-height: 1em;
+    padding-top: 5px; }
+
+.list-header,
+.list-header-small {
+  height: 50px;
+  border-bottom: 1px solid #7e8285;
+  position: relative;
+  margin-bottom: -10px; }
+  .list-header::before, .list-header::after,
+  .list-header-small::before,
+  .list-header-small::after {
+    display: table;
+    content: " "; }
+  .list-header::after,
+  .list-header-small::after {
+    clear: both; }
+
+.list-header-text {
+  font-size: 12px;
+  line-height: 50px;
+  float: left;
+  display: block; }
+
+.list-item {
+  height: 60px;
+  width: 360px;
+  position: relative;
+  border-bottom: 1px solid #7e8285; }
+
+.list {
+  position: relative; }
+
+.item {
+  position: relative;
+  border-bottom: 1px solid #7e8285; }
+
+.list-header-small {
+  height: 30px;
+  border-top: 1px solid #7e8285; }
+  .list-header-small .list-header-text {
+    line-height: 30px;
+    margin-top: -2px; }
+
+.club-logo, .player-name-text, .player-type, .price, .buy-player, .match-information, .club-name-text, .team-chart-position, .long-club-name-text, .team-zone, .account-type, .team-chart-points {
+  position: absolute;
+  display: block; }
+
+.player-points, .details-text, .widget-players-list .club-logo, .widget-players-list .player-name-text, .widget-players-list .player-type, .widget-players-list .price, .list .player-name-text, .list .match-information, .list .club-name-text {
+  position: relative;
+  float: left;
+  display: block; }
+
+.widget-content .widget-row:first-child .list-header-small {
+  border-top: none; }
+
+.team-zone-hexa {
+  background-color: #2c2d31;
+  color: white;
+  display: inline-block;
+  height: 30px;
+  padding: 7px 7px 0 7px;
+  font-size: 16px;
+  line-height: 16px;
+  position: relative;
+  position: absolute;
+  left: 60%; }
+  .team-zone-hexa::before, .team-zone-hexa::after {
+    display: block;
+    position: absolute;
+    content: " ";
+    border: solid transparent;
+    top: 0; }
+  .team-zone-hexa::before {
+    border-right-color: #2c2d31;
+    border-width: 15px 9px 15px 21px;
+    left: -30px; }
+  .team-zone-hexa::after {
+    border-left-color: #2c2d31;
+    border-width: 15px 21px 15px 9px;
+    right: -30px; }
+
+.button-team-info {
+  position: relative;
+  top: 20px; }
+
+.widget-team-info .account-type {
+  width: 10px;
+  height: 10px;
+  position: relative;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+  border-radius: 10px;
+  background-color: #7e8285;
+  left: auto;
+  display: inline-block;
+  top: auto; }
+.widget-team-info .account-type-ultimate {
+  background-color: white; }
+.widget-team-info .widget-row:last-child {
+  margin-bottom: 20px; }
+
+.account-type-text {
+  color: white;
+  display: block;
+  left: 40%;
+  position: absolute;
+  top: 0; }
+
+.account-type-ultimate {
+  background-color: white; }
+
+.club-logo {
+  -webkit-border-radius: 30px;
+  -moz-border-radius: 30px;
+  -ms-border-radius: 30px;
+  -o-border-radius: 30px;
+  border-radius: 30px;
+  height: 40px;
+  width: 40px;
+  top: 10px;
+  left: 0; }
+
+.player-name-text {
+  display: block;
+  left: 60px;
+  top: 12.5px;
+  font-size: 14px; }
+
+.player-type {
+  left: 270px;
+  height: 30px;
+  width: 30px;
+  -webkit-border-radius: 30px;
+  -moz-border-radius: 30px;
+  -ms-border-radius: 30px;
+  -o-border-radius: 30px;
+  border-radius: 30px;
+  background-color: blue;
+  top: 15px; }
+
+.price {
+  left: 190px;
+  top: 22px;
+  line-height: 1em; }
+
+.price.premium-player {
+  position: relative;
+  top: 14.5px; }
+  .price.premium-player span {
+    display: block;
+    position: absolute; }
+    .price.premium-player span:first-child {
+      width: 80px; }
+    .price.premium-player span:last-child {
+      width: 70px;
+      line-height: 1.5em;
+      top: 18px;
+      text-align: center;
+      background-color: #cecfd3;
+      color: #2c2d31;
+      -webkit-border-radius: 10px;
+      -moz-border-radius: 10px;
+      -ms-border-radius: 10px;
+      -o-border-radius: 10px;
+      border-radius: 10px; }
+
+.buy-player {
+  height: 40px;
+  width: 40px;
+  -webkit-border-radius: 40px;
+  -moz-border-radius: 40px;
+  -ms-border-radius: 40px;
+  -o-border-radius: 40px;
+  border-radius: 40px;
+  left: 320px;
+  background-color: #7e8285;
+  top: 10px; }
+
+.widget-search-players-list .header-item-1 {
+  width: 60px; }
+.widget-search-players-list .header-item-2 {
+  width: 130px; }
+.widget-search-players-list .header-item-3 {
+  width: 80px; }
+.widget-search-players-list .header-item-3 {
+  width: 80px; }
+.widget-search-players-list .header-item-4 {
+  width: 50px; }
+.widget-search-players-list .widget-content {
+  height: 689px;
+  padding-bottom: 0; }
+.widget-search-players-list .list-scrollable {
+  height: 609px; }
+.widget-search-players-list .list-scrollbar {
+  height: 599px; }
+
+.player-points {
+  height: 30px;
+  background-color: #cecfd3;
+  color: #2c2d31;
+  left: 84px;
+  -webkit-border-radius: 30px;
+  -moz-border-radius: 30px;
+  -ms-border-radius: 30px;
+  -o-border-radius: 30px;
+  border-radius: 30px;
+  width: 60px;
+  text-align: center;
+  padding-top: 7px;
+  line-height: 16px;
+  top: 15px; }
+
+.details-text {
+  top: 55px;
+  right: 0;
+  position: absolute; }
+  .details-text i {
+    margin-left: 5px;
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    background: red; }
+
+.more-details .widget-table {
+  margin-top: 90px;
+  margin-left: 105px; }
+  .more-details .widget-table span {
+    font-size: 14px;
+    line-height: 1.5em; }
+    .more-details .widget-table span:first-child {
+      width: 200px;
+      display: inline-block; }
+.more-details.hide {
+  display: none; }
+
+.widget-players-list .widget-content {
+  min-height: 694px; }
+  .widget-players-list .widget-content.hide {
+    min-height: 0; }
+.widget-players-list .item {
+  padding-bottom: 20px; }
+  .widget-players-list .item::before, .widget-players-list .item::after {
+    display: table;
+    content: " "; }
+  .widget-players-list .item::after {
+    clear: both; }
+.widget-players-list .club-logo {
+  -webkit-border-radius: 30px;
+  -moz-border-radius: 30px;
+  -ms-border-radius: 30px;
+  -o-border-radius: 30px;
+  border-radius: 30px;
+  height: 40px;
+  width: 40px;
+  margin-top: 8px;
+  left: 0; }
+.widget-players-list .player-name-text {
+  width: 140px;
+  display: block;
+  font-size: 14px;
+  left: 20px; }
+  .widget-players-list .player-name-text::before, .widget-players-list .player-name-text::after {
+    display: table;
+    content: " "; }
+  .widget-players-list .player-name-text::after {
+    clear: both; }
+.widget-players-list .player-type {
+  left: 30px;
+  height: 30px;
+  width: 30px;
+  -webkit-border-radius: 30px;
+  -moz-border-radius: 30px;
+  -ms-border-radius: 30px;
+  -o-border-radius: 30px;
+  border-radius: 30px;
+  background-color: blue; }
+.widget-players-list .price {
+  left: 0;
+  margin-top: 5px;
+  line-height: 1em; }
+.widget-players-list .price.premium-player {
+  position: relative;
+  top: 0; }
+  .widget-players-list .price.premium-player span {
+    display: inline-block;
+    position: relative; }
+    .widget-players-list .price.premium-player span:first-child {
+      width: auto; }
+    .widget-players-list .price.premium-player span:last-child {
+      text-align: center;
+      background-color: #2c2d31;
+      color: #cecfd3;
+      top: 0;
+      -webkit-border-radius: 10px;
+      -moz-border-radius: 10px;
+      -ms-border-radius: 10px;
+      -o-border-radius: 10px;
+      border-radius: 10px; }
+.widget-players-list .header-item-1 {
+  width: 60px; }
+.widget-players-list .header-item-2 {
+  width: 140px; }
+.widget-players-list .header-item-3 {
+  width: 80px; }
+.widget-players-list .header-item-4 {
+  width: 50px; }
+
+.player-name-text {
+  display: block;
+  left: 60px;
+  top: 12.5px;
+  font-size: 14px; }
+
+.match-information {
+  width: 80px;
+  text-align: center;
+  left: 140px;
+  top: 10px; }
+
+.match-information-score,
+.match-information-date {
+  display: block;
+  font-size: 16px;
+  padding-top: 4px;
+  margin-bottom: -4px; }
+
+.match-information-text,
+.match-information-time {
+  font-size: 12px;
+  vertical-align: bottom;
+  display: inline; }
+
+.club-name-text {
+  display: block;
+  top: 12.5px;
+  font-size: 14px;
+  width: 80px; }
+
+.club-name-left {
+  left: 60px; }
+
+.club-name-right {
+  right: 60px; }
+
+.list .player-name-text {
+  display: block;
+  font-size: 14px; }
+.list .match-information {
+  width: 80px;
+  text-align: center;
+  left: 60px; }
+.list .match-information-score,
+.list .match-information-date {
+  display: block;
+  font-size: 16px;
+  padding-top: 4px;
+  margin-bottom: -4px; }
+.list .match-information-text,
+.list .match-information-time {
+  font-size: 12px;
+  vertical-align: bottom;
+  display: inline; }
+.list .club-name-text {
+  display: block;
+  top: 12.5px;
+  font-size: 14px;
+  width: 80px; }
+.list .club-name-left {
+  left: 60px; }
+.list .club-name-right {
+  position: absolute;
+  right: 60px; }
+
+.widget-matches .item {
+  height: 60px; }
+.widget-matches .header-item-1 {
+  left: 0;
+  position: absolute; }
+.widget-matches .header-item-2 {
+  width: 80px;
+  text-align: center;
+  position: absolute;
+  left: 140px; }
+.widget-matches .header-item-3 {
+  right: 0;
+  position: absolute; }
+.widget-matches .club-logo {
+  position: absolute; }
+.widget-matches .club-logo-left {
+  left: 0; }
+.widget-matches .club-logo-right {
+  right: 0;
+  left: auto; }
+
+.team-chart-position {
+  left: 0;
+  height: 30px;
+  -webkit-border-radius: 30px;
+  -moz-border-radius: 30px;
+  -ms-border-radius: 30px;
+  -o-border-radius: 30px;
+  border-radius: 30px;
+  background-color: #2c2d31;
+  padding: 0 5px;
+  text-align: center;
+  padding-top: 6.25px;
+  top: 17.5px;
+  font-size: 14px;
+  width: 60px; }
+
+.long-club-name-text {
+  top: 12.5px;
+  font-size: 14px;
+  left: 70px;
+  width: 140px; }
+
+.team-zone {
+  left: 220px;
+  top: 22px; }
+
+.account-type {
+  width: 10px;
+  height: 10px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+  border-radius: 10px;
+  background-color: #7e8285;
+  left: 205px;
+  top: 27px; }
+
+.team-chart-points {
+  left: 300px;
+  top: 22px; }
+
+.widget-chart .list-header-text {
+  position: absolute; }
+.widget-chart .header-item-1 {
+  left: 0; }
+.widget-chart .header-item-2 {
+  left: 70px; }
+.widget-chart .header-item-3 {
+  left: 220px; }
+.widget-chart .header-item-4 {
+  left: 300px; }
+.widget-chart .widget-content {
+  height: 415px;
+  padding-bottom: 0; }
+.widget-chart .list-scrollable {
+  height: 285px; }
+.widget-chart .list-scrollbar {
+  height: 295px; }
+
+.list-item.active .team-chart-position {
+  background-color: #c9cacc;
+  color: #2c2d31; }
+
+.widget-bench .widget-row {
+  position: relative;
+  height: 80px;
+  width: 360px; }
+.widget-bench .widget-column {
+  position: relative; }
+.widget-bench .col-1-4 {
+  width: 90px;
+  height: 1px; }
+
+.pitch-player {
+  position: absolute;
+  height: 60px;
+  width: 60px; }
+
+.player-name {
+  color: white;
+  position: absolute;
+  bottom: -22px;
+  z-index: 20; }
+
+.pitch-row {
+  position: relative;
+  height: 100px;
+  width: 360px;
+  left: 20px;
+  padding-top: 20px; }
+
+.pitch {
+  position: relative;
+  height: 400px;
+  margin: 0 -20px;
+  background-size: 400px 600px;
+  background-position: 0px -200px; }
+
+.pitch-team-performance {
+  background-color: #37383c;
+  height: 60px;
+  position: absolute;
+  -webkit-border-radius: 60px;
+  -moz-border-radius: 60px;
+  -ms-border-radius: 60px;
+  -o-border-radius: 60px;
+  border-radius: 60px;
+  width: 125px;
+  right: 0; }
+
+.pitch-team-performance-graph {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  height: 40px;
+  width: 40px; }
+
+.pitch-team-performance-text {
+  font-size: 12px;
+  padding-left: 20px;
+  padding-top: 15px;
+  width: 60px;
+  display: block;
+  line-height: 1.25em; }
+
+.f-5-3-2 .pitch-row:nth-child(1) .pitch-player:nth-child(1) {
+  left: 110px; }
+.f-5-3-2 .pitch-row:nth-child(1) .pitch-player:nth-child(2) {
+  right: 110px; }
+.f-5-3-2 .pitch-row:nth-child(2) .pitch-player:nth-child(1) {
+  left: 70px; }
+.f-5-3-2 .pitch-row:nth-child(2) .pitch-player:nth-child(2) {
+  left: 150px;
+  top: 40px; }
+.f-5-3-2 .pitch-row:nth-child(2) .pitch-player:nth-child(3) {
+  right: 70px; }
+.f-5-3-2 .pitch-row:nth-child(3) .pitch-player:nth-child(1) {
+  left: 0;
+  top: -20px; }
+.f-5-3-2 .pitch-row:nth-child(3) .pitch-player:nth-child(2) {
+  left: 75px; }
+.f-5-3-2 .pitch-row:nth-child(3) .pitch-player:nth-child(3) {
+  left: 150px;
+  top: 40px; }
+.f-5-3-2 .pitch-row:nth-child(3) .pitch-player:nth-child(4) {
+  right: 75px; }
+.f-5-3-2 .pitch-row:nth-child(3) .pitch-player:nth-child(5) {
+  right: 0;
+  top: -20px; }
+.f-5-3-2 .pitch-row:nth-child(4) .pitch-player:nth-child(1) {
+  left: 150px;
+  top: 20px; }
+
+.hold {
+  clip: rect(0px, 60px, 60px, 30px); }
+
+.player-type .hold {
+  clip: rect(0px, 30px, 30px, 15px); }
+
+.pitch-team-performance-graph .hold {
+  clip: rect(0px, 40px, 40px, 20px); }
+
+.circle, .circle-hold, .circle-rotate, .circle-pseudo-transparency {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -moz-border-radius: 50%;
+  -webkit-border-radius: 50%;
+  -o-border-radius: 50%;
+  border-radius: 50%;
+  background-color: #da4243; }
+
+.circle-rotate {
+  clip: rect(0px, 30px, 60px, 0px); }
+
+.player-type .circle-rotate {
+  clip: rect(0px, 15px, 30px, 0px); }
+
+.pitch-team-performance-graph .circle-rotate {
+  clip: rect(0px, 20px, 40px, 0px); }
+
+.rotate-0 .circle, .rotate-1 .circle, .rotate-2 .circle, .rotate-3 .circle, .rotate-4 .circle, .rotate-5 .circle, .rotate-6 .circle, .rotate-7 .circle, .rotate-8 .circle, .rotate-9 .circle, .rotate-10 .circle, .rotate-11 .circle, .rotate-12 .circle, .rotate-13 .circle, .rotate-14 .circle, .rotate-15 .circle, .rotate-16 .circle, .rotate-17 .circle, .rotate-18 .circle, .rotate-19 .circle, .rotate-20 .circle, .rotate-21 .circle, .rotate-22 .circle, .rotate-23 .circle, .rotate-24 .circle, .rotate-25 .circle, .rotate-26 .circle, .rotate-27 .circle, .rotate-28 .circle, .rotate-29 .circle, .rotate-30 .circle, .rotate-31 .circle, .rotate-32 .circle, .rotate-33 .circle, .rotate-34 .circle, .rotate-35 .circle, .rotate-36 .circle, .rotate-37 .circle, .rotate-38 .circle, .rotate-39 .circle, .rotate-40 .circle, .rotate-41 .circle, .rotate-42 .circle, .rotate-43 .circle, .rotate-44 .circle, .rotate-45 .circle, .rotate-46 .circle, .rotate-47 .circle, .rotate-48 .circle, .rotate-49 .circle, .rotate-50 .circle, .rotate-51 .circle, .rotate-52 .circle, .rotate-53 .circle, .rotate-54 .circle, .rotate-55 .circle, .rotate-56 .circle, .rotate-57 .circle, .rotate-58 .circle, .rotate-59 .circle, .rotate-60 .circle, .rotate-61 .circle, .rotate-62 .circle, .rotate-63 .circle, .rotate-64 .circle, .rotate-65 .circle, .rotate-66 .circle, .rotate-67 .circle, .rotate-68 .circle, .rotate-69 .circle, .rotate-70 .circle, .rotate-71 .circle, .rotate-72 .circle, .rotate-73 .circle, .rotate-74 .circle, .rotate-75 .circle, .rotate-76 .circle, .rotate-77 .circle, .rotate-78 .circle, .rotate-79 .circle, .rotate-80 .circle, .rotate-81 .circle, .rotate-82 .circle, .rotate-83 .circle, .rotate-84 .circle, .rotate-85 .circle, .rotate-86 .circle, .rotate-87 .circle, .rotate-88 .circle, .rotate-89 .circle, .rotate-90 .circle, .rotate-91 .circle, .rotate-92 .circle, .rotate-93 .circle, .rotate-94 .circle, .rotate-95 .circle, .rotate-96 .circle, .rotate-97 .circle, .rotate-98 .circle, .rotate-99 .circle, .rotate-100 .circle, .rotate-101 .circle, .rotate-102 .circle, .rotate-103 .circle, .rotate-104 .circle, .rotate-105 .circle, .rotate-106 .circle, .rotate-107 .circle, .rotate-108 .circle, .rotate-109 .circle, .rotate-110 .circle, .rotate-111 .circle, .rotate-112 .circle, .rotate-113 .circle, .rotate-114 .circle, .rotate-115 .circle, .rotate-116 .circle, .rotate-117 .circle, .rotate-118 .circle, .rotate-119 .circle, .rotate-120 .circle, .rotate-121 .circle, .rotate-122 .circle, .rotate-123 .circle, .rotate-124 .circle, .rotate-125 .circle, .rotate-126 .circle, .rotate-127 .circle, .rotate-128 .circle, .rotate-129 .circle, .rotate-130 .circle, .rotate-131 .circle, .rotate-132 .circle, .rotate-133 .circle, .rotate-134 .circle, .rotate-135 .circle, .rotate-136 .circle, .rotate-137 .circle, .rotate-138 .circle, .rotate-139 .circle, .rotate-140 .circle, .rotate-141 .circle, .rotate-142 .circle, .rotate-143 .circle, .rotate-144 .circle, .rotate-145 .circle, .rotate-146 .circle, .rotate-147 .circle, .rotate-148 .circle, .rotate-149 .circle, .rotate-150 .circle, .rotate-151 .circle, .rotate-152 .circle, .rotate-153 .circle, .rotate-154 .circle, .rotate-155 .circle, .rotate-156 .circle, .rotate-157 .circle, .rotate-158 .circle, .rotate-159 .circle, .rotate-160 .circle, .rotate-161 .circle, .rotate-162 .circle, .rotate-163 .circle, .rotate-164 .circle, .rotate-165 .circle, .rotate-166 .circle, .rotate-167 .circle, .rotate-168 .circle, .rotate-169 .circle, .rotate-170 .circle, .rotate-171 .circle, .rotate-172 .circle, .rotate-173 .circle, .rotate-174 .circle, .rotate-175 .circle, .rotate-176 .circle, .rotate-177 .circle, .rotate-178 .circle, .rotate-179 .circle, .rotate-180 .circle, .rotate-181 .circle-rotate, .rotate-182 .circle-rotate, .rotate-183 .circle-rotate, .rotate-184 .circle-rotate, .rotate-185 .circle-rotate, .rotate-186 .circle-rotate, .rotate-187 .circle-rotate, .rotate-188 .circle-rotate, .rotate-189 .circle-rotate, .rotate-190 .circle-rotate, .rotate-191 .circle-rotate, .rotate-192 .circle-rotate, .rotate-193 .circle-rotate, .rotate-194 .circle-rotate, .rotate-195 .circle-rotate, .rotate-196 .circle-rotate, .rotate-197 .circle-rotate, .rotate-198 .circle-rotate, .rotate-199 .circle-rotate, .rotate-200 .circle-rotate, .rotate-201 .circle-rotate, .rotate-202 .circle-rotate, .rotate-203 .circle-rotate, .rotate-204 .circle-rotate, .rotate-205 .circle-rotate, .rotate-206 .circle-rotate, .rotate-207 .circle-rotate, .rotate-208 .circle-rotate, .rotate-209 .circle-rotate, .rotate-210 .circle-rotate, .rotate-211 .circle-rotate, .rotate-212 .circle-rotate, .rotate-213 .circle-rotate, .rotate-214 .circle-rotate, .rotate-215 .circle-rotate, .rotate-216 .circle-rotate, .rotate-217 .circle-rotate, .rotate-218 .circle-rotate, .rotate-219 .circle-rotate, .rotate-220 .circle-rotate, .rotate-221 .circle-rotate, .rotate-222 .circle-rotate, .rotate-223 .circle-rotate, .rotate-224 .circle-rotate, .rotate-225 .circle-rotate, .rotate-226 .circle-rotate, .rotate-227 .circle-rotate, .rotate-228 .circle-rotate, .rotate-229 .circle-rotate, .rotate-230 .circle-rotate, .rotate-231 .circle-rotate, .rotate-232 .circle-rotate, .rotate-233 .circle-rotate, .rotate-234 .circle-rotate, .rotate-235 .circle-rotate, .rotate-236 .circle-rotate, .rotate-237 .circle-rotate, .rotate-238 .circle-rotate, .rotate-239 .circle-rotate, .rotate-240 .circle-rotate, .rotate-241 .circle-rotate, .rotate-242 .circle-rotate, .rotate-243 .circle-rotate, .rotate-244 .circle-rotate, .rotate-245 .circle-rotate, .rotate-246 .circle-rotate, .rotate-247 .circle-rotate, .rotate-248 .circle-rotate, .rotate-249 .circle-rotate, .rotate-250 .circle-rotate, .rotate-251 .circle-rotate, .rotate-252 .circle-rotate, .rotate-253 .circle-rotate, .rotate-254 .circle-rotate, .rotate-255 .circle-rotate, .rotate-256 .circle-rotate, .rotate-257 .circle-rotate, .rotate-258 .circle-rotate, .rotate-259 .circle-rotate, .rotate-260 .circle-rotate, .rotate-261 .circle-rotate, .rotate-262 .circle-rotate, .rotate-263 .circle-rotate, .rotate-264 .circle-rotate, .rotate-265 .circle-rotate, .rotate-266 .circle-rotate, .rotate-267 .circle-rotate, .rotate-268 .circle-rotate, .rotate-269 .circle-rotate, .rotate-270 .circle-rotate, .rotate-271 .circle-rotate, .rotate-272 .circle-rotate, .rotate-273 .circle-rotate, .rotate-274 .circle-rotate, .rotate-275 .circle-rotate, .rotate-276 .circle-rotate, .rotate-277 .circle-rotate, .rotate-278 .circle-rotate, .rotate-279 .circle-rotate, .rotate-280 .circle-rotate, .rotate-281 .circle-rotate, .rotate-282 .circle-rotate, .rotate-283 .circle-rotate, .rotate-284 .circle-rotate, .rotate-285 .circle-rotate, .rotate-286 .circle-rotate, .rotate-287 .circle-rotate, .rotate-288 .circle-rotate, .rotate-289 .circle-rotate, .rotate-290 .circle-rotate, .rotate-291 .circle-rotate, .rotate-292 .circle-rotate, .rotate-293 .circle-rotate, .rotate-294 .circle-rotate, .rotate-295 .circle-rotate, .rotate-296 .circle-rotate, .rotate-297 .circle-rotate, .rotate-298 .circle-rotate, .rotate-299 .circle-rotate, .rotate-300 .circle-rotate, .rotate-301 .circle-rotate, .rotate-302 .circle-rotate, .rotate-303 .circle-rotate, .rotate-304 .circle-rotate, .rotate-305 .circle-rotate, .rotate-306 .circle-rotate, .rotate-307 .circle-rotate, .rotate-308 .circle-rotate, .rotate-309 .circle-rotate, .rotate-310 .circle-rotate, .rotate-311 .circle-rotate, .rotate-312 .circle-rotate, .rotate-313 .circle-rotate, .rotate-314 .circle-rotate, .rotate-315 .circle-rotate, .rotate-316 .circle-rotate, .rotate-317 .circle-rotate, .rotate-318 .circle-rotate, .rotate-319 .circle-rotate, .rotate-320 .circle-rotate, .rotate-321 .circle-rotate, .rotate-322 .circle-rotate, .rotate-323 .circle-rotate, .rotate-324 .circle-rotate, .rotate-325 .circle-rotate, .rotate-326 .circle-rotate, .rotate-327 .circle-rotate, .rotate-328 .circle-rotate, .rotate-329 .circle-rotate, .rotate-330 .circle-rotate, .rotate-331 .circle-rotate, .rotate-332 .circle-rotate, .rotate-333 .circle-rotate, .rotate-334 .circle-rotate, .rotate-335 .circle-rotate, .rotate-336 .circle-rotate, .rotate-337 .circle-rotate, .rotate-338 .circle-rotate, .rotate-339 .circle-rotate, .rotate-340 .circle-rotate, .rotate-341 .circle-rotate, .rotate-342 .circle-rotate, .rotate-343 .circle-rotate, .rotate-344 .circle-rotate, .rotate-345 .circle-rotate, .rotate-346 .circle-rotate, .rotate-347 .circle-rotate, .rotate-348 .circle-rotate, .rotate-349 .circle-rotate, .rotate-350 .circle-rotate, .rotate-351 .circle-rotate, .rotate-352 .circle-rotate, .rotate-353 .circle-rotate, .rotate-354 .circle-rotate, .rotate-355 .circle-rotate, .rotate-356 .circle-rotate, .rotate-357 .circle-rotate, .rotate-358 .circle-rotate, .rotate-359 .circle-rotate, .rotate-360 .circle-rotate {
+  background-color: #2c2d31; }
+
+.rotate-0 .circle-rotate, .rotate-1 .circle-rotate, .rotate-2 .circle-rotate, .rotate-3 .circle-rotate, .rotate-4 .circle-rotate, .rotate-5 .circle-rotate, .rotate-6 .circle-rotate, .rotate-7 .circle-rotate, .rotate-8 .circle-rotate, .rotate-9 .circle-rotate, .rotate-10 .circle-rotate, .rotate-11 .circle-rotate, .rotate-12 .circle-rotate, .rotate-13 .circle-rotate, .rotate-14 .circle-rotate, .rotate-15 .circle-rotate, .rotate-16 .circle-rotate, .rotate-17 .circle-rotate, .rotate-18 .circle-rotate, .rotate-19 .circle-rotate, .rotate-20 .circle-rotate, .rotate-21 .circle-rotate, .rotate-22 .circle-rotate, .rotate-23 .circle-rotate, .rotate-24 .circle-rotate, .rotate-25 .circle-rotate, .rotate-26 .circle-rotate, .rotate-27 .circle-rotate, .rotate-28 .circle-rotate, .rotate-29 .circle-rotate, .rotate-30 .circle-rotate, .rotate-31 .circle-rotate, .rotate-32 .circle-rotate, .rotate-33 .circle-rotate, .rotate-34 .circle-rotate, .rotate-35 .circle-rotate, .rotate-36 .circle-rotate, .rotate-37 .circle-rotate, .rotate-38 .circle-rotate, .rotate-39 .circle-rotate, .rotate-40 .circle-rotate, .rotate-41 .circle-rotate, .rotate-42 .circle-rotate, .rotate-43 .circle-rotate, .rotate-44 .circle-rotate, .rotate-45 .circle-rotate, .rotate-46 .circle-rotate, .rotate-47 .circle-rotate, .rotate-48 .circle-rotate, .rotate-49 .circle-rotate, .rotate-50 .circle-rotate, .rotate-51 .circle-rotate, .rotate-52 .circle-rotate, .rotate-53 .circle-rotate, .rotate-54 .circle-rotate, .rotate-55 .circle-rotate, .rotate-56 .circle-rotate, .rotate-57 .circle-rotate, .rotate-58 .circle-rotate, .rotate-59 .circle-rotate, .rotate-60 .circle-rotate, .rotate-61 .circle-rotate, .rotate-62 .circle-rotate, .rotate-63 .circle-rotate, .rotate-64 .circle-rotate, .rotate-65 .circle-rotate, .rotate-66 .circle-rotate, .rotate-67 .circle-rotate, .rotate-68 .circle-rotate, .rotate-69 .circle-rotate, .rotate-70 .circle-rotate, .rotate-71 .circle-rotate, .rotate-72 .circle-rotate, .rotate-73 .circle-rotate, .rotate-74 .circle-rotate, .rotate-75 .circle-rotate, .rotate-76 .circle-rotate, .rotate-77 .circle-rotate, .rotate-78 .circle-rotate, .rotate-79 .circle-rotate, .rotate-80 .circle-rotate, .rotate-81 .circle-rotate, .rotate-82 .circle-rotate, .rotate-83 .circle-rotate, .rotate-84 .circle-rotate, .rotate-85 .circle-rotate, .rotate-86 .circle-rotate, .rotate-87 .circle-rotate, .rotate-88 .circle-rotate, .rotate-89 .circle-rotate, .rotate-90 .circle-rotate, .rotate-91 .circle-rotate, .rotate-92 .circle-rotate, .rotate-93 .circle-rotate, .rotate-94 .circle-rotate, .rotate-95 .circle-rotate, .rotate-96 .circle-rotate, .rotate-97 .circle-rotate, .rotate-98 .circle-rotate, .rotate-99 .circle-rotate, .rotate-100 .circle-rotate, .rotate-101 .circle-rotate, .rotate-102 .circle-rotate, .rotate-103 .circle-rotate, .rotate-104 .circle-rotate, .rotate-105 .circle-rotate, .rotate-106 .circle-rotate, .rotate-107 .circle-rotate, .rotate-108 .circle-rotate, .rotate-109 .circle-rotate, .rotate-110 .circle-rotate, .rotate-111 .circle-rotate, .rotate-112 .circle-rotate, .rotate-113 .circle-rotate, .rotate-114 .circle-rotate, .rotate-115 .circle-rotate, .rotate-116 .circle-rotate, .rotate-117 .circle-rotate, .rotate-118 .circle-rotate, .rotate-119 .circle-rotate, .rotate-120 .circle-rotate, .rotate-121 .circle-rotate, .rotate-122 .circle-rotate, .rotate-123 .circle-rotate, .rotate-124 .circle-rotate, .rotate-125 .circle-rotate, .rotate-126 .circle-rotate, .rotate-127 .circle-rotate, .rotate-128 .circle-rotate, .rotate-129 .circle-rotate, .rotate-130 .circle-rotate, .rotate-131 .circle-rotate, .rotate-132 .circle-rotate, .rotate-133 .circle-rotate, .rotate-134 .circle-rotate, .rotate-135 .circle-rotate, .rotate-136 .circle-rotate, .rotate-137 .circle-rotate, .rotate-138 .circle-rotate, .rotate-139 .circle-rotate, .rotate-140 .circle-rotate, .rotate-141 .circle-rotate, .rotate-142 .circle-rotate, .rotate-143 .circle-rotate, .rotate-144 .circle-rotate, .rotate-145 .circle-rotate, .rotate-146 .circle-rotate, .rotate-147 .circle-rotate, .rotate-148 .circle-rotate, .rotate-149 .circle-rotate, .rotate-150 .circle-rotate, .rotate-151 .circle-rotate, .rotate-152 .circle-rotate, .rotate-153 .circle-rotate, .rotate-154 .circle-rotate, .rotate-155 .circle-rotate, .rotate-156 .circle-rotate, .rotate-157 .circle-rotate, .rotate-158 .circle-rotate, .rotate-159 .circle-rotate, .rotate-160 .circle-rotate, .rotate-161 .circle-rotate, .rotate-162 .circle-rotate, .rotate-163 .circle-rotate, .rotate-164 .circle-rotate, .rotate-165 .circle-rotate, .rotate-166 .circle-rotate, .rotate-167 .circle-rotate, .rotate-168 .circle-rotate, .rotate-169 .circle-rotate, .rotate-170 .circle-rotate, .rotate-171 .circle-rotate, .rotate-172 .circle-rotate, .rotate-173 .circle-rotate, .rotate-174 .circle-rotate, .rotate-175 .circle-rotate, .rotate-176 .circle-rotate, .rotate-177 .circle-rotate, .rotate-178 .circle-rotate, .rotate-179 .circle-rotate, .rotate-180 .circle-rotate, .rotate-181 .circle, .rotate-182 .circle, .rotate-183 .circle, .rotate-184 .circle, .rotate-185 .circle, .rotate-186 .circle, .rotate-187 .circle, .rotate-188 .circle, .rotate-189 .circle, .rotate-190 .circle, .rotate-191 .circle, .rotate-192 .circle, .rotate-193 .circle, .rotate-194 .circle, .rotate-195 .circle, .rotate-196 .circle, .rotate-197 .circle, .rotate-198 .circle, .rotate-199 .circle, .rotate-200 .circle, .rotate-201 .circle, .rotate-202 .circle, .rotate-203 .circle, .rotate-204 .circle, .rotate-205 .circle, .rotate-206 .circle, .rotate-207 .circle, .rotate-208 .circle, .rotate-209 .circle, .rotate-210 .circle, .rotate-211 .circle, .rotate-212 .circle, .rotate-213 .circle, .rotate-214 .circle, .rotate-215 .circle, .rotate-216 .circle, .rotate-217 .circle, .rotate-218 .circle, .rotate-219 .circle, .rotate-220 .circle, .rotate-221 .circle, .rotate-222 .circle, .rotate-223 .circle, .rotate-224 .circle, .rotate-225 .circle, .rotate-226 .circle, .rotate-227 .circle, .rotate-228 .circle, .rotate-229 .circle, .rotate-230 .circle, .rotate-231 .circle, .rotate-232 .circle, .rotate-233 .circle, .rotate-234 .circle, .rotate-235 .circle, .rotate-236 .circle, .rotate-237 .circle, .rotate-238 .circle, .rotate-239 .circle, .rotate-240 .circle, .rotate-241 .circle, .rotate-242 .circle, .rotate-243 .circle, .rotate-244 .circle, .rotate-245 .circle, .rotate-246 .circle, .rotate-247 .circle, .rotate-248 .circle, .rotate-249 .circle, .rotate-250 .circle, .rotate-251 .circle, .rotate-252 .circle, .rotate-253 .circle, .rotate-254 .circle, .rotate-255 .circle, .rotate-256 .circle, .rotate-257 .circle, .rotate-258 .circle, .rotate-259 .circle, .rotate-260 .circle, .rotate-261 .circle, .rotate-262 .circle, .rotate-263 .circle, .rotate-264 .circle, .rotate-265 .circle, .rotate-266 .circle, .rotate-267 .circle, .rotate-268 .circle, .rotate-269 .circle, .rotate-270 .circle, .rotate-271 .circle, .rotate-272 .circle, .rotate-273 .circle, .rotate-274 .circle, .rotate-275 .circle, .rotate-276 .circle, .rotate-277 .circle, .rotate-278 .circle, .rotate-279 .circle, .rotate-280 .circle, .rotate-281 .circle, .rotate-282 .circle, .rotate-283 .circle, .rotate-284 .circle, .rotate-285 .circle, .rotate-286 .circle, .rotate-287 .circle, .rotate-288 .circle, .rotate-289 .circle, .rotate-290 .circle, .rotate-291 .circle, .rotate-292 .circle, .rotate-293 .circle, .rotate-294 .circle, .rotate-295 .circle, .rotate-296 .circle, .rotate-297 .circle, .rotate-298 .circle, .rotate-299 .circle, .rotate-300 .circle, .rotate-301 .circle, .rotate-302 .circle, .rotate-303 .circle, .rotate-304 .circle, .rotate-305 .circle, .rotate-306 .circle, .rotate-307 .circle, .rotate-308 .circle, .rotate-309 .circle, .rotate-310 .circle, .rotate-311 .circle, .rotate-312 .circle, .rotate-313 .circle, .rotate-314 .circle, .rotate-315 .circle, .rotate-316 .circle, .rotate-317 .circle, .rotate-318 .circle, .rotate-319 .circle, .rotate-320 .circle, .rotate-321 .circle, .rotate-322 .circle, .rotate-323 .circle, .rotate-324 .circle, .rotate-325 .circle, .rotate-326 .circle, .rotate-327 .circle, .rotate-328 .circle, .rotate-329 .circle, .rotate-330 .circle, .rotate-331 .circle, .rotate-332 .circle, .rotate-333 .circle, .rotate-334 .circle, .rotate-335 .circle, .rotate-336 .circle, .rotate-337 .circle, .rotate-338 .circle, .rotate-339 .circle, .rotate-340 .circle, .rotate-341 .circle, .rotate-342 .circle, .rotate-343 .circle, .rotate-344 .circle, .rotate-345 .circle, .rotate-346 .circle, .rotate-347 .circle, .rotate-348 .circle, .rotate-349 .circle, .rotate-350 .circle, .rotate-351 .circle, .rotate-352 .circle, .rotate-353 .circle, .rotate-354 .circle, .rotate-355 .circle, .rotate-356 .circle, .rotate-357 .circle, .rotate-358 .circle, .rotate-359 .circle, .rotate-360 .circle {
+  background-color: #c9cacc; }
+
+.rotate-181 .circle-rotate, .rotate-182 .circle-rotate, .rotate-183 .circle-rotate, .rotate-184 .circle-rotate, .rotate-185 .circle-rotate, .rotate-186 .circle-rotate, .rotate-187 .circle-rotate, .rotate-188 .circle-rotate, .rotate-189 .circle-rotate, .rotate-190 .circle-rotate, .rotate-191 .circle-rotate, .rotate-192 .circle-rotate, .rotate-193 .circle-rotate, .rotate-194 .circle-rotate, .rotate-195 .circle-rotate, .rotate-196 .circle-rotate, .rotate-197 .circle-rotate, .rotate-198 .circle-rotate, .rotate-199 .circle-rotate, .rotate-200 .circle-rotate, .rotate-201 .circle-rotate, .rotate-202 .circle-rotate, .rotate-203 .circle-rotate, .rotate-204 .circle-rotate, .rotate-205 .circle-rotate, .rotate-206 .circle-rotate, .rotate-207 .circle-rotate, .rotate-208 .circle-rotate, .rotate-209 .circle-rotate, .rotate-210 .circle-rotate, .rotate-211 .circle-rotate, .rotate-212 .circle-rotate, .rotate-213 .circle-rotate, .rotate-214 .circle-rotate, .rotate-215 .circle-rotate, .rotate-216 .circle-rotate, .rotate-217 .circle-rotate, .rotate-218 .circle-rotate, .rotate-219 .circle-rotate, .rotate-220 .circle-rotate, .rotate-221 .circle-rotate, .rotate-222 .circle-rotate, .rotate-223 .circle-rotate, .rotate-224 .circle-rotate, .rotate-225 .circle-rotate, .rotate-226 .circle-rotate, .rotate-227 .circle-rotate, .rotate-228 .circle-rotate, .rotate-229 .circle-rotate, .rotate-230 .circle-rotate, .rotate-231 .circle-rotate, .rotate-232 .circle-rotate, .rotate-233 .circle-rotate, .rotate-234 .circle-rotate, .rotate-235 .circle-rotate, .rotate-236 .circle-rotate, .rotate-237 .circle-rotate, .rotate-238 .circle-rotate, .rotate-239 .circle-rotate, .rotate-240 .circle-rotate, .rotate-241 .circle-rotate, .rotate-242 .circle-rotate, .rotate-243 .circle-rotate, .rotate-244 .circle-rotate, .rotate-245 .circle-rotate, .rotate-246 .circle-rotate, .rotate-247 .circle-rotate, .rotate-248 .circle-rotate, .rotate-249 .circle-rotate, .rotate-250 .circle-rotate, .rotate-251 .circle-rotate, .rotate-252 .circle-rotate, .rotate-253 .circle-rotate, .rotate-254 .circle-rotate, .rotate-255 .circle-rotate, .rotate-256 .circle-rotate, .rotate-257 .circle-rotate, .rotate-258 .circle-rotate, .rotate-259 .circle-rotate, .rotate-260 .circle-rotate, .rotate-261 .circle-rotate, .rotate-262 .circle-rotate, .rotate-263 .circle-rotate, .rotate-264 .circle-rotate, .rotate-265 .circle-rotate, .rotate-266 .circle-rotate, .rotate-267 .circle-rotate, .rotate-268 .circle-rotate, .rotate-269 .circle-rotate, .rotate-270 .circle-rotate, .rotate-271 .circle-rotate, .rotate-272 .circle-rotate, .rotate-273 .circle-rotate, .rotate-274 .circle-rotate, .rotate-275 .circle-rotate, .rotate-276 .circle-rotate, .rotate-277 .circle-rotate, .rotate-278 .circle-rotate, .rotate-279 .circle-rotate, .rotate-280 .circle-rotate, .rotate-281 .circle-rotate, .rotate-282 .circle-rotate, .rotate-283 .circle-rotate, .rotate-284 .circle-rotate, .rotate-285 .circle-rotate, .rotate-286 .circle-rotate, .rotate-287 .circle-rotate, .rotate-288 .circle-rotate, .rotate-289 .circle-rotate, .rotate-290 .circle-rotate, .rotate-291 .circle-rotate, .rotate-292 .circle-rotate, .rotate-293 .circle-rotate, .rotate-294 .circle-rotate, .rotate-295 .circle-rotate, .rotate-296 .circle-rotate, .rotate-297 .circle-rotate, .rotate-298 .circle-rotate, .rotate-299 .circle-rotate, .rotate-300 .circle-rotate, .rotate-301 .circle-rotate, .rotate-302 .circle-rotate, .rotate-303 .circle-rotate, .rotate-304 .circle-rotate, .rotate-305 .circle-rotate, .rotate-306 .circle-rotate, .rotate-307 .circle-rotate, .rotate-308 .circle-rotate, .rotate-309 .circle-rotate, .rotate-310 .circle-rotate, .rotate-311 .circle-rotate, .rotate-312 .circle-rotate, .rotate-313 .circle-rotate, .rotate-314 .circle-rotate, .rotate-315 .circle-rotate, .rotate-316 .circle-rotate, .rotate-317 .circle-rotate, .rotate-318 .circle-rotate, .rotate-319 .circle-rotate, .rotate-320 .circle-rotate, .rotate-321 .circle-rotate, .rotate-322 .circle-rotate, .rotate-323 .circle-rotate, .rotate-324 .circle-rotate, .rotate-325 .circle-rotate, .rotate-326 .circle-rotate, .rotate-327 .circle-rotate, .rotate-328 .circle-rotate, .rotate-329 .circle-rotate, .rotate-330 .circle-rotate, .rotate-331 .circle-rotate, .rotate-332 .circle-rotate, .rotate-333 .circle-rotate, .rotate-334 .circle-rotate, .rotate-335 .circle-rotate, .rotate-336 .circle-rotate, .rotate-337 .circle-rotate, .rotate-338 .circle-rotate, .rotate-339 .circle-rotate, .rotate-340 .circle-rotate, .rotate-341 .circle-rotate, .rotate-342 .circle-rotate, .rotate-343 .circle-rotate, .rotate-344 .circle-rotate, .rotate-345 .circle-rotate, .rotate-346 .circle-rotate, .rotate-347 .circle-rotate, .rotate-348 .circle-rotate, .rotate-349 .circle-rotate, .rotate-350 .circle-rotate, .rotate-351 .circle-rotate, .rotate-352 .circle-rotate, .rotate-353 .circle-rotate, .rotate-354 .circle-rotate, .rotate-355 .circle-rotate, .rotate-356 .circle-rotate, .rotate-357 .circle-rotate, .rotate-358 .circle-rotate, .rotate-359 .circle-rotate, .rotate-360 .circle-rotate {
+  width: 101.5%; }
+
+.rotate-0 .circle-rotate {
+  -webkit-transform: rotate(0deg);
+  -moz-transform: rotate(0deg);
+  -o-transform: rotate(0deg);
+  transform: rotate(0deg); }
+
+.rotate-1 .circle-rotate {
+  -webkit-transform: rotate(1deg);
+  -moz-transform: rotate(1deg);
+  -o-transform: rotate(1deg);
+  transform: rotate(1deg); }
+
+.rotate-2 .circle-rotate {
+  -webkit-transform: rotate(2deg);
+  -moz-transform: rotate(2deg);
+  -o-transform: rotate(2deg);
+  transform: rotate(2deg); }
+
+.rotate-3 .circle-rotate {
+  -webkit-transform: rotate(3deg);
+  -moz-transform: rotate(3deg);
+  -o-transform: rotate(3deg);
+  transform: rotate(3deg); }
+
+.rotate-4 .circle-rotate {
+  -webkit-transform: rotate(4deg);
+  -moz-transform: rotate(4deg);
+  -o-transform: rotate(4deg);
+  transform: rotate(4deg); }
+
+.rotate-5 .circle-rotate {
+  -webkit-transform: rotate(5deg);
+  -moz-transform: rotate(5deg);
+  -o-transform: rotate(5deg);
+  transform: rotate(5deg); }
+
+.rotate-6 .circle-rotate {
+  -webkit-transform: rotate(6deg);
+  -moz-transform: rotate(6deg);
+  -o-transform: rotate(6deg);
+  transform: rotate(6deg); }
+
+.rotate-7 .circle-rotate {
+  -webkit-transform: rotate(7deg);
+  -moz-transform: rotate(7deg);
+  -o-transform: rotate(7deg);
+  transform: rotate(7deg); }
+
+.rotate-8 .circle-rotate {
+  -webkit-transform: rotate(8deg);
+  -moz-transform: rotate(8deg);
+  -o-transform: rotate(8deg);
+  transform: rotate(8deg); }
+
+.rotate-9 .circle-rotate {
+  -webkit-transform: rotate(9deg);
+  -moz-transform: rotate(9deg);
+  -o-transform: rotate(9deg);
+  transform: rotate(9deg); }
+
+.rotate-10 .circle-rotate {
+  -webkit-transform: rotate(10deg);
+  -moz-transform: rotate(10deg);
+  -o-transform: rotate(10deg);
+  transform: rotate(10deg); }
+
+.rotate-11 .circle-rotate {
+  -webkit-transform: rotate(11deg);
+  -moz-transform: rotate(11deg);
+  -o-transform: rotate(11deg);
+  transform: rotate(11deg); }
+
+.rotate-12 .circle-rotate {
+  -webkit-transform: rotate(12deg);
+  -moz-transform: rotate(12deg);
+  -o-transform: rotate(12deg);
+  transform: rotate(12deg); }
+
+.rotate-13 .circle-rotate {
+  -webkit-transform: rotate(13deg);
+  -moz-transform: rotate(13deg);
+  -o-transform: rotate(13deg);
+  transform: rotate(13deg); }
+
+.rotate-14 .circle-rotate {
+  -webkit-transform: rotate(14deg);
+  -moz-transform: rotate(14deg);
+  -o-transform: rotate(14deg);
+  transform: rotate(14deg); }
+
+.rotate-15 .circle-rotate {
+  -webkit-transform: rotate(15deg);
+  -moz-transform: rotate(15deg);
+  -o-transform: rotate(15deg);
+  transform: rotate(15deg); }
+
+.rotate-16 .circle-rotate {
+  -webkit-transform: rotate(16deg);
+  -moz-transform: rotate(16deg);
+  -o-transform: rotate(16deg);
+  transform: rotate(16deg); }
+
+.rotate-17 .circle-rotate {
+  -webkit-transform: rotate(17deg);
+  -moz-transform: rotate(17deg);
+  -o-transform: rotate(17deg);
+  transform: rotate(17deg); }
+
+.rotate-18 .circle-rotate {
+  -webkit-transform: rotate(18deg);
+  -moz-transform: rotate(18deg);
+  -o-transform: rotate(18deg);
+  transform: rotate(18deg); }
+
+.rotate-19 .circle-rotate {
+  -webkit-transform: rotate(19deg);
+  -moz-transform: rotate(19deg);
+  -o-transform: rotate(19deg);
+  transform: rotate(19deg); }
+
+.rotate-20 .circle-rotate {
+  -webkit-transform: rotate(20deg);
+  -moz-transform: rotate(20deg);
+  -o-transform: rotate(20deg);
+  transform: rotate(20deg); }
+
+.rotate-21 .circle-rotate {
+  -webkit-transform: rotate(21deg);
+  -moz-transform: rotate(21deg);
+  -o-transform: rotate(21deg);
+  transform: rotate(21deg); }
+
+.rotate-22 .circle-rotate {
+  -webkit-transform: rotate(22deg);
+  -moz-transform: rotate(22deg);
+  -o-transform: rotate(22deg);
+  transform: rotate(22deg); }
+
+.rotate-23 .circle-rotate {
+  -webkit-transform: rotate(23deg);
+  -moz-transform: rotate(23deg);
+  -o-transform: rotate(23deg);
+  transform: rotate(23deg); }
+
+.rotate-24 .circle-rotate {
+  -webkit-transform: rotate(24deg);
+  -moz-transform: rotate(24deg);
+  -o-transform: rotate(24deg);
+  transform: rotate(24deg); }
+
+.rotate-25 .circle-rotate {
+  -webkit-transform: rotate(25deg);
+  -moz-transform: rotate(25deg);
+  -o-transform: rotate(25deg);
+  transform: rotate(25deg); }
+
+.rotate-26 .circle-rotate {
+  -webkit-transform: rotate(26deg);
+  -moz-transform: rotate(26deg);
+  -o-transform: rotate(26deg);
+  transform: rotate(26deg); }
+
+.rotate-27 .circle-rotate {
+  -webkit-transform: rotate(27deg);
+  -moz-transform: rotate(27deg);
+  -o-transform: rotate(27deg);
+  transform: rotate(27deg); }
+
+.rotate-28 .circle-rotate {
+  -webkit-transform: rotate(28deg);
+  -moz-transform: rotate(28deg);
+  -o-transform: rotate(28deg);
+  transform: rotate(28deg); }
+
+.rotate-29 .circle-rotate {
+  -webkit-transform: rotate(29deg);
+  -moz-transform: rotate(29deg);
+  -o-transform: rotate(29deg);
+  transform: rotate(29deg); }
+
+.rotate-30 .circle-rotate {
+  -webkit-transform: rotate(30deg);
+  -moz-transform: rotate(30deg);
+  -o-transform: rotate(30deg);
+  transform: rotate(30deg); }
+
+.rotate-31 .circle-rotate {
+  -webkit-transform: rotate(31deg);
+  -moz-transform: rotate(31deg);
+  -o-transform: rotate(31deg);
+  transform: rotate(31deg); }
+
+.rotate-32 .circle-rotate {
+  -webkit-transform: rotate(32deg);
+  -moz-transform: rotate(32deg);
+  -o-transform: rotate(32deg);
+  transform: rotate(32deg); }
+
+.rotate-33 .circle-rotate {
+  -webkit-transform: rotate(33deg);
+  -moz-transform: rotate(33deg);
+  -o-transform: rotate(33deg);
+  transform: rotate(33deg); }
+
+.rotate-34 .circle-rotate {
+  -webkit-transform: rotate(34deg);
+  -moz-transform: rotate(34deg);
+  -o-transform: rotate(34deg);
+  transform: rotate(34deg); }
+
+.rotate-35 .circle-rotate {
+  -webkit-transform: rotate(35deg);
+  -moz-transform: rotate(35deg);
+  -o-transform: rotate(35deg);
+  transform: rotate(35deg); }
+
+.rotate-36 .circle-rotate {
+  -webkit-transform: rotate(36deg);
+  -moz-transform: rotate(36deg);
+  -o-transform: rotate(36deg);
+  transform: rotate(36deg); }
+
+.rotate-37 .circle-rotate {
+  -webkit-transform: rotate(37deg);
+  -moz-transform: rotate(37deg);
+  -o-transform: rotate(37deg);
+  transform: rotate(37deg); }
+
+.rotate-38 .circle-rotate {
+  -webkit-transform: rotate(38deg);
+  -moz-transform: rotate(38deg);
+  -o-transform: rotate(38deg);
+  transform: rotate(38deg); }
+
+.rotate-39 .circle-rotate {
+  -webkit-transform: rotate(39deg);
+  -moz-transform: rotate(39deg);
+  -o-transform: rotate(39deg);
+  transform: rotate(39deg); }
+
+.rotate-40 .circle-rotate {
+  -webkit-transform: rotate(40deg);
+  -moz-transform: rotate(40deg);
+  -o-transform: rotate(40deg);
+  transform: rotate(40deg); }
+
+.rotate-41 .circle-rotate {
+  -webkit-transform: rotate(41deg);
+  -moz-transform: rotate(41deg);
+  -o-transform: rotate(41deg);
+  transform: rotate(41deg); }
+
+.rotate-42 .circle-rotate {
+  -webkit-transform: rotate(42deg);
+  -moz-transform: rotate(42deg);
+  -o-transform: rotate(42deg);
+  transform: rotate(42deg); }
+
+.rotate-43 .circle-rotate {
+  -webkit-transform: rotate(43deg);
+  -moz-transform: rotate(43deg);
+  -o-transform: rotate(43deg);
+  transform: rotate(43deg); }
+
+.rotate-44 .circle-rotate {
+  -webkit-transform: rotate(44deg);
+  -moz-transform: rotate(44deg);
+  -o-transform: rotate(44deg);
+  transform: rotate(44deg); }
+
+.rotate-45 .circle-rotate {
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+  transform: rotate(45deg); }
+
+.rotate-46 .circle-rotate {
+  -webkit-transform: rotate(46deg);
+  -moz-transform: rotate(46deg);
+  -o-transform: rotate(46deg);
+  transform: rotate(46deg); }
+
+.rotate-47 .circle-rotate {
+  -webkit-transform: rotate(47deg);
+  -moz-transform: rotate(47deg);
+  -o-transform: rotate(47deg);
+  transform: rotate(47deg); }
+
+.rotate-48 .circle-rotate {
+  -webkit-transform: rotate(48deg);
+  -moz-transform: rotate(48deg);
+  -o-transform: rotate(48deg);
+  transform: rotate(48deg); }
+
+.rotate-49 .circle-rotate {
+  -webkit-transform: rotate(49deg);
+  -moz-transform: rotate(49deg);
+  -o-transform: rotate(49deg);
+  transform: rotate(49deg); }
+
+.rotate-50 .circle-rotate {
+  -webkit-transform: rotate(50deg);
+  -moz-transform: rotate(50deg);
+  -o-transform: rotate(50deg);
+  transform: rotate(50deg); }
+
+.rotate-51 .circle-rotate {
+  -webkit-transform: rotate(51deg);
+  -moz-transform: rotate(51deg);
+  -o-transform: rotate(51deg);
+  transform: rotate(51deg); }
+
+.rotate-52 .circle-rotate {
+  -webkit-transform: rotate(52deg);
+  -moz-transform: rotate(52deg);
+  -o-transform: rotate(52deg);
+  transform: rotate(52deg); }
+
+.rotate-53 .circle-rotate {
+  -webkit-transform: rotate(53deg);
+  -moz-transform: rotate(53deg);
+  -o-transform: rotate(53deg);
+  transform: rotate(53deg); }
+
+.rotate-54 .circle-rotate {
+  -webkit-transform: rotate(54deg);
+  -moz-transform: rotate(54deg);
+  -o-transform: rotate(54deg);
+  transform: rotate(54deg); }
+
+.rotate-55 .circle-rotate {
+  -webkit-transform: rotate(55deg);
+  -moz-transform: rotate(55deg);
+  -o-transform: rotate(55deg);
+  transform: rotate(55deg); }
+
+.rotate-56 .circle-rotate {
+  -webkit-transform: rotate(56deg);
+  -moz-transform: rotate(56deg);
+  -o-transform: rotate(56deg);
+  transform: rotate(56deg); }
+
+.rotate-57 .circle-rotate {
+  -webkit-transform: rotate(57deg);
+  -moz-transform: rotate(57deg);
+  -o-transform: rotate(57deg);
+  transform: rotate(57deg); }
+
+.rotate-58 .circle-rotate {
+  -webkit-transform: rotate(58deg);
+  -moz-transform: rotate(58deg);
+  -o-transform: rotate(58deg);
+  transform: rotate(58deg); }
+
+.rotate-59 .circle-rotate {
+  -webkit-transform: rotate(59deg);
+  -moz-transform: rotate(59deg);
+  -o-transform: rotate(59deg);
+  transform: rotate(59deg); }
+
+.rotate-60 .circle-rotate {
+  -webkit-transform: rotate(60deg);
+  -moz-transform: rotate(60deg);
+  -o-transform: rotate(60deg);
+  transform: rotate(60deg); }
+
+.rotate-61 .circle-rotate {
+  -webkit-transform: rotate(61deg);
+  -moz-transform: rotate(61deg);
+  -o-transform: rotate(61deg);
+  transform: rotate(61deg); }
+
+.rotate-62 .circle-rotate {
+  -webkit-transform: rotate(62deg);
+  -moz-transform: rotate(62deg);
+  -o-transform: rotate(62deg);
+  transform: rotate(62deg); }
+
+.rotate-63 .circle-rotate {
+  -webkit-transform: rotate(63deg);
+  -moz-transform: rotate(63deg);
+  -o-transform: rotate(63deg);
+  transform: rotate(63deg); }
+
+.rotate-64 .circle-rotate {
+  -webkit-transform: rotate(64deg);
+  -moz-transform: rotate(64deg);
+  -o-transform: rotate(64deg);
+  transform: rotate(64deg); }
+
+.rotate-65 .circle-rotate {
+  -webkit-transform: rotate(65deg);
+  -moz-transform: rotate(65deg);
+  -o-transform: rotate(65deg);
+  transform: rotate(65deg); }
+
+.rotate-66 .circle-rotate {
+  -webkit-transform: rotate(66deg);
+  -moz-transform: rotate(66deg);
+  -o-transform: rotate(66deg);
+  transform: rotate(66deg); }
+
+.rotate-67 .circle-rotate {
+  -webkit-transform: rotate(67deg);
+  -moz-transform: rotate(67deg);
+  -o-transform: rotate(67deg);
+  transform: rotate(67deg); }
+
+.rotate-68 .circle-rotate {
+  -webkit-transform: rotate(68deg);
+  -moz-transform: rotate(68deg);
+  -o-transform: rotate(68deg);
+  transform: rotate(68deg); }
+
+.rotate-69 .circle-rotate {
+  -webkit-transform: rotate(69deg);
+  -moz-transform: rotate(69deg);
+  -o-transform: rotate(69deg);
+  transform: rotate(69deg); }
+
+.rotate-70 .circle-rotate {
+  -webkit-transform: rotate(70deg);
+  -moz-transform: rotate(70deg);
+  -o-transform: rotate(70deg);
+  transform: rotate(70deg); }
+
+.rotate-71 .circle-rotate {
+  -webkit-transform: rotate(71deg);
+  -moz-transform: rotate(71deg);
+  -o-transform: rotate(71deg);
+  transform: rotate(71deg); }
+
+.rotate-72 .circle-rotate {
+  -webkit-transform: rotate(72deg);
+  -moz-transform: rotate(72deg);
+  -o-transform: rotate(72deg);
+  transform: rotate(72deg); }
+
+.rotate-73 .circle-rotate {
+  -webkit-transform: rotate(73deg);
+  -moz-transform: rotate(73deg);
+  -o-transform: rotate(73deg);
+  transform: rotate(73deg); }
+
+.rotate-74 .circle-rotate {
+  -webkit-transform: rotate(74deg);
+  -moz-transform: rotate(74deg);
+  -o-transform: rotate(74deg);
+  transform: rotate(74deg); }
+
+.rotate-75 .circle-rotate {
+  -webkit-transform: rotate(75deg);
+  -moz-transform: rotate(75deg);
+  -o-transform: rotate(75deg);
+  transform: rotate(75deg); }
+
+.rotate-76 .circle-rotate {
+  -webkit-transform: rotate(76deg);
+  -moz-transform: rotate(76deg);
+  -o-transform: rotate(76deg);
+  transform: rotate(76deg); }
+
+.rotate-77 .circle-rotate {
+  -webkit-transform: rotate(77deg);
+  -moz-transform: rotate(77deg);
+  -o-transform: rotate(77deg);
+  transform: rotate(77deg); }
+
+.rotate-78 .circle-rotate {
+  -webkit-transform: rotate(78deg);
+  -moz-transform: rotate(78deg);
+  -o-transform: rotate(78deg);
+  transform: rotate(78deg); }
+
+.rotate-79 .circle-rotate {
+  -webkit-transform: rotate(79deg);
+  -moz-transform: rotate(79deg);
+  -o-transform: rotate(79deg);
+  transform: rotate(79deg); }
+
+.rotate-80 .circle-rotate {
+  -webkit-transform: rotate(80deg);
+  -moz-transform: rotate(80deg);
+  -o-transform: rotate(80deg);
+  transform: rotate(80deg); }
+
+.rotate-81 .circle-rotate {
+  -webkit-transform: rotate(81deg);
+  -moz-transform: rotate(81deg);
+  -o-transform: rotate(81deg);
+  transform: rotate(81deg); }
+
+.rotate-82 .circle-rotate {
+  -webkit-transform: rotate(82deg);
+  -moz-transform: rotate(82deg);
+  -o-transform: rotate(82deg);
+  transform: rotate(82deg); }
+
+.rotate-83 .circle-rotate {
+  -webkit-transform: rotate(83deg);
+  -moz-transform: rotate(83deg);
+  -o-transform: rotate(83deg);
+  transform: rotate(83deg); }
+
+.rotate-84 .circle-rotate {
+  -webkit-transform: rotate(84deg);
+  -moz-transform: rotate(84deg);
+  -o-transform: rotate(84deg);
+  transform: rotate(84deg); }
+
+.rotate-85 .circle-rotate {
+  -webkit-transform: rotate(85deg);
+  -moz-transform: rotate(85deg);
+  -o-transform: rotate(85deg);
+  transform: rotate(85deg); }
+
+.rotate-86 .circle-rotate {
+  -webkit-transform: rotate(86deg);
+  -moz-transform: rotate(86deg);
+  -o-transform: rotate(86deg);
+  transform: rotate(86deg); }
+
+.rotate-87 .circle-rotate {
+  -webkit-transform: rotate(87deg);
+  -moz-transform: rotate(87deg);
+  -o-transform: rotate(87deg);
+  transform: rotate(87deg); }
+
+.rotate-88 .circle-rotate {
+  -webkit-transform: rotate(88deg);
+  -moz-transform: rotate(88deg);
+  -o-transform: rotate(88deg);
+  transform: rotate(88deg); }
+
+.rotate-89 .circle-rotate {
+  -webkit-transform: rotate(89deg);
+  -moz-transform: rotate(89deg);
+  -o-transform: rotate(89deg);
+  transform: rotate(89deg); }
+
+.rotate-90 .circle-rotate {
+  -webkit-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
+  -o-transform: rotate(90deg);
+  transform: rotate(90deg); }
+
+.rotate-91 .circle-rotate {
+  -webkit-transform: rotate(91deg);
+  -moz-transform: rotate(91deg);
+  -o-transform: rotate(91deg);
+  transform: rotate(91deg); }
+
+.rotate-92 .circle-rotate {
+  -webkit-transform: rotate(92deg);
+  -moz-transform: rotate(92deg);
+  -o-transform: rotate(92deg);
+  transform: rotate(92deg); }
+
+.rotate-93 .circle-rotate {
+  -webkit-transform: rotate(93deg);
+  -moz-transform: rotate(93deg);
+  -o-transform: rotate(93deg);
+  transform: rotate(93deg); }
+
+.rotate-94 .circle-rotate {
+  -webkit-transform: rotate(94deg);
+  -moz-transform: rotate(94deg);
+  -o-transform: rotate(94deg);
+  transform: rotate(94deg); }
+
+.rotate-95 .circle-rotate {
+  -webkit-transform: rotate(95deg);
+  -moz-transform: rotate(95deg);
+  -o-transform: rotate(95deg);
+  transform: rotate(95deg); }
+
+.rotate-96 .circle-rotate {
+  -webkit-transform: rotate(96deg);
+  -moz-transform: rotate(96deg);
+  -o-transform: rotate(96deg);
+  transform: rotate(96deg); }
+
+.rotate-97 .circle-rotate {
+  -webkit-transform: rotate(97deg);
+  -moz-transform: rotate(97deg);
+  -o-transform: rotate(97deg);
+  transform: rotate(97deg); }
+
+.rotate-98 .circle-rotate {
+  -webkit-transform: rotate(98deg);
+  -moz-transform: rotate(98deg);
+  -o-transform: rotate(98deg);
+  transform: rotate(98deg); }
+
+.rotate-99 .circle-rotate {
+  -webkit-transform: rotate(99deg);
+  -moz-transform: rotate(99deg);
+  -o-transform: rotate(99deg);
+  transform: rotate(99deg); }
+
+.rotate-100 .circle-rotate {
+  -webkit-transform: rotate(100deg);
+  -moz-transform: rotate(100deg);
+  -o-transform: rotate(100deg);
+  transform: rotate(100deg); }
+
+.rotate-101 .circle-rotate {
+  -webkit-transform: rotate(101deg);
+  -moz-transform: rotate(101deg);
+  -o-transform: rotate(101deg);
+  transform: rotate(101deg); }
+
+.rotate-102 .circle-rotate {
+  -webkit-transform: rotate(102deg);
+  -moz-transform: rotate(102deg);
+  -o-transform: rotate(102deg);
+  transform: rotate(102deg); }
+
+.rotate-103 .circle-rotate {
+  -webkit-transform: rotate(103deg);
+  -moz-transform: rotate(103deg);
+  -o-transform: rotate(103deg);
+  transform: rotate(103deg); }
+
+.rotate-104 .circle-rotate {
+  -webkit-transform: rotate(104deg);
+  -moz-transform: rotate(104deg);
+  -o-transform: rotate(104deg);
+  transform: rotate(104deg); }
+
+.rotate-105 .circle-rotate {
+  -webkit-transform: rotate(105deg);
+  -moz-transform: rotate(105deg);
+  -o-transform: rotate(105deg);
+  transform: rotate(105deg); }
+
+.rotate-106 .circle-rotate {
+  -webkit-transform: rotate(106deg);
+  -moz-transform: rotate(106deg);
+  -o-transform: rotate(106deg);
+  transform: rotate(106deg); }
+
+.rotate-107 .circle-rotate {
+  -webkit-transform: rotate(107deg);
+  -moz-transform: rotate(107deg);
+  -o-transform: rotate(107deg);
+  transform: rotate(107deg); }
+
+.rotate-108 .circle-rotate {
+  -webkit-transform: rotate(108deg);
+  -moz-transform: rotate(108deg);
+  -o-transform: rotate(108deg);
+  transform: rotate(108deg); }
+
+.rotate-109 .circle-rotate {
+  -webkit-transform: rotate(109deg);
+  -moz-transform: rotate(109deg);
+  -o-transform: rotate(109deg);
+  transform: rotate(109deg); }
+
+.rotate-110 .circle-rotate {
+  -webkit-transform: rotate(110deg);
+  -moz-transform: rotate(110deg);
+  -o-transform: rotate(110deg);
+  transform: rotate(110deg); }
+
+.rotate-111 .circle-rotate {
+  -webkit-transform: rotate(111deg);
+  -moz-transform: rotate(111deg);
+  -o-transform: rotate(111deg);
+  transform: rotate(111deg); }
+
+.rotate-112 .circle-rotate {
+  -webkit-transform: rotate(112deg);
+  -moz-transform: rotate(112deg);
+  -o-transform: rotate(112deg);
+  transform: rotate(112deg); }
+
+.rotate-113 .circle-rotate {
+  -webkit-transform: rotate(113deg);
+  -moz-transform: rotate(113deg);
+  -o-transform: rotate(113deg);
+  transform: rotate(113deg); }
+
+.rotate-114 .circle-rotate {
+  -webkit-transform: rotate(114deg);
+  -moz-transform: rotate(114deg);
+  -o-transform: rotate(114deg);
+  transform: rotate(114deg); }
+
+.rotate-115 .circle-rotate {
+  -webkit-transform: rotate(115deg);
+  -moz-transform: rotate(115deg);
+  -o-transform: rotate(115deg);
+  transform: rotate(115deg); }
+
+.rotate-116 .circle-rotate {
+  -webkit-transform: rotate(116deg);
+  -moz-transform: rotate(116deg);
+  -o-transform: rotate(116deg);
+  transform: rotate(116deg); }
+
+.rotate-117 .circle-rotate {
+  -webkit-transform: rotate(117deg);
+  -moz-transform: rotate(117deg);
+  -o-transform: rotate(117deg);
+  transform: rotate(117deg); }
+
+.rotate-118 .circle-rotate {
+  -webkit-transform: rotate(118deg);
+  -moz-transform: rotate(118deg);
+  -o-transform: rotate(118deg);
+  transform: rotate(118deg); }
+
+.rotate-119 .circle-rotate {
+  -webkit-transform: rotate(119deg);
+  -moz-transform: rotate(119deg);
+  -o-transform: rotate(119deg);
+  transform: rotate(119deg); }
+
+.rotate-120 .circle-rotate {
+  -webkit-transform: rotate(120deg);
+  -moz-transform: rotate(120deg);
+  -o-transform: rotate(120deg);
+  transform: rotate(120deg); }
+
+.rotate-121 .circle-rotate {
+  -webkit-transform: rotate(121deg);
+  -moz-transform: rotate(121deg);
+  -o-transform: rotate(121deg);
+  transform: rotate(121deg); }
+
+.rotate-122 .circle-rotate {
+  -webkit-transform: rotate(122deg);
+  -moz-transform: rotate(122deg);
+  -o-transform: rotate(122deg);
+  transform: rotate(122deg); }
+
+.rotate-123 .circle-rotate {
+  -webkit-transform: rotate(123deg);
+  -moz-transform: rotate(123deg);
+  -o-transform: rotate(123deg);
+  transform: rotate(123deg); }
+
+.rotate-124 .circle-rotate {
+  -webkit-transform: rotate(124deg);
+  -moz-transform: rotate(124deg);
+  -o-transform: rotate(124deg);
+  transform: rotate(124deg); }
+
+.rotate-125 .circle-rotate {
+  -webkit-transform: rotate(125deg);
+  -moz-transform: rotate(125deg);
+  -o-transform: rotate(125deg);
+  transform: rotate(125deg); }
+
+.rotate-126 .circle-rotate {
+  -webkit-transform: rotate(126deg);
+  -moz-transform: rotate(126deg);
+  -o-transform: rotate(126deg);
+  transform: rotate(126deg); }
+
+.rotate-127 .circle-rotate {
+  -webkit-transform: rotate(127deg);
+  -moz-transform: rotate(127deg);
+  -o-transform: rotate(127deg);
+  transform: rotate(127deg); }
+
+.rotate-128 .circle-rotate {
+  -webkit-transform: rotate(128deg);
+  -moz-transform: rotate(128deg);
+  -o-transform: rotate(128deg);
+  transform: rotate(128deg); }
+
+.rotate-129 .circle-rotate {
+  -webkit-transform: rotate(129deg);
+  -moz-transform: rotate(129deg);
+  -o-transform: rotate(129deg);
+  transform: rotate(129deg); }
+
+.rotate-130 .circle-rotate {
+  -webkit-transform: rotate(130deg);
+  -moz-transform: rotate(130deg);
+  -o-transform: rotate(130deg);
+  transform: rotate(130deg); }
+
+.rotate-131 .circle-rotate {
+  -webkit-transform: rotate(131deg);
+  -moz-transform: rotate(131deg);
+  -o-transform: rotate(131deg);
+  transform: rotate(131deg); }
+
+.rotate-132 .circle-rotate {
+  -webkit-transform: rotate(132deg);
+  -moz-transform: rotate(132deg);
+  -o-transform: rotate(132deg);
+  transform: rotate(132deg); }
+
+.rotate-133 .circle-rotate {
+  -webkit-transform: rotate(133deg);
+  -moz-transform: rotate(133deg);
+  -o-transform: rotate(133deg);
+  transform: rotate(133deg); }
+
+.rotate-134 .circle-rotate {
+  -webkit-transform: rotate(134deg);
+  -moz-transform: rotate(134deg);
+  -o-transform: rotate(134deg);
+  transform: rotate(134deg); }
+
+.rotate-135 .circle-rotate {
+  -webkit-transform: rotate(135deg);
+  -moz-transform: rotate(135deg);
+  -o-transform: rotate(135deg);
+  transform: rotate(135deg); }
+
+.rotate-136 .circle-rotate {
+  -webkit-transform: rotate(136deg);
+  -moz-transform: rotate(136deg);
+  -o-transform: rotate(136deg);
+  transform: rotate(136deg); }
+
+.rotate-137 .circle-rotate {
+  -webkit-transform: rotate(137deg);
+  -moz-transform: rotate(137deg);
+  -o-transform: rotate(137deg);
+  transform: rotate(137deg); }
+
+.rotate-138 .circle-rotate {
+  -webkit-transform: rotate(138deg);
+  -moz-transform: rotate(138deg);
+  -o-transform: rotate(138deg);
+  transform: rotate(138deg); }
+
+.rotate-139 .circle-rotate {
+  -webkit-transform: rotate(139deg);
+  -moz-transform: rotate(139deg);
+  -o-transform: rotate(139deg);
+  transform: rotate(139deg); }
+
+.rotate-140 .circle-rotate {
+  -webkit-transform: rotate(140deg);
+  -moz-transform: rotate(140deg);
+  -o-transform: rotate(140deg);
+  transform: rotate(140deg); }
+
+.rotate-141 .circle-rotate {
+  -webkit-transform: rotate(141deg);
+  -moz-transform: rotate(141deg);
+  -o-transform: rotate(141deg);
+  transform: rotate(141deg); }
+
+.rotate-142 .circle-rotate {
+  -webkit-transform: rotate(142deg);
+  -moz-transform: rotate(142deg);
+  -o-transform: rotate(142deg);
+  transform: rotate(142deg); }
+
+.rotate-143 .circle-rotate {
+  -webkit-transform: rotate(143deg);
+  -moz-transform: rotate(143deg);
+  -o-transform: rotate(143deg);
+  transform: rotate(143deg); }
+
+.rotate-144 .circle-rotate {
+  -webkit-transform: rotate(144deg);
+  -moz-transform: rotate(144deg);
+  -o-transform: rotate(144deg);
+  transform: rotate(144deg); }
+
+.rotate-145 .circle-rotate {
+  -webkit-transform: rotate(145deg);
+  -moz-transform: rotate(145deg);
+  -o-transform: rotate(145deg);
+  transform: rotate(145deg); }
+
+.rotate-146 .circle-rotate {
+  -webkit-transform: rotate(146deg);
+  -moz-transform: rotate(146deg);
+  -o-transform: rotate(146deg);
+  transform: rotate(146deg); }
+
+.rotate-147 .circle-rotate {
+  -webkit-transform: rotate(147deg);
+  -moz-transform: rotate(147deg);
+  -o-transform: rotate(147deg);
+  transform: rotate(147deg); }
+
+.rotate-148 .circle-rotate {
+  -webkit-transform: rotate(148deg);
+  -moz-transform: rotate(148deg);
+  -o-transform: rotate(148deg);
+  transform: rotate(148deg); }
+
+.rotate-149 .circle-rotate {
+  -webkit-transform: rotate(149deg);
+  -moz-transform: rotate(149deg);
+  -o-transform: rotate(149deg);
+  transform: rotate(149deg); }
+
+.rotate-150 .circle-rotate {
+  -webkit-transform: rotate(150deg);
+  -moz-transform: rotate(150deg);
+  -o-transform: rotate(150deg);
+  transform: rotate(150deg); }
+
+.rotate-151 .circle-rotate {
+  -webkit-transform: rotate(151deg);
+  -moz-transform: rotate(151deg);
+  -o-transform: rotate(151deg);
+  transform: rotate(151deg); }
+
+.rotate-152 .circle-rotate {
+  -webkit-transform: rotate(152deg);
+  -moz-transform: rotate(152deg);
+  -o-transform: rotate(152deg);
+  transform: rotate(152deg); }
+
+.rotate-153 .circle-rotate {
+  -webkit-transform: rotate(153deg);
+  -moz-transform: rotate(153deg);
+  -o-transform: rotate(153deg);
+  transform: rotate(153deg); }
+
+.rotate-154 .circle-rotate {
+  -webkit-transform: rotate(154deg);
+  -moz-transform: rotate(154deg);
+  -o-transform: rotate(154deg);
+  transform: rotate(154deg); }
+
+.rotate-155 .circle-rotate {
+  -webkit-transform: rotate(155deg);
+  -moz-transform: rotate(155deg);
+  -o-transform: rotate(155deg);
+  transform: rotate(155deg); }
+
+.rotate-156 .circle-rotate {
+  -webkit-transform: rotate(156deg);
+  -moz-transform: rotate(156deg);
+  -o-transform: rotate(156deg);
+  transform: rotate(156deg); }
+
+.rotate-157 .circle-rotate {
+  -webkit-transform: rotate(157deg);
+  -moz-transform: rotate(157deg);
+  -o-transform: rotate(157deg);
+  transform: rotate(157deg); }
+
+.rotate-158 .circle-rotate {
+  -webkit-transform: rotate(158deg);
+  -moz-transform: rotate(158deg);
+  -o-transform: rotate(158deg);
+  transform: rotate(158deg); }
+
+.rotate-159 .circle-rotate {
+  -webkit-transform: rotate(159deg);
+  -moz-transform: rotate(159deg);
+  -o-transform: rotate(159deg);
+  transform: rotate(159deg); }
+
+.rotate-160 .circle-rotate {
+  -webkit-transform: rotate(160deg);
+  -moz-transform: rotate(160deg);
+  -o-transform: rotate(160deg);
+  transform: rotate(160deg); }
+
+.rotate-161 .circle-rotate {
+  -webkit-transform: rotate(161deg);
+  -moz-transform: rotate(161deg);
+  -o-transform: rotate(161deg);
+  transform: rotate(161deg); }
+
+.rotate-162 .circle-rotate {
+  -webkit-transform: rotate(162deg);
+  -moz-transform: rotate(162deg);
+  -o-transform: rotate(162deg);
+  transform: rotate(162deg); }
+
+.rotate-163 .circle-rotate {
+  -webkit-transform: rotate(163deg);
+  -moz-transform: rotate(163deg);
+  -o-transform: rotate(163deg);
+  transform: rotate(163deg); }
+
+.rotate-164 .circle-rotate {
+  -webkit-transform: rotate(164deg);
+  -moz-transform: rotate(164deg);
+  -o-transform: rotate(164deg);
+  transform: rotate(164deg); }
+
+.rotate-165 .circle-rotate {
+  -webkit-transform: rotate(165deg);
+  -moz-transform: rotate(165deg);
+  -o-transform: rotate(165deg);
+  transform: rotate(165deg); }
+
+.rotate-166 .circle-rotate {
+  -webkit-transform: rotate(166deg);
+  -moz-transform: rotate(166deg);
+  -o-transform: rotate(166deg);
+  transform: rotate(166deg); }
+
+.rotate-167 .circle-rotate {
+  -webkit-transform: rotate(167deg);
+  -moz-transform: rotate(167deg);
+  -o-transform: rotate(167deg);
+  transform: rotate(167deg); }
+
+.rotate-168 .circle-rotate {
+  -webkit-transform: rotate(168deg);
+  -moz-transform: rotate(168deg);
+  -o-transform: rotate(168deg);
+  transform: rotate(168deg); }
+
+.rotate-169 .circle-rotate {
+  -webkit-transform: rotate(169deg);
+  -moz-transform: rotate(169deg);
+  -o-transform: rotate(169deg);
+  transform: rotate(169deg); }
+
+.rotate-170 .circle-rotate {
+  -webkit-transform: rotate(170deg);
+  -moz-transform: rotate(170deg);
+  -o-transform: rotate(170deg);
+  transform: rotate(170deg); }
+
+.rotate-171 .circle-rotate {
+  -webkit-transform: rotate(171deg);
+  -moz-transform: rotate(171deg);
+  -o-transform: rotate(171deg);
+  transform: rotate(171deg); }
+
+.rotate-172 .circle-rotate {
+  -webkit-transform: rotate(172deg);
+  -moz-transform: rotate(172deg);
+  -o-transform: rotate(172deg);
+  transform: rotate(172deg); }
+
+.rotate-173 .circle-rotate {
+  -webkit-transform: rotate(173deg);
+  -moz-transform: rotate(173deg);
+  -o-transform: rotate(173deg);
+  transform: rotate(173deg); }
+
+.rotate-174 .circle-rotate {
+  -webkit-transform: rotate(174deg);
+  -moz-transform: rotate(174deg);
+  -o-transform: rotate(174deg);
+  transform: rotate(174deg); }
+
+.rotate-175 .circle-rotate {
+  -webkit-transform: rotate(175deg);
+  -moz-transform: rotate(175deg);
+  -o-transform: rotate(175deg);
+  transform: rotate(175deg); }
+
+.rotate-176 .circle-rotate {
+  -webkit-transform: rotate(176deg);
+  -moz-transform: rotate(176deg);
+  -o-transform: rotate(176deg);
+  transform: rotate(176deg); }
+
+.rotate-177 .circle-rotate {
+  -webkit-transform: rotate(177deg);
+  -moz-transform: rotate(177deg);
+  -o-transform: rotate(177deg);
+  transform: rotate(177deg); }
+
+.rotate-178 .circle-rotate {
+  -webkit-transform: rotate(178deg);
+  -moz-transform: rotate(178deg);
+  -o-transform: rotate(178deg);
+  transform: rotate(178deg); }
+
+.rotate-179 .circle-rotate {
+  -webkit-transform: rotate(179deg);
+  -moz-transform: rotate(179deg);
+  -o-transform: rotate(179deg);
+  transform: rotate(179deg); }
+
+.rotate-180 .circle-rotate {
+  -webkit-transform: rotate(180deg);
+  -moz-transform: rotate(180deg);
+  -o-transform: rotate(180deg);
+  transform: rotate(180deg); }
+
+.rotate-181 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-181 .circle-rotate {
+  -webkit-transform: rotate(181deg);
+  -moz-transform: rotate(181deg);
+  -o-transform: rotate(181deg);
+  transform: rotate(181deg); }
+
+.rotate-182 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-182 .circle-rotate {
+  -webkit-transform: rotate(182deg);
+  -moz-transform: rotate(182deg);
+  -o-transform: rotate(182deg);
+  transform: rotate(182deg); }
+
+.rotate-183 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-183 .circle-rotate {
+  -webkit-transform: rotate(183deg);
+  -moz-transform: rotate(183deg);
+  -o-transform: rotate(183deg);
+  transform: rotate(183deg); }
+
+.rotate-184 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-184 .circle-rotate {
+  -webkit-transform: rotate(184deg);
+  -moz-transform: rotate(184deg);
+  -o-transform: rotate(184deg);
+  transform: rotate(184deg); }
+
+.rotate-185 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-185 .circle-rotate {
+  -webkit-transform: rotate(185deg);
+  -moz-transform: rotate(185deg);
+  -o-transform: rotate(185deg);
+  transform: rotate(185deg); }
+
+.rotate-186 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-186 .circle-rotate {
+  -webkit-transform: rotate(186deg);
+  -moz-transform: rotate(186deg);
+  -o-transform: rotate(186deg);
+  transform: rotate(186deg); }
+
+.rotate-187 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-187 .circle-rotate {
+  -webkit-transform: rotate(187deg);
+  -moz-transform: rotate(187deg);
+  -o-transform: rotate(187deg);
+  transform: rotate(187deg); }
+
+.rotate-188 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-188 .circle-rotate {
+  -webkit-transform: rotate(188deg);
+  -moz-transform: rotate(188deg);
+  -o-transform: rotate(188deg);
+  transform: rotate(188deg); }
+
+.rotate-189 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-189 .circle-rotate {
+  -webkit-transform: rotate(189deg);
+  -moz-transform: rotate(189deg);
+  -o-transform: rotate(189deg);
+  transform: rotate(189deg); }
+
+.rotate-190 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-190 .circle-rotate {
+  -webkit-transform: rotate(190deg);
+  -moz-transform: rotate(190deg);
+  -o-transform: rotate(190deg);
+  transform: rotate(190deg); }
+
+.rotate-191 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-191 .circle-rotate {
+  -webkit-transform: rotate(191deg);
+  -moz-transform: rotate(191deg);
+  -o-transform: rotate(191deg);
+  transform: rotate(191deg); }
+
+.rotate-192 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-192 .circle-rotate {
+  -webkit-transform: rotate(192deg);
+  -moz-transform: rotate(192deg);
+  -o-transform: rotate(192deg);
+  transform: rotate(192deg); }
+
+.rotate-193 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-193 .circle-rotate {
+  -webkit-transform: rotate(193deg);
+  -moz-transform: rotate(193deg);
+  -o-transform: rotate(193deg);
+  transform: rotate(193deg); }
+
+.rotate-194 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-194 .circle-rotate {
+  -webkit-transform: rotate(194deg);
+  -moz-transform: rotate(194deg);
+  -o-transform: rotate(194deg);
+  transform: rotate(194deg); }
+
+.rotate-195 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-195 .circle-rotate {
+  -webkit-transform: rotate(195deg);
+  -moz-transform: rotate(195deg);
+  -o-transform: rotate(195deg);
+  transform: rotate(195deg); }
+
+.rotate-196 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-196 .circle-rotate {
+  -webkit-transform: rotate(196deg);
+  -moz-transform: rotate(196deg);
+  -o-transform: rotate(196deg);
+  transform: rotate(196deg); }
+
+.rotate-197 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-197 .circle-rotate {
+  -webkit-transform: rotate(197deg);
+  -moz-transform: rotate(197deg);
+  -o-transform: rotate(197deg);
+  transform: rotate(197deg); }
+
+.rotate-198 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-198 .circle-rotate {
+  -webkit-transform: rotate(198deg);
+  -moz-transform: rotate(198deg);
+  -o-transform: rotate(198deg);
+  transform: rotate(198deg); }
+
+.rotate-199 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-199 .circle-rotate {
+  -webkit-transform: rotate(199deg);
+  -moz-transform: rotate(199deg);
+  -o-transform: rotate(199deg);
+  transform: rotate(199deg); }
+
+.rotate-200 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-200 .circle-rotate {
+  -webkit-transform: rotate(200deg);
+  -moz-transform: rotate(200deg);
+  -o-transform: rotate(200deg);
+  transform: rotate(200deg); }
+
+.rotate-201 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-201 .circle-rotate {
+  -webkit-transform: rotate(201deg);
+  -moz-transform: rotate(201deg);
+  -o-transform: rotate(201deg);
+  transform: rotate(201deg); }
+
+.rotate-202 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-202 .circle-rotate {
+  -webkit-transform: rotate(202deg);
+  -moz-transform: rotate(202deg);
+  -o-transform: rotate(202deg);
+  transform: rotate(202deg); }
+
+.rotate-203 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-203 .circle-rotate {
+  -webkit-transform: rotate(203deg);
+  -moz-transform: rotate(203deg);
+  -o-transform: rotate(203deg);
+  transform: rotate(203deg); }
+
+.rotate-204 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-204 .circle-rotate {
+  -webkit-transform: rotate(204deg);
+  -moz-transform: rotate(204deg);
+  -o-transform: rotate(204deg);
+  transform: rotate(204deg); }
+
+.rotate-205 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-205 .circle-rotate {
+  -webkit-transform: rotate(205deg);
+  -moz-transform: rotate(205deg);
+  -o-transform: rotate(205deg);
+  transform: rotate(205deg); }
+
+.rotate-206 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-206 .circle-rotate {
+  -webkit-transform: rotate(206deg);
+  -moz-transform: rotate(206deg);
+  -o-transform: rotate(206deg);
+  transform: rotate(206deg); }
+
+.rotate-207 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-207 .circle-rotate {
+  -webkit-transform: rotate(207deg);
+  -moz-transform: rotate(207deg);
+  -o-transform: rotate(207deg);
+  transform: rotate(207deg); }
+
+.rotate-208 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-208 .circle-rotate {
+  -webkit-transform: rotate(208deg);
+  -moz-transform: rotate(208deg);
+  -o-transform: rotate(208deg);
+  transform: rotate(208deg); }
+
+.rotate-209 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-209 .circle-rotate {
+  -webkit-transform: rotate(209deg);
+  -moz-transform: rotate(209deg);
+  -o-transform: rotate(209deg);
+  transform: rotate(209deg); }
+
+.rotate-210 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-210 .circle-rotate {
+  -webkit-transform: rotate(210deg);
+  -moz-transform: rotate(210deg);
+  -o-transform: rotate(210deg);
+  transform: rotate(210deg); }
+
+.rotate-211 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-211 .circle-rotate {
+  -webkit-transform: rotate(211deg);
+  -moz-transform: rotate(211deg);
+  -o-transform: rotate(211deg);
+  transform: rotate(211deg); }
+
+.rotate-212 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-212 .circle-rotate {
+  -webkit-transform: rotate(212deg);
+  -moz-transform: rotate(212deg);
+  -o-transform: rotate(212deg);
+  transform: rotate(212deg); }
+
+.rotate-213 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-213 .circle-rotate {
+  -webkit-transform: rotate(213deg);
+  -moz-transform: rotate(213deg);
+  -o-transform: rotate(213deg);
+  transform: rotate(213deg); }
+
+.rotate-214 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-214 .circle-rotate {
+  -webkit-transform: rotate(214deg);
+  -moz-transform: rotate(214deg);
+  -o-transform: rotate(214deg);
+  transform: rotate(214deg); }
+
+.rotate-215 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-215 .circle-rotate {
+  -webkit-transform: rotate(215deg);
+  -moz-transform: rotate(215deg);
+  -o-transform: rotate(215deg);
+  transform: rotate(215deg); }
+
+.rotate-216 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-216 .circle-rotate {
+  -webkit-transform: rotate(216deg);
+  -moz-transform: rotate(216deg);
+  -o-transform: rotate(216deg);
+  transform: rotate(216deg); }
+
+.rotate-217 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-217 .circle-rotate {
+  -webkit-transform: rotate(217deg);
+  -moz-transform: rotate(217deg);
+  -o-transform: rotate(217deg);
+  transform: rotate(217deg); }
+
+.rotate-218 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-218 .circle-rotate {
+  -webkit-transform: rotate(218deg);
+  -moz-transform: rotate(218deg);
+  -o-transform: rotate(218deg);
+  transform: rotate(218deg); }
+
+.rotate-219 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-219 .circle-rotate {
+  -webkit-transform: rotate(219deg);
+  -moz-transform: rotate(219deg);
+  -o-transform: rotate(219deg);
+  transform: rotate(219deg); }
+
+.rotate-220 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-220 .circle-rotate {
+  -webkit-transform: rotate(220deg);
+  -moz-transform: rotate(220deg);
+  -o-transform: rotate(220deg);
+  transform: rotate(220deg); }
+
+.rotate-221 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-221 .circle-rotate {
+  -webkit-transform: rotate(221deg);
+  -moz-transform: rotate(221deg);
+  -o-transform: rotate(221deg);
+  transform: rotate(221deg); }
+
+.rotate-222 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-222 .circle-rotate {
+  -webkit-transform: rotate(222deg);
+  -moz-transform: rotate(222deg);
+  -o-transform: rotate(222deg);
+  transform: rotate(222deg); }
+
+.rotate-223 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-223 .circle-rotate {
+  -webkit-transform: rotate(223deg);
+  -moz-transform: rotate(223deg);
+  -o-transform: rotate(223deg);
+  transform: rotate(223deg); }
+
+.rotate-224 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-224 .circle-rotate {
+  -webkit-transform: rotate(224deg);
+  -moz-transform: rotate(224deg);
+  -o-transform: rotate(224deg);
+  transform: rotate(224deg); }
+
+.rotate-225 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-225 .circle-rotate {
+  -webkit-transform: rotate(225deg);
+  -moz-transform: rotate(225deg);
+  -o-transform: rotate(225deg);
+  transform: rotate(225deg); }
+
+.rotate-226 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-226 .circle-rotate {
+  -webkit-transform: rotate(226deg);
+  -moz-transform: rotate(226deg);
+  -o-transform: rotate(226deg);
+  transform: rotate(226deg); }
+
+.rotate-227 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-227 .circle-rotate {
+  -webkit-transform: rotate(227deg);
+  -moz-transform: rotate(227deg);
+  -o-transform: rotate(227deg);
+  transform: rotate(227deg); }
+
+.rotate-228 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-228 .circle-rotate {
+  -webkit-transform: rotate(228deg);
+  -moz-transform: rotate(228deg);
+  -o-transform: rotate(228deg);
+  transform: rotate(228deg); }
+
+.rotate-229 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-229 .circle-rotate {
+  -webkit-transform: rotate(229deg);
+  -moz-transform: rotate(229deg);
+  -o-transform: rotate(229deg);
+  transform: rotate(229deg); }
+
+.rotate-230 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-230 .circle-rotate {
+  -webkit-transform: rotate(230deg);
+  -moz-transform: rotate(230deg);
+  -o-transform: rotate(230deg);
+  transform: rotate(230deg); }
+
+.rotate-231 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-231 .circle-rotate {
+  -webkit-transform: rotate(231deg);
+  -moz-transform: rotate(231deg);
+  -o-transform: rotate(231deg);
+  transform: rotate(231deg); }
+
+.rotate-232 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-232 .circle-rotate {
+  -webkit-transform: rotate(232deg);
+  -moz-transform: rotate(232deg);
+  -o-transform: rotate(232deg);
+  transform: rotate(232deg); }
+
+.rotate-233 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-233 .circle-rotate {
+  -webkit-transform: rotate(233deg);
+  -moz-transform: rotate(233deg);
+  -o-transform: rotate(233deg);
+  transform: rotate(233deg); }
+
+.rotate-234 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-234 .circle-rotate {
+  -webkit-transform: rotate(234deg);
+  -moz-transform: rotate(234deg);
+  -o-transform: rotate(234deg);
+  transform: rotate(234deg); }
+
+.rotate-235 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-235 .circle-rotate {
+  -webkit-transform: rotate(235deg);
+  -moz-transform: rotate(235deg);
+  -o-transform: rotate(235deg);
+  transform: rotate(235deg); }
+
+.rotate-236 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-236 .circle-rotate {
+  -webkit-transform: rotate(236deg);
+  -moz-transform: rotate(236deg);
+  -o-transform: rotate(236deg);
+  transform: rotate(236deg); }
+
+.rotate-237 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-237 .circle-rotate {
+  -webkit-transform: rotate(237deg);
+  -moz-transform: rotate(237deg);
+  -o-transform: rotate(237deg);
+  transform: rotate(237deg); }
+
+.rotate-238 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-238 .circle-rotate {
+  -webkit-transform: rotate(238deg);
+  -moz-transform: rotate(238deg);
+  -o-transform: rotate(238deg);
+  transform: rotate(238deg); }
+
+.rotate-239 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-239 .circle-rotate {
+  -webkit-transform: rotate(239deg);
+  -moz-transform: rotate(239deg);
+  -o-transform: rotate(239deg);
+  transform: rotate(239deg); }
+
+.rotate-240 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-240 .circle-rotate {
+  -webkit-transform: rotate(240deg);
+  -moz-transform: rotate(240deg);
+  -o-transform: rotate(240deg);
+  transform: rotate(240deg); }
+
+.rotate-241 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-241 .circle-rotate {
+  -webkit-transform: rotate(241deg);
+  -moz-transform: rotate(241deg);
+  -o-transform: rotate(241deg);
+  transform: rotate(241deg); }
+
+.rotate-242 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-242 .circle-rotate {
+  -webkit-transform: rotate(242deg);
+  -moz-transform: rotate(242deg);
+  -o-transform: rotate(242deg);
+  transform: rotate(242deg); }
+
+.rotate-243 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-243 .circle-rotate {
+  -webkit-transform: rotate(243deg);
+  -moz-transform: rotate(243deg);
+  -o-transform: rotate(243deg);
+  transform: rotate(243deg); }
+
+.rotate-244 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-244 .circle-rotate {
+  -webkit-transform: rotate(244deg);
+  -moz-transform: rotate(244deg);
+  -o-transform: rotate(244deg);
+  transform: rotate(244deg); }
+
+.rotate-245 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-245 .circle-rotate {
+  -webkit-transform: rotate(245deg);
+  -moz-transform: rotate(245deg);
+  -o-transform: rotate(245deg);
+  transform: rotate(245deg); }
+
+.rotate-246 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-246 .circle-rotate {
+  -webkit-transform: rotate(246deg);
+  -moz-transform: rotate(246deg);
+  -o-transform: rotate(246deg);
+  transform: rotate(246deg); }
+
+.rotate-247 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-247 .circle-rotate {
+  -webkit-transform: rotate(247deg);
+  -moz-transform: rotate(247deg);
+  -o-transform: rotate(247deg);
+  transform: rotate(247deg); }
+
+.rotate-248 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-248 .circle-rotate {
+  -webkit-transform: rotate(248deg);
+  -moz-transform: rotate(248deg);
+  -o-transform: rotate(248deg);
+  transform: rotate(248deg); }
+
+.rotate-249 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-249 .circle-rotate {
+  -webkit-transform: rotate(249deg);
+  -moz-transform: rotate(249deg);
+  -o-transform: rotate(249deg);
+  transform: rotate(249deg); }
+
+.rotate-250 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-250 .circle-rotate {
+  -webkit-transform: rotate(250deg);
+  -moz-transform: rotate(250deg);
+  -o-transform: rotate(250deg);
+  transform: rotate(250deg); }
+
+.rotate-251 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-251 .circle-rotate {
+  -webkit-transform: rotate(251deg);
+  -moz-transform: rotate(251deg);
+  -o-transform: rotate(251deg);
+  transform: rotate(251deg); }
+
+.rotate-252 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-252 .circle-rotate {
+  -webkit-transform: rotate(252deg);
+  -moz-transform: rotate(252deg);
+  -o-transform: rotate(252deg);
+  transform: rotate(252deg); }
+
+.rotate-253 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-253 .circle-rotate {
+  -webkit-transform: rotate(253deg);
+  -moz-transform: rotate(253deg);
+  -o-transform: rotate(253deg);
+  transform: rotate(253deg); }
+
+.rotate-254 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-254 .circle-rotate {
+  -webkit-transform: rotate(254deg);
+  -moz-transform: rotate(254deg);
+  -o-transform: rotate(254deg);
+  transform: rotate(254deg); }
+
+.rotate-255 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-255 .circle-rotate {
+  -webkit-transform: rotate(255deg);
+  -moz-transform: rotate(255deg);
+  -o-transform: rotate(255deg);
+  transform: rotate(255deg); }
+
+.rotate-256 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-256 .circle-rotate {
+  -webkit-transform: rotate(256deg);
+  -moz-transform: rotate(256deg);
+  -o-transform: rotate(256deg);
+  transform: rotate(256deg); }
+
+.rotate-257 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-257 .circle-rotate {
+  -webkit-transform: rotate(257deg);
+  -moz-transform: rotate(257deg);
+  -o-transform: rotate(257deg);
+  transform: rotate(257deg); }
+
+.rotate-258 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-258 .circle-rotate {
+  -webkit-transform: rotate(258deg);
+  -moz-transform: rotate(258deg);
+  -o-transform: rotate(258deg);
+  transform: rotate(258deg); }
+
+.rotate-259 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-259 .circle-rotate {
+  -webkit-transform: rotate(259deg);
+  -moz-transform: rotate(259deg);
+  -o-transform: rotate(259deg);
+  transform: rotate(259deg); }
+
+.rotate-260 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-260 .circle-rotate {
+  -webkit-transform: rotate(260deg);
+  -moz-transform: rotate(260deg);
+  -o-transform: rotate(260deg);
+  transform: rotate(260deg); }
+
+.rotate-261 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-261 .circle-rotate {
+  -webkit-transform: rotate(261deg);
+  -moz-transform: rotate(261deg);
+  -o-transform: rotate(261deg);
+  transform: rotate(261deg); }
+
+.rotate-262 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-262 .circle-rotate {
+  -webkit-transform: rotate(262deg);
+  -moz-transform: rotate(262deg);
+  -o-transform: rotate(262deg);
+  transform: rotate(262deg); }
+
+.rotate-263 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-263 .circle-rotate {
+  -webkit-transform: rotate(263deg);
+  -moz-transform: rotate(263deg);
+  -o-transform: rotate(263deg);
+  transform: rotate(263deg); }
+
+.rotate-264 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-264 .circle-rotate {
+  -webkit-transform: rotate(264deg);
+  -moz-transform: rotate(264deg);
+  -o-transform: rotate(264deg);
+  transform: rotate(264deg); }
+
+.rotate-265 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-265 .circle-rotate {
+  -webkit-transform: rotate(265deg);
+  -moz-transform: rotate(265deg);
+  -o-transform: rotate(265deg);
+  transform: rotate(265deg); }
+
+.rotate-266 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-266 .circle-rotate {
+  -webkit-transform: rotate(266deg);
+  -moz-transform: rotate(266deg);
+  -o-transform: rotate(266deg);
+  transform: rotate(266deg); }
+
+.rotate-267 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-267 .circle-rotate {
+  -webkit-transform: rotate(267deg);
+  -moz-transform: rotate(267deg);
+  -o-transform: rotate(267deg);
+  transform: rotate(267deg); }
+
+.rotate-268 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-268 .circle-rotate {
+  -webkit-transform: rotate(268deg);
+  -moz-transform: rotate(268deg);
+  -o-transform: rotate(268deg);
+  transform: rotate(268deg); }
+
+.rotate-269 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-269 .circle-rotate {
+  -webkit-transform: rotate(269deg);
+  -moz-transform: rotate(269deg);
+  -o-transform: rotate(269deg);
+  transform: rotate(269deg); }
+
+.rotate-270 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-270 .circle-rotate {
+  -webkit-transform: rotate(270deg);
+  -moz-transform: rotate(270deg);
+  -o-transform: rotate(270deg);
+  transform: rotate(270deg); }
+
+.rotate-271 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-271 .circle-rotate {
+  -webkit-transform: rotate(271deg);
+  -moz-transform: rotate(271deg);
+  -o-transform: rotate(271deg);
+  transform: rotate(271deg); }
+
+.rotate-272 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-272 .circle-rotate {
+  -webkit-transform: rotate(272deg);
+  -moz-transform: rotate(272deg);
+  -o-transform: rotate(272deg);
+  transform: rotate(272deg); }
+
+.rotate-273 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-273 .circle-rotate {
+  -webkit-transform: rotate(273deg);
+  -moz-transform: rotate(273deg);
+  -o-transform: rotate(273deg);
+  transform: rotate(273deg); }
+
+.rotate-274 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-274 .circle-rotate {
+  -webkit-transform: rotate(274deg);
+  -moz-transform: rotate(274deg);
+  -o-transform: rotate(274deg);
+  transform: rotate(274deg); }
+
+.rotate-275 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-275 .circle-rotate {
+  -webkit-transform: rotate(275deg);
+  -moz-transform: rotate(275deg);
+  -o-transform: rotate(275deg);
+  transform: rotate(275deg); }
+
+.rotate-276 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-276 .circle-rotate {
+  -webkit-transform: rotate(276deg);
+  -moz-transform: rotate(276deg);
+  -o-transform: rotate(276deg);
+  transform: rotate(276deg); }
+
+.rotate-277 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-277 .circle-rotate {
+  -webkit-transform: rotate(277deg);
+  -moz-transform: rotate(277deg);
+  -o-transform: rotate(277deg);
+  transform: rotate(277deg); }
+
+.rotate-278 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-278 .circle-rotate {
+  -webkit-transform: rotate(278deg);
+  -moz-transform: rotate(278deg);
+  -o-transform: rotate(278deg);
+  transform: rotate(278deg); }
+
+.rotate-279 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-279 .circle-rotate {
+  -webkit-transform: rotate(279deg);
+  -moz-transform: rotate(279deg);
+  -o-transform: rotate(279deg);
+  transform: rotate(279deg); }
+
+.rotate-280 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-280 .circle-rotate {
+  -webkit-transform: rotate(280deg);
+  -moz-transform: rotate(280deg);
+  -o-transform: rotate(280deg);
+  transform: rotate(280deg); }
+
+.rotate-281 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-281 .circle-rotate {
+  -webkit-transform: rotate(281deg);
+  -moz-transform: rotate(281deg);
+  -o-transform: rotate(281deg);
+  transform: rotate(281deg); }
+
+.rotate-282 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-282 .circle-rotate {
+  -webkit-transform: rotate(282deg);
+  -moz-transform: rotate(282deg);
+  -o-transform: rotate(282deg);
+  transform: rotate(282deg); }
+
+.rotate-283 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-283 .circle-rotate {
+  -webkit-transform: rotate(283deg);
+  -moz-transform: rotate(283deg);
+  -o-transform: rotate(283deg);
+  transform: rotate(283deg); }
+
+.rotate-284 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-284 .circle-rotate {
+  -webkit-transform: rotate(284deg);
+  -moz-transform: rotate(284deg);
+  -o-transform: rotate(284deg);
+  transform: rotate(284deg); }
+
+.rotate-285 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-285 .circle-rotate {
+  -webkit-transform: rotate(285deg);
+  -moz-transform: rotate(285deg);
+  -o-transform: rotate(285deg);
+  transform: rotate(285deg); }
+
+.rotate-286 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-286 .circle-rotate {
+  -webkit-transform: rotate(286deg);
+  -moz-transform: rotate(286deg);
+  -o-transform: rotate(286deg);
+  transform: rotate(286deg); }
+
+.rotate-287 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-287 .circle-rotate {
+  -webkit-transform: rotate(287deg);
+  -moz-transform: rotate(287deg);
+  -o-transform: rotate(287deg);
+  transform: rotate(287deg); }
+
+.rotate-288 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-288 .circle-rotate {
+  -webkit-transform: rotate(288deg);
+  -moz-transform: rotate(288deg);
+  -o-transform: rotate(288deg);
+  transform: rotate(288deg); }
+
+.rotate-289 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-289 .circle-rotate {
+  -webkit-transform: rotate(289deg);
+  -moz-transform: rotate(289deg);
+  -o-transform: rotate(289deg);
+  transform: rotate(289deg); }
+
+.rotate-290 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-290 .circle-rotate {
+  -webkit-transform: rotate(290deg);
+  -moz-transform: rotate(290deg);
+  -o-transform: rotate(290deg);
+  transform: rotate(290deg); }
+
+.rotate-291 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-291 .circle-rotate {
+  -webkit-transform: rotate(291deg);
+  -moz-transform: rotate(291deg);
+  -o-transform: rotate(291deg);
+  transform: rotate(291deg); }
+
+.rotate-292 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-292 .circle-rotate {
+  -webkit-transform: rotate(292deg);
+  -moz-transform: rotate(292deg);
+  -o-transform: rotate(292deg);
+  transform: rotate(292deg); }
+
+.rotate-293 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-293 .circle-rotate {
+  -webkit-transform: rotate(293deg);
+  -moz-transform: rotate(293deg);
+  -o-transform: rotate(293deg);
+  transform: rotate(293deg); }
+
+.rotate-294 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-294 .circle-rotate {
+  -webkit-transform: rotate(294deg);
+  -moz-transform: rotate(294deg);
+  -o-transform: rotate(294deg);
+  transform: rotate(294deg); }
+
+.rotate-295 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-295 .circle-rotate {
+  -webkit-transform: rotate(295deg);
+  -moz-transform: rotate(295deg);
+  -o-transform: rotate(295deg);
+  transform: rotate(295deg); }
+
+.rotate-296 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-296 .circle-rotate {
+  -webkit-transform: rotate(296deg);
+  -moz-transform: rotate(296deg);
+  -o-transform: rotate(296deg);
+  transform: rotate(296deg); }
+
+.rotate-297 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-297 .circle-rotate {
+  -webkit-transform: rotate(297deg);
+  -moz-transform: rotate(297deg);
+  -o-transform: rotate(297deg);
+  transform: rotate(297deg); }
+
+.rotate-298 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-298 .circle-rotate {
+  -webkit-transform: rotate(298deg);
+  -moz-transform: rotate(298deg);
+  -o-transform: rotate(298deg);
+  transform: rotate(298deg); }
+
+.rotate-299 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-299 .circle-rotate {
+  -webkit-transform: rotate(299deg);
+  -moz-transform: rotate(299deg);
+  -o-transform: rotate(299deg);
+  transform: rotate(299deg); }
+
+.rotate-300 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-300 .circle-rotate {
+  -webkit-transform: rotate(300deg);
+  -moz-transform: rotate(300deg);
+  -o-transform: rotate(300deg);
+  transform: rotate(300deg); }
+
+.rotate-301 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-301 .circle-rotate {
+  -webkit-transform: rotate(301deg);
+  -moz-transform: rotate(301deg);
+  -o-transform: rotate(301deg);
+  transform: rotate(301deg); }
+
+.rotate-302 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-302 .circle-rotate {
+  -webkit-transform: rotate(302deg);
+  -moz-transform: rotate(302deg);
+  -o-transform: rotate(302deg);
+  transform: rotate(302deg); }
+
+.rotate-303 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-303 .circle-rotate {
+  -webkit-transform: rotate(303deg);
+  -moz-transform: rotate(303deg);
+  -o-transform: rotate(303deg);
+  transform: rotate(303deg); }
+
+.rotate-304 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-304 .circle-rotate {
+  -webkit-transform: rotate(304deg);
+  -moz-transform: rotate(304deg);
+  -o-transform: rotate(304deg);
+  transform: rotate(304deg); }
+
+.rotate-305 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-305 .circle-rotate {
+  -webkit-transform: rotate(305deg);
+  -moz-transform: rotate(305deg);
+  -o-transform: rotate(305deg);
+  transform: rotate(305deg); }
+
+.rotate-306 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-306 .circle-rotate {
+  -webkit-transform: rotate(306deg);
+  -moz-transform: rotate(306deg);
+  -o-transform: rotate(306deg);
+  transform: rotate(306deg); }
+
+.rotate-307 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-307 .circle-rotate {
+  -webkit-transform: rotate(307deg);
+  -moz-transform: rotate(307deg);
+  -o-transform: rotate(307deg);
+  transform: rotate(307deg); }
+
+.rotate-308 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-308 .circle-rotate {
+  -webkit-transform: rotate(308deg);
+  -moz-transform: rotate(308deg);
+  -o-transform: rotate(308deg);
+  transform: rotate(308deg); }
+
+.rotate-309 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-309 .circle-rotate {
+  -webkit-transform: rotate(309deg);
+  -moz-transform: rotate(309deg);
+  -o-transform: rotate(309deg);
+  transform: rotate(309deg); }
+
+.rotate-310 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-310 .circle-rotate {
+  -webkit-transform: rotate(310deg);
+  -moz-transform: rotate(310deg);
+  -o-transform: rotate(310deg);
+  transform: rotate(310deg); }
+
+.rotate-311 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-311 .circle-rotate {
+  -webkit-transform: rotate(311deg);
+  -moz-transform: rotate(311deg);
+  -o-transform: rotate(311deg);
+  transform: rotate(311deg); }
+
+.rotate-312 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-312 .circle-rotate {
+  -webkit-transform: rotate(312deg);
+  -moz-transform: rotate(312deg);
+  -o-transform: rotate(312deg);
+  transform: rotate(312deg); }
+
+.rotate-313 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-313 .circle-rotate {
+  -webkit-transform: rotate(313deg);
+  -moz-transform: rotate(313deg);
+  -o-transform: rotate(313deg);
+  transform: rotate(313deg); }
+
+.rotate-314 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-314 .circle-rotate {
+  -webkit-transform: rotate(314deg);
+  -moz-transform: rotate(314deg);
+  -o-transform: rotate(314deg);
+  transform: rotate(314deg); }
+
+.rotate-315 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-315 .circle-rotate {
+  -webkit-transform: rotate(315deg);
+  -moz-transform: rotate(315deg);
+  -o-transform: rotate(315deg);
+  transform: rotate(315deg); }
+
+.rotate-316 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-316 .circle-rotate {
+  -webkit-transform: rotate(316deg);
+  -moz-transform: rotate(316deg);
+  -o-transform: rotate(316deg);
+  transform: rotate(316deg); }
+
+.rotate-317 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-317 .circle-rotate {
+  -webkit-transform: rotate(317deg);
+  -moz-transform: rotate(317deg);
+  -o-transform: rotate(317deg);
+  transform: rotate(317deg); }
+
+.rotate-318 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-318 .circle-rotate {
+  -webkit-transform: rotate(318deg);
+  -moz-transform: rotate(318deg);
+  -o-transform: rotate(318deg);
+  transform: rotate(318deg); }
+
+.rotate-319 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-319 .circle-rotate {
+  -webkit-transform: rotate(319deg);
+  -moz-transform: rotate(319deg);
+  -o-transform: rotate(319deg);
+  transform: rotate(319deg); }
+
+.rotate-320 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-320 .circle-rotate {
+  -webkit-transform: rotate(320deg);
+  -moz-transform: rotate(320deg);
+  -o-transform: rotate(320deg);
+  transform: rotate(320deg); }
+
+.rotate-321 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-321 .circle-rotate {
+  -webkit-transform: rotate(321deg);
+  -moz-transform: rotate(321deg);
+  -o-transform: rotate(321deg);
+  transform: rotate(321deg); }
+
+.rotate-322 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-322 .circle-rotate {
+  -webkit-transform: rotate(322deg);
+  -moz-transform: rotate(322deg);
+  -o-transform: rotate(322deg);
+  transform: rotate(322deg); }
+
+.rotate-323 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-323 .circle-rotate {
+  -webkit-transform: rotate(323deg);
+  -moz-transform: rotate(323deg);
+  -o-transform: rotate(323deg);
+  transform: rotate(323deg); }
+
+.rotate-324 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-324 .circle-rotate {
+  -webkit-transform: rotate(324deg);
+  -moz-transform: rotate(324deg);
+  -o-transform: rotate(324deg);
+  transform: rotate(324deg); }
+
+.rotate-325 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-325 .circle-rotate {
+  -webkit-transform: rotate(325deg);
+  -moz-transform: rotate(325deg);
+  -o-transform: rotate(325deg);
+  transform: rotate(325deg); }
+
+.rotate-326 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-326 .circle-rotate {
+  -webkit-transform: rotate(326deg);
+  -moz-transform: rotate(326deg);
+  -o-transform: rotate(326deg);
+  transform: rotate(326deg); }
+
+.rotate-327 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-327 .circle-rotate {
+  -webkit-transform: rotate(327deg);
+  -moz-transform: rotate(327deg);
+  -o-transform: rotate(327deg);
+  transform: rotate(327deg); }
+
+.rotate-328 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-328 .circle-rotate {
+  -webkit-transform: rotate(328deg);
+  -moz-transform: rotate(328deg);
+  -o-transform: rotate(328deg);
+  transform: rotate(328deg); }
+
+.rotate-329 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-329 .circle-rotate {
+  -webkit-transform: rotate(329deg);
+  -moz-transform: rotate(329deg);
+  -o-transform: rotate(329deg);
+  transform: rotate(329deg); }
+
+.rotate-330 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-330 .circle-rotate {
+  -webkit-transform: rotate(330deg);
+  -moz-transform: rotate(330deg);
+  -o-transform: rotate(330deg);
+  transform: rotate(330deg); }
+
+.rotate-331 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-331 .circle-rotate {
+  -webkit-transform: rotate(331deg);
+  -moz-transform: rotate(331deg);
+  -o-transform: rotate(331deg);
+  transform: rotate(331deg); }
+
+.rotate-332 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-332 .circle-rotate {
+  -webkit-transform: rotate(332deg);
+  -moz-transform: rotate(332deg);
+  -o-transform: rotate(332deg);
+  transform: rotate(332deg); }
+
+.rotate-333 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-333 .circle-rotate {
+  -webkit-transform: rotate(333deg);
+  -moz-transform: rotate(333deg);
+  -o-transform: rotate(333deg);
+  transform: rotate(333deg); }
+
+.rotate-334 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-334 .circle-rotate {
+  -webkit-transform: rotate(334deg);
+  -moz-transform: rotate(334deg);
+  -o-transform: rotate(334deg);
+  transform: rotate(334deg); }
+
+.rotate-335 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-335 .circle-rotate {
+  -webkit-transform: rotate(335deg);
+  -moz-transform: rotate(335deg);
+  -o-transform: rotate(335deg);
+  transform: rotate(335deg); }
+
+.rotate-336 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-336 .circle-rotate {
+  -webkit-transform: rotate(336deg);
+  -moz-transform: rotate(336deg);
+  -o-transform: rotate(336deg);
+  transform: rotate(336deg); }
+
+.rotate-337 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-337 .circle-rotate {
+  -webkit-transform: rotate(337deg);
+  -moz-transform: rotate(337deg);
+  -o-transform: rotate(337deg);
+  transform: rotate(337deg); }
+
+.rotate-338 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-338 .circle-rotate {
+  -webkit-transform: rotate(338deg);
+  -moz-transform: rotate(338deg);
+  -o-transform: rotate(338deg);
+  transform: rotate(338deg); }
+
+.rotate-339 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-339 .circle-rotate {
+  -webkit-transform: rotate(339deg);
+  -moz-transform: rotate(339deg);
+  -o-transform: rotate(339deg);
+  transform: rotate(339deg); }
+
+.rotate-340 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-340 .circle-rotate {
+  -webkit-transform: rotate(340deg);
+  -moz-transform: rotate(340deg);
+  -o-transform: rotate(340deg);
+  transform: rotate(340deg); }
+
+.rotate-341 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-341 .circle-rotate {
+  -webkit-transform: rotate(341deg);
+  -moz-transform: rotate(341deg);
+  -o-transform: rotate(341deg);
+  transform: rotate(341deg); }
+
+.rotate-342 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-342 .circle-rotate {
+  -webkit-transform: rotate(342deg);
+  -moz-transform: rotate(342deg);
+  -o-transform: rotate(342deg);
+  transform: rotate(342deg); }
+
+.rotate-343 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-343 .circle-rotate {
+  -webkit-transform: rotate(343deg);
+  -moz-transform: rotate(343deg);
+  -o-transform: rotate(343deg);
+  transform: rotate(343deg); }
+
+.rotate-344 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-344 .circle-rotate {
+  -webkit-transform: rotate(344deg);
+  -moz-transform: rotate(344deg);
+  -o-transform: rotate(344deg);
+  transform: rotate(344deg); }
+
+.rotate-345 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-345 .circle-rotate {
+  -webkit-transform: rotate(345deg);
+  -moz-transform: rotate(345deg);
+  -o-transform: rotate(345deg);
+  transform: rotate(345deg); }
+
+.rotate-346 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-346 .circle-rotate {
+  -webkit-transform: rotate(346deg);
+  -moz-transform: rotate(346deg);
+  -o-transform: rotate(346deg);
+  transform: rotate(346deg); }
+
+.rotate-347 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-347 .circle-rotate {
+  -webkit-transform: rotate(347deg);
+  -moz-transform: rotate(347deg);
+  -o-transform: rotate(347deg);
+  transform: rotate(347deg); }
+
+.rotate-348 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-348 .circle-rotate {
+  -webkit-transform: rotate(348deg);
+  -moz-transform: rotate(348deg);
+  -o-transform: rotate(348deg);
+  transform: rotate(348deg); }
+
+.rotate-349 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-349 .circle-rotate {
+  -webkit-transform: rotate(349deg);
+  -moz-transform: rotate(349deg);
+  -o-transform: rotate(349deg);
+  transform: rotate(349deg); }
+
+.rotate-350 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-350 .circle-rotate {
+  -webkit-transform: rotate(350deg);
+  -moz-transform: rotate(350deg);
+  -o-transform: rotate(350deg);
+  transform: rotate(350deg); }
+
+.rotate-351 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-351 .circle-rotate {
+  -webkit-transform: rotate(351deg);
+  -moz-transform: rotate(351deg);
+  -o-transform: rotate(351deg);
+  transform: rotate(351deg); }
+
+.rotate-352 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-352 .circle-rotate {
+  -webkit-transform: rotate(352deg);
+  -moz-transform: rotate(352deg);
+  -o-transform: rotate(352deg);
+  transform: rotate(352deg); }
+
+.rotate-353 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-353 .circle-rotate {
+  -webkit-transform: rotate(353deg);
+  -moz-transform: rotate(353deg);
+  -o-transform: rotate(353deg);
+  transform: rotate(353deg); }
+
+.rotate-354 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-354 .circle-rotate {
+  -webkit-transform: rotate(354deg);
+  -moz-transform: rotate(354deg);
+  -o-transform: rotate(354deg);
+  transform: rotate(354deg); }
+
+.rotate-355 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-355 .circle-rotate {
+  -webkit-transform: rotate(355deg);
+  -moz-transform: rotate(355deg);
+  -o-transform: rotate(355deg);
+  transform: rotate(355deg); }
+
+.rotate-356 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-356 .circle-rotate {
+  -webkit-transform: rotate(356deg);
+  -moz-transform: rotate(356deg);
+  -o-transform: rotate(356deg);
+  transform: rotate(356deg); }
+
+.rotate-357 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-357 .circle-rotate {
+  -webkit-transform: rotate(357deg);
+  -moz-transform: rotate(357deg);
+  -o-transform: rotate(357deg);
+  transform: rotate(357deg); }
+
+.rotate-358 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-358 .circle-rotate {
+  -webkit-transform: rotate(358deg);
+  -moz-transform: rotate(358deg);
+  -o-transform: rotate(358deg);
+  transform: rotate(358deg); }
+
+.rotate-359 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-359 .circle-rotate {
+  -webkit-transform: rotate(359deg);
+  -moz-transform: rotate(359deg);
+  -o-transform: rotate(359deg);
+  transform: rotate(359deg); }
+
+.rotate-360 .hold {
+  -webkit-transform: rotate(-180deg);
+  -moz-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.rotate-360 .circle-rotate {
+  -webkit-transform: rotate(360deg);
+  -moz-transform: rotate(360deg);
+  -o-transform: rotate(360deg);
+  transform: rotate(360deg); }
+
+.player-photo {
+  background-color: #fafafa;
+  width: 90%;
+  height: 90%;
+  position: absolute;
+  top: 5%;
+  left: 5%;
+  z-index: 10;
+  border-radius: 50%;
+  -webkit-transition: opacity 0.25s;
+  -moz-transition: opacity 0.25s;
+  -o-transition: opacity 0.25s;
+  transition: opacity 0.25s; }
+
+.player-position-text {
+  color: white;
+  line-height: 22px; }
+
+.circle-pseudo-transparency {
+  background-color: #56575b;
+  width: 22px;
+  height: 22px;
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  z-index: 10;
+  border-radius: 50%;
+  text-align: center;
+  vertical-align: middle; }
+
+.pitch-team-performance-graph .circle-pseudo-transparency {
+  background-color: #37383c;
+  width: 32px;
+  height: 32px; }
+.pitch-team-performance-graph .player-position-text {
+  line-height: 32px; }
+
+.widget-dark .circle-pseudo-transparency {
+  background-color: #37383c; }
+
+.pitch-player .circle-pseudo-transparency {
+  opacity: 0;
+  background-color: #37383c;
+  width: 50px;
+  height: 50px;
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  -webkit-transition: opacity 0.25s;
+  -moz-transition: opacity 0.25s;
+  -o-transition: opacity 0.25s;
+  transition: opacity 0.25s; }
+.pitch-player .player-performance-text {
+  color: #c9cacc;
+  font-size: 18px;
+  line-height: 2em;
+  vertical-align: bottom; }
+.pitch-player .player-performance-small-text {
+  color: #c9cacc;
+  font-size: 10px;
+  line-height: 1.25em;
+  margin-top: -7px;
+  display: block; }
+.pitch-player:hover .player-photo {
+  opacity: 0; }
+.pitch-player:hover .circle-pseudo-transparency {
+  opacity: 1; }
+
+.list-scrollable {
+  position: absolute;
+  width: 100%;
+  overflow: hidden; }
+  .list-scrollable::before, .list-scrollable::after {
+    display: table;
+    content: " "; }
+  .list-scrollable::after {
+    clear: both; }
+
+.list-content {
+  position: absolute;
+  height: 400px;
+  width: 100%; }
+
+.list-scrollbar {
+  position: absolute;
+  top: 10px;
+  right: -15px;
+  width: 5px;
+  background-color: #202123;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px; }
+
+.dragger {
+  position: absolute;
+  top: 20%;
+  height: 10%;
+  width: 5px;
+  background-color: #c9cacc;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px; }
+
+.switch {
+  -webkit-border-radius: 30px;
+  -moz-border-radius: 30px;
+  -ms-border-radius: 30px;
+  -o-border-radius: 30px;
+  border-radius: 30px;
+  background-color: #37383c;
+  height: 30px;
+  width: 100%;
+  position: relative;
+  cursor: pointer; }
+  .switch span {
+    -webkit-transition: color 0.5s;
+    -moz-transition: color 0.5s;
+    -o-transition: color 0.5s;
+    transition: color 0.5s;
+    font-size: 12px;
+    display: block;
+    position: absolute;
+    text-align: center;
+    width: 50%;
+    top: 5px; }
+    .switch span:first-child {
+      left: 0; }
+    .switch span:last-child {
+      right: 0; }
+
+.switch-background {
+  left: 0;
+  position: absolute;
+  width: 50%;
+  height: 30px;
+  background-color: #7e8285;
+  -webkit-border-radius: 30px;
+  -moz-border-radius: 30px;
+  -ms-border-radius: 30px;
+  -o-border-radius: 30px;
+  border-radius: 30px;
+  -webkit-transition: left 0.25s;
+  -moz-transition: left 0.25s;
+  -o-transition: left 0.25s;
+  transition: left 0.25s; }
+  .switch-background span:first-child {
+    color: #c9cacc; }
+  .switch-background span:last-child {
+    color: white; }
+
+.switch-change .switch-background {
+  left: 51%; }
+
+.switch-change-1 .switch-background {
+  left: 0; }
+.switch-change-1 .switch-text-1 {
+  color: white; }
+
+.switch-change-2 .switch-background {
+  left: 33%; }
+.switch-change-2 .switch-text-2 {
+  color: white; }
+
+.switch-change-3 .switch-background {
+  left: 68%; }
+.switch-change-3 .switch-text-3 {
+  color: white; }
+
+.switch-tripple span {
+  width: 33%; }
+  .switch-tripple span.switch-text-1 {
+    left: 0; }
+  .switch-tripple span.switch-text-2 {
+    left: 33%; }
+  .switch-tripple span.switch-text-3 {
+    right: 0; }
+.switch-tripple .switch-background {
+  width: 33%; }
+
+.switch-double span {
+  width: 50%; }
+.switch-double.switch-change-2 .switch-background {
+  left: 50%; }
+
+.round-selector {
+  position: relative;
+  left: 60px;
+  height: 30px;
+  width: 300px;
+  font-size: 12px; }
+  .round-selector .left-arrow, .round-selector .right-arrow,
+  .round-selector .left-arrow-start, .round-selector .right-arrow-end {
+    line-height: 30px;
+    float: left;
+    cursor: pointer;
+    width: 30px; }
+
+.round-selector-text {
+  position: absolute;
+  left: -60px;
+  top: 5px; }
+
+.round-list-fixed-width {
+  float: left;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  width: 240px;
+  display: block; }
+
+.round-list {
+  width: 2500px;
+  position: relative;
+  left: -5px;
+  -webkit-transition: margin 1s;
+  -moz-transition: margin 1s;
+  -o-transition: margin 1s;
+  transition: margin 1s; }
+  .round-list::before, .round-list::after {
+    display: table;
+    content: " "; }
+  .round-list::after {
+    clear: both; }
+  .round-list span {
+    display: block;
+    float: left;
+    margin: 0 5px;
+    text-align: center;
+    height: 30px;
+    width: 30px;
+    text-align: center;
+    padding-top: 4px; }
+    .round-list span.selected {
+      background-color: #2c2d31;
+      color: white;
+      border-radius: 50%; }
+    .round-list span.future-selected {
+      background-color: #2c2d31;
+      color: white;
+      border-radius: 50%; }
+    .round-list span.active {
+      background-color: #7e8285;
+      color: white;
+      border-radius: 50%; }
+
+.round-selector-full {
+  width: 100%;
+  left: 0;
+  padding-left: 120px; }
+  .round-selector-full .round-selector-text {
+    line-height: 1.25em;
+    top: 8px;
+    left: 0; }
+  .round-selector-full span {
+    margin: 0 15px; }
+  .round-selector-full .left-arrow-start {
+    width: 3%; }
+  .round-selector-full .left-arrow {
+    width: 3%; }
+  .round-selector-full .right-arrow-end {
+    width: 3%; }
+  .round-selector-full .right-arrow {
+    width: 3%; }
+  .round-selector-full .round-list-fixed-width {
+    width: 960px; }
+
+@media screen and (max-width: 1200px) and (min-width: 800px) {
+  .wrap {
+    width: 800px; }
+
+  .column:last-child {
+    width: 100%; }
+    .column:last-child .widget {
+      width: 50%; }
+
+  .column.col-1-1 .widget {
+    width: 100%; }
+
+  .widget {
+    float: left; }
+
+  .widget-chart .widget-content {
+    height: 450px;
+    padding-bottom: 0; }
+  .widget-chart .list-scrollable {
+    height: 334px; }
+  .widget-chart .list-scrollbar {
+    height: 344px; }
+
+  .column-left {
+    float: left; }
+    .column-left:last-child {
+      width: 50.0%; }
+      .column-left:last-child .widget {
+        width: 100%; }
+
+  .column-right {
+    float: right; }
+
+  .round-selector-full .round-list-fixed-width {
+    width: 600px; } }
+@media screen and (max-width: 800px) {
+  .wrap {
+    width: 400px; }
+
+  .round-selector-full {
+    padding-left: 60px; }
+    .round-selector-full .round-selector-text {
+      width: 60px;
+      top: 0; }
+    .round-selector-full .round-list-fixed-width {
+      width: 240px; }
+    .round-selector-full span {
+      margin: 0 5px; }
+    .round-selector-full .left-arrow {
+      width: 30px; }
+    .round-selector-full .right-arrow {
+      width: 30px; } }
