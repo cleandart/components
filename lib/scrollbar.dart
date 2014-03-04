@@ -2,6 +2,8 @@ library scrollbar;
 
 import 'package:react/react.dart';
 import 'dart:async';
+import 'dart:math';
+import 'dart:html';
 
 class ScrollbarComponent extends Component {
   
@@ -10,13 +12,14 @@ class ScrollbarComponent extends Component {
   var barHeight;
   var startY;
   var startTop;
+  var contentId;
+  var windowId;
+  var contentHeight;
+  var windowHeight;
   StreamSubscription ss;
-  get itemHeight => props['itemHeight'];
-  get windowHeight => props['windowHeight'];
   get children => props['children'];
   get stream => props['stream'];
   get scrollStep => props['scrollStep'];
-  get contentHeight => itemHeight*children.length;
   get barHeightPx => (windowHeight*windowHeight/contentHeight).round();
   
   ScrollbarComponent() {
@@ -26,14 +29,14 @@ class ScrollbarComponent extends Component {
   componentWillMount() {
     barTop = 0;
     contentTop = 0;
-    if (contentHeight > 0) {
-      barHeight = 100*(windowHeight/contentHeight);
-      if (barHeight > 100) barHeight = 100;
-    } else {
-      barHeight = 100;
-    }
     print('Number of children '+children.length.toString());
     print('Scroll step: $scrollStep');
+    var start = 97;
+    var rnd = new Random();
+    contentId = 'Scrollbar${rnd.nextInt(100000)}';
+    windowId = 'Window${rnd.nextInt(100000)}';
+    print('Scrollbar content Id is: $contentId');
+    print('Scrollbar window Id is: $windowId');
   }
   
   render() {
@@ -42,13 +45,30 @@ class ScrollbarComponent extends Component {
               div({'className':'list-scrollbar'+(barHeight == 100 ? ' hide' : ''),'style':{'height':windowHeight.toString()+'px'}},[
                  div({'className':'dragger', 'style':{'top':barTop.toString()+'px',
                'height':barHeight.toString()+'%'}, 'onMouseDown': mouseDown},[])]),
-            div({'className':'list-scrollable',
-                'style':{'height':windowHeight.toString()+'px'}, 
+            div({'className':'list-scrollable', 
+                'style':{'height':'285px'}, 'id':'${windowId}',
                 'onWheel':(ev) => onWheel(ev,scrollStep)},[
-               div({'className':'list-content', 'style':{'top':contentTop.toString()+'px'}},
+               div({'className':'list-content','id':'${contentId}', 'style':{'top':contentTop.toString()+'px'}},
                 children
                )])]);
         
+  }
+  
+  componentDidMount(root) {
+    var content = querySelector('#$contentId');
+    var window = querySelector('#$windowId');
+    windowHeight = window.clientHeight;
+    contentHeight = content.scrollHeight;
+    print('Content Height: ${contentHeight}');
+    print('Window Height: ${windowHeight}');
+    if (contentHeight > 0) {
+      barHeight = 100*(windowHeight/contentHeight);
+      if (barHeight > 100) barHeight = 100;
+    } else {
+      barHeight = 100;
+    }
+
+    this.redraw();
   }
   
   onWheel(ev,step) {
