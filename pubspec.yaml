@@ -1,4 +1,5 @@
 name: components
+version: 1.0.0
 description: A sample web application
 dependencies:
   browser: any
@@ -7,5 +8,5 @@ dependencies:
   clean_sync: any
   js: any
   logging: any
-  react: any
+  react: '>=0.3.0'
   unittest: any

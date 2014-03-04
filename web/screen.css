@@ -4560,3 +4560,7 @@ body {
       width: 30px; }
     .round-selector-full .right-arrow {
       width: 30px; } }
+      
+.hide {
+  display:none;
+}

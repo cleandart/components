@@ -2,6 +2,12 @@ library scrollbar;
 
 import 'package:react/react.dart';
 import 'dart:async';
+import 'dart:math';
+import 'dart:html';
+
+var scrollbar = ScrollbarComponent.register(window);
+
+typedef ScrollbarType(List children, {String containerClass, int scrollStep});
 
 class ScrollbarComponent extends Component {
   
@@ -10,45 +16,148 @@ class ScrollbarComponent extends Component {
   var barHeight;
   var startY;
   var startTop;
-  StreamSubscription ss;
-  get items => props['items'];
-  get itemHeight => props['itemHeight'];
-  get windowHeight => props['windowHeight'];
-  get stream => props['stream'];
-  get contentHeight => itemHeight*items.length;
+  var contentId;
+  var windowId;
+  var contentHeight;
+  var windowHeight;
+  var window;
+  var htmlWindow;
+  var redrawInvoked;
+  StreamSubscription ssMouseMove;
+  StreamSubscription ssMouseUp;
+  get children => props['children'];
+  get scrollStep => props['scrollStep'];
+  get containerClass => props['containerClass'];
   get barHeightPx => (windowHeight*windowHeight/contentHeight).round();
   
-  ScrollbarComponent() {
-    
+  ScrollbarComponent(_htmlWindow) {
+    htmlWindow = _htmlWindow;
+  }
+  
+  static ScrollbarType register(window) {
+    var _registeredComponent = registerComponent(() => new ScrollbarComponent(window));
+    return (children, {String containerClass : '', int scrollStep: 25}) {
+
+      return _registeredComponent({
+        'containerClass':containerClass,
+        'scrollStep':scrollStep
+      }, children);
+    };
   }
   
   componentWillMount() {
+    barTop = 0;
+    contentTop = 0;
+    redrawInvoked = false;
+    print('Number of children '+children.length.toString());
+    print('Scroll step: $scrollStep');
+    var start = 97;
+    var rnd = new Random();
+    contentId = 'Scrollbar${rnd.nextInt(100000)}';
+    windowId = 'Window${rnd.nextInt(100000)}';
+    print('Scrollbar content Id is: $contentId');
+    print('Scrollbar window Id is: $windowId');
+  }
+  
+  render() {
+  // print('Render'); 
+  return
+    div({'className':'${containerClass}','style':{'position':'relative'}},[
+      div({'className':'list-scrollbar'+(barHeight == 100 ? ' hide' : ''),
+           'style':{'height':'${windowHeight}px'}},[
+        div({'className':'dragger', 'style':{'top':'${barTop}px',
+             'height':'${barHeight}%'}, 'onMouseDown': mouseDown},[])
+      ]),
+      div({'className':'list-scrollable', 
+           'style':{'height':(windowHeight==0 ? '285px' : '${windowHeight}px')},
+           'ref':'${windowId}',
+           'onWheel':(ev) => onWheel(ev,scrollStep)},[
+        div({'className':'list-content','ref':'${contentId}',
+             'style':{'top':contentTop.toString()+'px'}},
+          children
+        )
+      ])
+    ]);
+  }
+  
+  recalculateBorders() {
+    var content = ref('$contentId');
+    window = ref('$windowId');
+    windowHeight = window.clientHeight;
+    contentHeight = content.scrollHeight;
+   // print('Content Height: ${contentHeight}');
+   // print('Window Height: ${windowHeight}');
+
     if (contentHeight > 0) {
       barHeight = 100*(windowHeight/contentHeight);
       if (barHeight > 100) barHeight = 100;
     } else {
       barHeight = 100;
     }
+
   }
   
-  render() {
-    
-    return div({},[
-              div({'className':'list-scrollbar'},[
-                 div({'className':'dragger', 'style':{'top':barTop.toString()+'px',
-               'height':barHeight.toString()+'%'}, 'onMouseDown': mouseDown},[])]),
-            div({'className':'list-scrollable'},[
-               div({'className':'list-content', 'style':{'top':contentTop.toString()+'px'}},[
-                  items
-               ])])]);
-        
+  componentDidMount(root) {
+    recalculateBorders();
+    redraw();
+  }
+  
+  componentDidUpdate(prevProps, prevState, rootNode) {
+   // print('Component did update');
+    if (!redrawInvoked) {
+      recalculateBorders();
+      redrawInvoked = true;
+      redraw();
+    } else {
+      redrawInvoked = false;
+    }
+  }
+  
+  onWheel(ev,step) {
+    if (ev is MouseEvent) {
+      ev.preventDefault();     
+    } else {
+      ev.nativeEvent.preventDefault();
+    }
+    if (barHeight == 100) return;
+    var newCntTop;
+    var newBarTop;
+    if (ev.deltaY > 0) {
+      // Scroll up
+      newCntTop = contentTop + step;
+      newBarTop = barTop - windowHeight*(step/contentHeight);
+      if (newBarTop < 0) {
+        newBarTop = 0;
+        newCntTop = 0;
+      }
+    } else {
+      // Scroll down
+      newCntTop = contentTop - step;
+      newBarTop = barTop + windowHeight*(step/contentHeight);
+      if (newBarTop + barHeightPx > windowHeight) {
+        newBarTop = windowHeight - barHeightPx;
+        newCntTop = windowHeight - contentHeight;
+      }
+    }
+    barTop = newBarTop;
+    contentTop = newCntTop;
+    redraw();
+    //print('Wheel event, delta: '+ev.deltaY.toString());
   }
   
   mouseDown(ev) {
-    ev.nativeEvent.preventDefault();
-    
+    if (ev is MouseEvent) {
+      ev.preventDefault();
+      startY = ev.page.y;
+    } else {
+      ev.nativeEvent.preventDefault();      
+      startY = ev.pageY;
+    }
     startTop = barTop;
-    startY = ev.pageY;
+    
+    ssMouseMove = htmlWindow.onMouseMove.listen(mouseMove);
+    ssMouseUp = htmlWindow.onMouseUp.listen(mouseUp);
+    /*
     ss = stream.listen((ev){
       if (ev.type == 'mousemove') {
         mouseMove(ev);
@@ -57,22 +166,30 @@ class ScrollbarComponent extends Component {
         mouseUp(ev);
       }
     });
+    */
   }
   
   mouseMove(ev) {
-    var diffY = ev.pageY - startY;
-    var newPos = startTop+diffY;
-    if (newPos < 0) {
-      newPos = 0;
-    } else if (newPos + barHeightPx > windowHeight) {
-      newPos = windowHeight - barHeightPx;
+    var diffY;
+    if (ev is MouseEvent) {
+      diffY = ev.page.y - startY;
+    } else {
+      diffY = ev.pageY - startY;  
     }
-    barTop = newPos;
-    contentTop = (barTop*contentHeight/windowHeight).round();
-    this.redraw();
+    var newTop = startTop + diffY;
+    if (newTop < 0) {
+      newTop = 0;
+    } else if (newTop + barHeightPx > windowHeight) {
+      newTop = windowHeight - barHeightPx;
+    }
+    barTop = newTop;
+    contentTop = -(barTop*contentHeight/windowHeight).round();
+    redraw();
   }
   
   mouseUp(ev) {
-    ss.cancel();
+   // ss.cancel();
+    ssMouseMove.cancel();
+    ssMouseUp.cancel();
   }
 }
