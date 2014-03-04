@@ -2,7 +2,15 @@ library selector;
 
 import 'package:react/react.dart';
 import 'package:clean_data/clean_data.dart';
+import 'dart:async';
 import 'dart:html';
+
+var selector = SelectorComponent.register(window);
+
+typedef SelectorType(List items, DataReference selected, 
+                    DataReference active, DataReference loading,
+                    {String key, String selectorText, bool fullSize});
+
 
 class SelectorComponent extends Component {
  
@@ -10,22 +18,42 @@ class SelectorComponent extends Component {
   DataReference get loading => props['loading'];
   DataReference get active => props['active'];
   
-  get items => props['items'];
-  get selectorText => props['selectorText'];
-  get fullSize => props['fullSize'];
-  //get scrollStep => props['scrollStep'];
+  List get items => props['items'];
+  String get selectorText => props['selectorText'];
+  bool get fullSize => props['fullSize'];
   
-  var scrollStep;
+  num scrollStep;
   var browserWindow;
+  
+  List<StreamSubscription> subscriptions;
+  
+  SelectorComponent(this.browserWindow);
+  
+  static SelectorType register(window) {
+    var _registeredComponent = registerComponent(() => new SelectorComponent(window));
+    return (List items, DataReference selected,
+        DataReference active, DataReference loading,
+        {String key : 'selector', String selectorText : '', bool fullSize : true}) {
 
+      return _registeredComponent({
+        'key' : key,
+        'selected' : selected,
+        'active' : active,
+        'loading' : loading,
+        'items' : items,
+        'selectorText' : selectorText,
+        'fullSize' : fullSize
+      });
+    };
+  }
 
   componentWillMount() {
-    selected.onChange.listen((_) => redraw());
-    loading.onChange.listen((_) => redraw());
-    active.onChange.listen((_) => redraw());
+    subscriptions = new List();
     
-    browserWindow = window;
-    browserWindow.onResize.listen(checkAndSetScrollStep);
+    subscriptions.add(selected.onChange.listen((_) => redraw()));
+    subscriptions.add(loading.onChange.listen((_) => redraw()));
+    subscriptions.add(active.onChange.listen((_) => redraw()));
+    subscriptions.add(browserWindow.onResize.listen(checkAndSetScrollStep));
 
     scrollStep = 16;
   }
@@ -39,15 +67,18 @@ class SelectorComponent extends Component {
     var _visibleItemsWindowSize = scrollStep * _spanWidth;
     var activeItemOrder = 0;
     
-    for (int i=0; i<items.length; i++){
-      if (items[i] == active.value){
-        activeItemOrder = i;
-      }
-    }
+    activeItemOrder = items.indexOf(active.value);
+    
     var _scrollStep = (0 - (activeItemOrder * 
                             _spanWidth - _visibleItemsWindowSize * 0.8)).round();
     
     checkSetScrollStepRedraw(_scrollStep, _scrollListDiv);
+  }
+  
+  componentWillUnmount(){
+    for (StreamSubscription subscr in subscriptions) {
+      subscr.cancel();
+    }
   }
   
   render() {

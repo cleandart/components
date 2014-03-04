@@ -2,31 +2,35 @@ library slider;
 
 import 'package:react/react.dart';
 import 'dart:async';
+import 'dart:html';
 
 
 class SliderComponent extends Component {
   
-  var left = 0;
-  var right = 0;
+  var left;
+  var right;
   get barWidth => props['barWidth'];
   get sliderWidth => props['sliderWidth'];
   get minValue => props['minValue'];
   get maxValue => props['maxValue'];
-  get stream => props['stream'];
   var startX;
   var diffX;
+  var htmlWindow;
   var startPos;
   var lowValue;
   var highValue;
   var down = false;
   var movedIsLeft;
-  StreamSubscription ss;
+  StreamSubscription ssMouseUp;
+  StreamSubscription ssMouseMove;
   
-  SliderComponent(){    
-    
+  SliderComponent(_htmlWindow){    
+    htmlWindow = _htmlWindow;
   }
   
   componentWillMount() {
+    left = 0;
+    right = 0;
     lowValue = minValue;
     highValue = maxValue;
   }
@@ -61,7 +65,11 @@ class SliderComponent extends Component {
     down = true;
     movedIsLeft = isLeft;
     var value;
-    startX = ev.pageX;    
+    if (ev is MouseEvent) {  
+      startX = ev.page.x;
+    } else {
+      startX = ev.pageX;    
+    }
     if (movedIsLeft) {
       startPos = left;
       value = (minValue + left*(maxValue-minValue)/(sliderWidth-barWidth)).round();
@@ -72,19 +80,18 @@ class SliderComponent extends Component {
       print('Drag of right handle started at value: $value');
     }
     
-    ss = stream.listen((ev){
-      if (ev.type == 'mousemove') {
-        mouseMove(ev);
-      }
-      if (ev.type == 'mouseup') {
-        mouseUp(ev);
-      }
-    });
+    ssMouseMove = htmlWindow.onMouseMove.listen(mouseMove);
+    ssMouseUp = htmlWindow.onMouseUp.listen(mouseUp);
+
   }
   
   mouseMove(ev) {
     if (down) {
-      diffX = ev.pageX - startX;
+      if (ev is MouseEvent) {
+        diffX = ev.page.x - startX;
+      } else {
+        diffX = ev.pageX - startX;
+      }
       var leftCorner = startPos + diffX - barWidth/2;
       var rightCorner = startPos + diffX + barWidth/2;
       
@@ -120,7 +127,10 @@ class SliderComponent extends Component {
   
   mouseUp(ev) {
     down = false;
-    ss.cancel();
+    
+    ssMouseMove.cancel();
+    ssMouseUp.cancel();
+    
     var value;
     if (movedIsLeft) {
       value = (minValue + left*(maxValue-minValue)/(sliderWidth-barWidth)).round();
