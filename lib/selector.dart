@@ -65,15 +65,15 @@ class SelectorComponent extends Component {
     var _itemSpan = ref(items[0].toString());
     var _spanWidth = _itemSpan.marginEdge.width;
     var _visibleItemsWindowSize = scrollStep * _spanWidth;
-    var activeItemOrder = 0;
+    var selectedItemOrder = 0;
 
     if (items.length > 40){ //hack due to testing 100 items in rounds, causing troubles with css width of round-list div
       _scrollListDiv.style.width = '4000px';
     }
 
-    activeItemOrder = items.indexOf(active.value);
+    selectedItemOrder = items.indexOf(selected.value);
 
-    var _scrollStep = (0 - (activeItemOrder *
+    var _scrollStep = (0 - (selectedItemOrder *
                             _spanWidth - _visibleItemsWindowSize * 0.8)).round();
 
     checkSetScrollStepRedraw(_scrollStep, _scrollListDiv);
