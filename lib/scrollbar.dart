@@ -3,9 +3,6 @@ library scrollbar;
 import 'package:react/react.dart';
 import 'dart:async';
 import 'dart:math';
-import 'dart:html';
-
-var scrollbar = ScrollbarComponent.register(window);
 
 typedef ScrollbarType(List children, {String containerClass, int scrollStep});
 
@@ -36,7 +33,7 @@ class ScrollbarComponent extends Component {
   
   static ScrollbarType register(window) {
     var _registeredComponent = registerComponent(() => new ScrollbarComponent(window));
-    return (children, {String containerClass : '', int scrollStep: 25}) {
+    return (children, {String containerClass : '', int scrollStep: 60}) {
 
       return _registeredComponent({
         'containerClass':containerClass,
@@ -94,17 +91,28 @@ class ScrollbarComponent extends Component {
     } else {
       barHeight = 100;
     }
+    
+    if (barTop + barHeightPx > windowHeight) {
+      barTop = windowHeight - barHeightPx;
+    }
+
+    if (barTop < 0) {
+      barTop = 0;
+    }
+    
+    contentTop = -(barTop*contentHeight/windowHeight).round();
+    //print('Recalculated: bar height: $barHeight');
 
   }
   
   componentDidMount(root) {
     recalculateBorders();
+    redrawInvoked = true;
     redraw();
   }
   
   componentDidUpdate(prevProps, prevState, rootNode) {
-   // print('Component did update');
-    if (!redrawInvoked) {
+   if (!redrawInvoked) {
       recalculateBorders();
       redrawInvoked = true;
       redraw();
@@ -114,10 +122,10 @@ class ScrollbarComponent extends Component {
   }
   
   onWheel(ev,step) {
-    if (ev is MouseEvent) {
-      ev.preventDefault();     
-    } else {
+    if (ev is SyntheticMouseEvent) {
       ev.nativeEvent.preventDefault();
+    } else {
+      ev.preventDefault();
     }
     if (barHeight == 100) return;
     var newCntTop;
@@ -141,40 +149,31 @@ class ScrollbarComponent extends Component {
     }
     barTop = newBarTop;
     contentTop = newCntTop;
+    redrawInvoked = true;
     redraw();
-    //print('Wheel event, delta: '+ev.deltaY.toString());
   }
   
   mouseDown(ev) {
-    if (ev is MouseEvent) {
+    if (ev is SyntheticMouseEvent) {
+      ev.nativeEvent.preventDefault();      
+      startY = ev.pageY;  
+    } else {
       ev.preventDefault();
       startY = ev.page.y;
-    } else {
-      ev.nativeEvent.preventDefault();      
-      startY = ev.pageY;
     }
     startTop = barTop;
     
     ssMouseMove = htmlWindow.onMouseMove.listen(mouseMove);
     ssMouseUp = htmlWindow.onMouseUp.listen(mouseUp);
-    /*
-    ss = stream.listen((ev){
-      if (ev.type == 'mousemove') {
-        mouseMove(ev);
-      }
-      if (ev.type == 'mouseup') {
-        mouseUp(ev);
-      }
-    });
-    */
+  
   }
   
   mouseMove(ev) {
     var diffY;
-    if (ev is MouseEvent) {
-      diffY = ev.page.y - startY;
+    if (ev is SyntheticMouseEvent) {
+      diffY = ev.pageY - startY;    
     } else {
-      diffY = ev.pageY - startY;  
+      diffY = ev.page.y - startY;
     }
     var newTop = startTop + diffY;
     if (newTop < 0) {
@@ -184,11 +183,11 @@ class ScrollbarComponent extends Component {
     }
     barTop = newTop;
     contentTop = -(barTop*contentHeight/windowHeight).round();
+    redrawInvoked = true;
     redraw();
   }
   
   mouseUp(ev) {
-   // ss.cancel();
     ssMouseMove.cancel();
     ssMouseUp.cancel();
   }
