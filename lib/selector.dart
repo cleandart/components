@@ -3,9 +3,6 @@ library selector;
 import 'package:react/react.dart';
 import 'package:clean_data/clean_data.dart';
 import 'dart:async';
-import 'dart:html';
-
-var selector = SelectorComponent.register(window);
 
 typedef SelectorType(List items, DataReference selected,
                     DataReference active, DataReference loading,
