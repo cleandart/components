@@ -1,85 +1,37 @@
 library item;
 
 import 'package:react/react.dart';
-import 'package:clean_data/clean_data.dart';
-import 'dart:html';
-import 'slider.dart';
-import 'selector.dart';
-import 'dart:async';
-import 'scrollbar.dart';
+import 'scrollbar_example.dart';
+import 'selector_example.dart';
 
-var itemList = registerComponent(() => new ComponentContainer());
 
-var selectorComponent = registerComponent(() => new SelectorComponent(window));
-var sliderComponent = registerComponent(() => new SliderComponent(window));
-var scrollbarComponent = registerComponent(() => new ScrollbarComponent(window));
+// add new component examples here
+var componentExamples = {
+  'selector': selectorExample,
+  'scrollbar': scrollbarExample,
+  // TODO slider: sliderExample
+};
 
-var count =12;
-var _selectorItems = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20, 21, 22, 23, 24, 25, 26, 27];
-
-DataReference selectorSelected;
-DataReference selectorActive;
-DataReference selectorLoading;
+var container = registerComponent(() => new ComponentContainer());
 
 class ComponentContainer extends Component {
-
-  StreamController sc;
-
-  componentWillMount() {
-    sc = new StreamController.broadcast();
-    
-    selectorSelected = new DataReference(null);
-    selectorActive = new DataReference(15);
-    selectorLoading = new DataReference(null);
-    selectorLoading.onChange.listen(load);
+  var selected = null;
+  select(clicked) {
+    selected = clicked;
+    redraw();
   }
 
-  mouseEvent(ev) {
-    sc.add(ev);
-  }
- 
-  load(item){
-    var selectorLastSelected = selectorLoading.value;
-    return new Future.delayed(new Duration(seconds: 2), () {
-      if (selectorLoading.value == selectorLastSelected) {
-        selectorSelected.value = selectorLastSelected;
-      }
-    });
-  }
-  
-  render() { 
-    
-    var _items = [];
-    
-    for (var i = 0; i < count; i++) {
-      _items.add(div({'className':'list-item'},[
-                   span({'className':'team-chart-position'},(i*1234).toString()),
-                   span({'className':'long-club-name-text'},'Futbalovy tim cislo $i'),
-                   span({'className':'account-type'}),
-                   span({'className':'team-zone text-upcase'},'abcdef $i'),
-                   span({'className':'team-chart-points'},(i*4321).toString())
-                 ]));
-    }
-    
-    return div({'style' : {'position' : 'absolute', 'right' : 0, 'left' : 0, 'top' : 0,'bottom':0},
-                'onMouseMove': mouseEvent, 'onMouseUp': mouseEvent},[
-// slider component                                                                     
-           sliderComponent({'minValue':10, 'maxValue':50, 'sliderWidth' : 460,
-                            'barWidth' : 30},[]), 
-            div({'style':{'width':360}},
-// scrollbar component
-           scrollbarComponent({'scrollStep':25,'containerClass':''},
-             _items
-           )),
-           button({'style':{'position':'absolute','left':400},'onClick':(e){count++;redraw();}},'add'),
-// dummy space maker
-           div({'key' : 'dummy', 'style' : {'height' : '350px'}},[]),
-// selector component
-           div({'key' : 'widgetSelector', 'className' : 'widget widget-dark widget-full'},
-               selector(_selectorItems, selectorSelected, selectorActive, 
-                   selectorLoading, selectorText : 'VYBER KOLA', fullSize : true))
+  render() {
+    var buttons = componentExamples.keys
+        .map((cName) => button({'onClick': (_) => select(cName)}, cName));
+    var render = componentExamples[selected];
+    var content = (render == null) ? 'Choose some component.' : render({});
 
-           ]); 
+    return
+        div({}, [
+        div({'key' : 'dummy', 'style' : {'height' : '150px'}}, buttons),
+       content
+    ]);
 
   }
 }
