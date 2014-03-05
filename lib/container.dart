@@ -1,11 +1,11 @@
 library item;
 
 import 'package:react/react.dart';
-import 'package:clean_data/clean_data.dart';
 import 'dart:html';
 import 'slider.dart';
 import 'dart:async';
 import 'scrollbar.dart';
+import 'package:clean_data/clean_data.dart';
 
 var itemList = registerComponent(() => new ComponentContainer());
 
@@ -42,8 +42,7 @@ class ComponentContainer extends Component {
     
     return div({'style' : {'position' : 'absolute', 'right' : 0, 'left' : 0, 'top' : 0,'bottom':0},
                 'onMouseMove': mouseEvent, 'onMouseUp': mouseEvent},[ 
-           sliderComponent({'minValue':10, 'maxValue':50, 'sliderWidth' : 460,
-                            'barWidth' : 30},[]), 
+           sliderComponent({'minValue':10, 'maxValue':50, 'barWidth' : 30,'lowValue':new DataReference(10), 'highValue': new DataReference(50)},[]), 
             div({'style':{'width':360}},
              scrollbarComponent({'scrollStep':25,'containerClass':''},
                _items

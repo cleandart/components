@@ -114,11 +114,7 @@ class ScrollbarComponent extends Component {
   }
   
   onWheel(ev,step) {
-    if (ev is MouseEvent) {
-      ev.preventDefault();     
-    } else {
-      ev.nativeEvent.preventDefault();
-    }
+    ev.nativeEvent.preventDefault();
     if (barHeight == 100) return;
     var newCntTop;
     var newBarTop;
@@ -146,13 +142,8 @@ class ScrollbarComponent extends Component {
   }
   
   mouseDown(ev) {
-    if (ev is MouseEvent) {
-      ev.preventDefault();
-      startY = ev.page.y;
-    } else {
-      ev.nativeEvent.preventDefault();      
-      startY = ev.pageY;
-    }
+    ev.nativeEvent.preventDefault();      
+    startY = ev.pageY;
     startTop = barTop;
     
     ssMouseMove = htmlWindow.onMouseMove.listen(mouseMove);
@@ -170,12 +161,7 @@ class ScrollbarComponent extends Component {
   }
   
   mouseMove(ev) {
-    var diffY;
-    if (ev is MouseEvent) {
-      diffY = ev.page.y - startY;
-    } else {
-      diffY = ev.pageY - startY;  
-    }
+    var diffY = ev.pageY - startY;  
     var newTop = startTop + diffY;
     if (newTop < 0) {
       newTop = 0;

@@ -3,6 +3,8 @@ library slider;
 import 'package:react/react.dart';
 import 'dart:async';
 import 'dart:html';
+import 'package:clean_data/clean_data.dart';
+import 'dart:math';
 
 
 class SliderComponent extends Component {
@@ -10,15 +12,18 @@ class SliderComponent extends Component {
   var left;
   var right;
   get barWidth => props['barWidth'];
-  get sliderWidth => props['sliderWidth'];
   get minValue => props['minValue'];
   get maxValue => props['maxValue'];
+  get lowValue => props['lowValue'];
+  get highValue => props['highValue'];
   var startX;
   var diffX;
+  var sliderId;
+  var sliderWidth;
   var htmlWindow;
   var startPos;
-  var lowValue;
-  var highValue;
+  var lowValueDisplayed;
+  var highValueDisplayed;
   var down = false;
   var movedIsLeft;
   StreamSubscription ssMouseUp;
@@ -31,14 +36,16 @@ class SliderComponent extends Component {
   componentWillMount() {
     left = 0;
     right = 0;
-    lowValue = minValue;
-    highValue = maxValue;
+    lowValueDisplayed = minValue;
+    highValueDisplayed = maxValue;
+    var rnd = new Random();
+    sliderId = 'Slider${rnd.nextInt(100000)}';
   }
   
   render() {
     
     return div({'className' : 'form-range'},
-              [div({'className':'rail'}, [
+              [div({'className':'rail','ref':'${sliderId}'}, [
                   div({'className':'rail-selected', 
                         'style':{'left': left.toString()+'px', 
                                   'right': right.toString()+'px'}},
@@ -46,11 +53,11 @@ class SliderComponent extends Component {
                       button({'className':'left-handle', 
                         'style' : {'border-style':'none'},
                         'onMouseDown': (ev)=>mouseDown(ev,true)
-                        },lowValue.toString()),
+                        },'${lowValueDisplayed}'),
                       button({'className':'right-handle', 
                         'style' : {'border-style':'none'}, 
                         'onMouseDown': (ev)=>mouseDown(ev,false),
-                        },highValue.toString())
+                        },'${highValueDisplayed}')
                   ])
                ]),
                div({'className':'form-range-legend'},[
@@ -60,6 +67,11 @@ class SliderComponent extends Component {
            ]);
   }
  
+  componentDidMount(root) {
+    var sliderElement = ref('$sliderId');
+    print('slider width: ${sliderElement.clientWidth}');
+    sliderWidth = sliderElement.clientWidth;
+  }
   
   mouseDown(ev,isLeft) {
     down = true;
@@ -105,7 +117,7 @@ class SliderComponent extends Component {
           middle = sliderWidth-barWidth-right;
         }
         left = middle;
-        lowValue = (minValue + left*(maxValue-minValue)/(sliderWidth-barWidth)).round();
+        lowValueDisplayed = (minValue + left*(maxValue-minValue)/(sliderWidth-barWidth)).round();
         
       } else {
 
@@ -117,7 +129,7 @@ class SliderComponent extends Component {
           middle = sliderWidth - barWidth - left;
         }
         right = middle;
-        highValue = (maxValue - right*(maxValue-minValue)/(sliderWidth-barWidth)).round();
+        highValueDisplayed = (maxValue - right*(maxValue-minValue)/(sliderWidth-barWidth)).round();
         
       }
       
@@ -131,13 +143,12 @@ class SliderComponent extends Component {
     ssMouseMove.cancel();
     ssMouseUp.cancel();
     
-    var value;
     if (movedIsLeft) {
-      value = (minValue + left*(maxValue-minValue)/(sliderWidth-barWidth)).round();
-      print('Drag of left handle stopped at value: $value');
+      (lowValue as DataReference).changeValue(lowValueDisplayed);
+      print('Drag of left handle stopped at value: $lowValueDisplayed');
     } else {
-      value = (maxValue - right*(maxValue-minValue)/(sliderWidth-barWidth)).round();
-      print('Drag of right handle stopped at value: $value');
+      (highValue as DataReference).changeValue(highValueDisplayed);
+      print('Drag of right handle stopped at value: $highValueDisplayed');
     }
   }
   
