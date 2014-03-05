@@ -3,9 +3,6 @@ library scrollbar;
 import 'package:react/react.dart';
 import 'dart:async';
 import 'dart:math';
-import 'dart:html';
-
-var scrollbar = ScrollbarComponent.register(window);
 
 typedef ScrollbarType(List children, {String containerClass, int scrollStep});
 
@@ -36,7 +33,7 @@ class ScrollbarComponent extends Component {
   
   static ScrollbarType register(window) {
     var _registeredComponent = registerComponent(() => new ScrollbarComponent(window));
-    return (children, {String containerClass : '', int scrollStep: 25}) {
+    return (children, {String containerClass : '', int scrollStep: 60}) {
 
       return _registeredComponent({
         'containerClass':containerClass,
@@ -94,6 +91,7 @@ class ScrollbarComponent extends Component {
     } else {
       barHeight = 100;
     }
+    print('Bar height: $barHeight');
 
   }
   
@@ -142,8 +140,13 @@ class ScrollbarComponent extends Component {
   }
   
   mouseDown(ev) {
-    ev.nativeEvent.preventDefault();      
-    startY = ev.pageY;
+    if (ev is SyntheticMouseEvent) {
+      ev.nativeEvent.preventDefault();      
+      startY = ev.pageY;  
+    } else {
+      ev.preventDefault();
+      startY = ev.page.y;
+    }
     startTop = barTop;
     
     ssMouseMove = htmlWindow.onMouseMove.listen(mouseMove);
@@ -161,7 +164,12 @@ class ScrollbarComponent extends Component {
   }
   
   mouseMove(ev) {
-    var diffY = ev.pageY - startY;  
+    var diffY;
+    if (ev is SyntheticMouseEvent) {
+      diffY = ev.pageY - startY;    
+    } else {
+      diffY = ev.page.y - startY;
+    }
     var newTop = startTop + diffY;
     if (newTop < 0) {
       newTop = 0;

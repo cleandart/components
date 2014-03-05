@@ -2,12 +2,33 @@ library slider_example;
 
 import 'package:react/react.dart';
 import 'components.dart';
+import 'package:clean_data/clean_data.dart';
 
 var sliderExample = registerComponent(() => new SliderExample());
 
 class SliderExample extends Component {
-  var count = 3;
-
+  var count;
+  DataReference low;
+  DataReference high;
+  var minValue;
+  var maxValue;
+  
+  componentWillMount() {
+    count = 3;
+    minValue = 10;
+    maxValue = 80;
+    low = new DataReference(minValue);
+    high = new DataReference(50);
+    low.onChange.listen((val){
+      (val as Change);
+      print('Changed low from ${val.oldValue} to ${val.newValue}');
+    });
+    high.onChange.listen((val){
+      (val as Change);
+      print('Changed high from ${val.oldValue} to ${val.newValue}');
+    });
+  }
+  
   render() {
     var _items = [];
 
@@ -22,12 +43,8 @@ class SliderExample extends Component {
     }
 
     return
-        div({'style': {'width': 360}}, [
-            scrollableWindow(_items),
-            button({'style': {'position': 'absolute', 'left':400},
-                    'onClick': (e) {count++; redraw();}},
-                   'add'),
-        ]);
+        div({},  
+         doubleSlider(10,80,low,high));
 
   }
 }

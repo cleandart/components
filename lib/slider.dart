@@ -2,23 +2,25 @@ library slider;
 
 import 'package:react/react.dart';
 import 'dart:async';
-import 'dart:html';
 import 'package:clean_data/clean_data.dart';
 import 'dart:math';
 
+typedef SliderType(int minValue, int maxValue, 
+  DataReference lowValue, DataReference highValue);
 
 class SliderComponent extends Component {
   
   var left;
   var right;
-  get barWidth => props['barWidth'];
   get minValue => props['minValue'];
   get maxValue => props['maxValue'];
   get lowValue => props['lowValue'];
   get highValue => props['highValue'];
+  var barWidth;
   var startX;
   var diffX;
   var sliderId;
+  var leftHandleId;
   var sliderWidth;
   var htmlWindow;
   var startPos;
@@ -33,13 +35,24 @@ class SliderComponent extends Component {
     htmlWindow = _htmlWindow;
   }
   
+  static SliderType register(window) {
+    var _registeredComponent = registerComponent(() => new SliderComponent(window));
+    return (int minValue, int maxValue, DataReference lowValue, DataReference highValue) {
+
+      return _registeredComponent({
+        'minValue':minValue,
+        'maxValue':maxValue,
+        'lowValue':lowValue,
+        'highValue':highValue
+      });
+    };
+  }
+  
   componentWillMount() {
-    left = 0;
-    right = 0;
-    lowValueDisplayed = minValue;
-    highValueDisplayed = maxValue;
     var rnd = new Random();
-    sliderId = 'Slider${rnd.nextInt(100000)}';
+    var ids = rnd.nextInt(100000);
+    sliderId = 'Slider$ids';
+    leftHandleId = 'LeftHandle$ids';    
   }
   
   render() {
@@ -50,7 +63,8 @@ class SliderComponent extends Component {
                         'style':{'left': left.toString()+'px', 
                                   'right': right.toString()+'px'}},
                       [
-                      button({'className':'left-handle', 
+                      button({'className':'left-handle',
+                        'ref': '${leftHandleId}',
                         'style' : {'border-style':'none'},
                         'onMouseDown': (ev)=>mouseDown(ev,true)
                         },'${lowValueDisplayed}'),
@@ -69,19 +83,33 @@ class SliderComponent extends Component {
  
   componentDidMount(root) {
     var sliderElement = ref('$sliderId');
+    var leftHandleElement = ref('$leftHandleId');
     print('slider width: ${sliderElement.clientWidth}');
+    print('handle width: ${leftHandleElement}');
     sliderWidth = sliderElement.clientWidth;
+    barWidth = leftHandleElement.clientWidth;
+    if (lowValue.value < minValue) {
+      lowValue.changeValue(minValue);
+    }
+    if (highValue.value > maxValue) {
+      highValue.changeValue(maxValue);
+    }
+    lowValueDisplayed = lowValue.value;
+    highValueDisplayed = highValue.value;
+    left = ((lowValueDisplayed - minValue)*(sliderWidth-barWidth)/(maxValue-minValue)).round();
+    right = ((maxValue - highValueDisplayed)*(sliderWidth-barWidth)/(maxValue-minValue)).round();
+    redraw();
   }
   
   mouseDown(ev,isLeft) {
+    if (ev is SyntheticMouseEvent) {
+      startX = ev.pageX;
+    } else {
+      startX = ev.page.x;
+    }
     down = true;
     movedIsLeft = isLeft;
-    var value;
-    if (ev is MouseEvent) {  
-      startX = ev.page.x;
-    } else {
-      startX = ev.pageX;    
-    }
+    var value; 
     if (movedIsLeft) {
       startPos = left;
       value = (minValue + left*(maxValue-minValue)/(sliderWidth-barWidth)).round();
@@ -99,10 +127,10 @@ class SliderComponent extends Component {
   
   mouseMove(ev) {
     if (down) {
-      if (ev is MouseEvent) {
-        diffX = ev.page.x - startX;
+      if (ev is SyntheticMouseEvent) {
+        diffX = ev.pageX - startX;        
       } else {
-        diffX = ev.pageX - startX;
+        diffX = ev.page.x - startX;
       }
       var leftCorner = startPos + diffX - barWidth/2;
       var rightCorner = startPos + diffX + barWidth/2;
