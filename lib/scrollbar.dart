@@ -91,18 +91,28 @@ class ScrollbarComponent extends Component {
     } else {
       barHeight = 100;
     }
-    print('Bar height: $barHeight');
+    
+    if (barTop + barHeightPx > windowHeight) {
+      barTop = windowHeight - barHeightPx;
+    }
+
+    if (barTop < 0) {
+      barTop = 0;
+    }
+    
+    contentTop = -(barTop*contentHeight/windowHeight).round();
+    //print('Recalculated: bar height: $barHeight');
 
   }
   
   componentDidMount(root) {
     recalculateBorders();
+    redrawInvoked = true;
     redraw();
   }
   
   componentDidUpdate(prevProps, prevState, rootNode) {
-   // print('Component did update');
-    if (!redrawInvoked) {
+   if (!redrawInvoked) {
       recalculateBorders();
       redrawInvoked = true;
       redraw();
@@ -112,7 +122,11 @@ class ScrollbarComponent extends Component {
   }
   
   onWheel(ev,step) {
-    ev.nativeEvent.preventDefault();
+    if (ev is SyntheticMouseEvent) {
+      ev.nativeEvent.preventDefault();
+    } else {
+      ev.preventDefault();
+    }
     if (barHeight == 100) return;
     var newCntTop;
     var newBarTop;
@@ -135,8 +149,8 @@ class ScrollbarComponent extends Component {
     }
     barTop = newBarTop;
     contentTop = newCntTop;
+    redrawInvoked = true;
     redraw();
-    //print('Wheel event, delta: '+ev.deltaY.toString());
   }
   
   mouseDown(ev) {
@@ -151,16 +165,7 @@ class ScrollbarComponent extends Component {
     
     ssMouseMove = htmlWindow.onMouseMove.listen(mouseMove);
     ssMouseUp = htmlWindow.onMouseUp.listen(mouseUp);
-    /*
-    ss = stream.listen((ev){
-      if (ev.type == 'mousemove') {
-        mouseMove(ev);
-      }
-      if (ev.type == 'mouseup') {
-        mouseUp(ev);
-      }
-    });
-    */
+  
   }
   
   mouseMove(ev) {
@@ -178,11 +183,11 @@ class ScrollbarComponent extends Component {
     }
     barTop = newTop;
     contentTop = -(barTop*contentHeight/windowHeight).round();
+    redrawInvoked = true;
     redraw();
   }
   
   mouseUp(ev) {
-   // ss.cancel();
     ssMouseMove.cancel();
     ssMouseUp.cancel();
   }

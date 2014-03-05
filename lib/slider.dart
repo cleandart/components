@@ -113,11 +113,9 @@ class SliderComponent extends Component {
     if (movedIsLeft) {
       startPos = left;
       value = (minValue + left*(maxValue-minValue)/(sliderWidth-barWidth)).round();
-      print('Drag of left handle started at value: $value');
     } else {
       startPos = right;
       value = (maxValue - right*(maxValue-minValue)/(sliderWidth-barWidth)).round();
-      print('Drag of right handle started at value: $value');
     }
     
     ssMouseMove = htmlWindow.onMouseMove.listen(mouseMove);
@@ -173,10 +171,8 @@ class SliderComponent extends Component {
     
     if (movedIsLeft) {
       (lowValue as DataReference).changeValue(lowValueDisplayed);
-      print('Drag of left handle stopped at value: $lowValueDisplayed');
     } else {
       (highValue as DataReference).changeValue(highValueDisplayed);
-      print('Drag of right handle stopped at value: $highValueDisplayed');
     }
   }
   
