@@ -1,53 +1,36 @@
 library item;
 
 import 'package:react/react.dart';
-import 'dart:html';
-import 'slider.dart';
-import 'dart:async';
-import 'scrollbar.dart';
-import 'package:clean_data/clean_data.dart';
+import 'scrollbar_example.dart';
+import 'selector_example.dart';
 
-var itemList = registerComponent(() => new ComponentContainer());
+// add new component examples here
+var componentExamples = {
+  'selector': selectorExample,
+  'scrollbar': scrollbarExample,
+  // TODO slider: sliderExample
+};
 
-var sliderComponent = registerComponent(() => new SliderComponent(window));
-var scrollbarComponent = registerComponent(() => new ScrollbarComponent(window));
+var container = registerComponent(() => new ComponentContainer());
 
 class ComponentContainer extends Component {
-
-  StreamController sc;
-
-  componentWillMount() {
-    sc = new StreamController.broadcast();
+  var selected = null;
+  select(clicked) {
+    selected = clicked;
+    redraw();
   }
 
-  mouseEvent(ev) {
-    sc.add(ev);
-  }
- 
-  var count =12;
-  render() { 
-    
-    var _items = [];
-    
-    for (var i = 0; i < count; i++) {
-      _items.add(div({'className':'list-item'},[
-                   span({'className':'team-chart-position'},(i*1234).toString()),
-                   span({'className':'long-club-name-text'},'Futbalovy tim cislo $i'),
-                   span({'className':'account-type'}),
-                   span({'className':'team-zone text-upcase'},'abcdef $i'),
-                   span({'className':'team-chart-points'},(i*4321).toString())
-                 ]));
-    }
-    
-    
-    return div({'style' : {'position' : 'absolute', 'right' : 0, 'left' : 0, 'top' : 0,'bottom':0},
-                'onMouseMove': mouseEvent, 'onMouseUp': mouseEvent},[ 
-           sliderComponent({'minValue':10, 'maxValue':50, 'barWidth' : 30,'lowValue':new DataReference(10), 'highValue': new DataReference(50)},[]), 
-            div({'style':{'width':360}},
-             scrollbarComponent({'scrollStep':25,'containerClass':''},
-               _items
-             )),
-             button({'style':{'position':'absolute','left':400},'onClick':(e){count++;redraw();}},'add')
-           ]); 
+  render() {
+    var buttons = componentExamples.keys
+        .map((cName) => button({'onClick': (_) => select(cName)}, cName));
+    var render = componentExamples[selected];
+    var content = (render == null) ? 'Choose some component.' : render({});
+
+    return
+        div({}, [
+        div({'key' : 'dummy', 'style' : {'height' : '150px'}}, buttons),
+       content
+    ]);
+
   }
 }
