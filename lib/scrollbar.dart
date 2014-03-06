@@ -7,7 +7,7 @@ import 'dart:math';
 typedef ScrollbarType(List children, {String containerClass, int scrollStep});
 
 class ScrollbarComponent extends Component {
-  
+
   var barTop;
   var contentTop;
   var barHeight;
@@ -25,12 +25,12 @@ class ScrollbarComponent extends Component {
   get children => props['children'];
   get scrollStep => props['scrollStep'];
   get containerClass => props['containerClass'];
-  get barHeightPx => (windowHeight*windowHeight/contentHeight).round();
-  
+  get barHeightPx => (contentHeight == 0? windowHeight : windowHeight*windowHeight/contentHeight).round();
+
   ScrollbarComponent(_htmlWindow) {
     htmlWindow = _htmlWindow;
   }
-  
+
   static ScrollbarType register(window) {
     var _registeredComponent = registerComponent(() => new ScrollbarComponent(window));
     return (children, {String containerClass : '', int scrollStep: 60}) {
@@ -41,7 +41,7 @@ class ScrollbarComponent extends Component {
       }, children);
     };
   }
-  
+
   componentWillMount() {
     barTop = 0;
     contentTop = 0;
@@ -55,9 +55,9 @@ class ScrollbarComponent extends Component {
     print('Scrollbar content Id is: $contentId');
     print('Scrollbar window Id is: $windowId');
   }
-  
+
   render() {
-  // print('Render'); 
+  // print('Render');
   return
     div({'className':'${containerClass}','style':{'position':'relative'}},[
       div({'className':'list-scrollbar'+(barHeight == 100 ? ' hide' : ''),
@@ -65,7 +65,7 @@ class ScrollbarComponent extends Component {
         div({'className':'dragger', 'style':{'top':'${barTop}px',
              'height':'${barHeight}%'}, 'onMouseDown': mouseDown},[])
       ]),
-      div({'className':'list-scrollable', 
+      div({'className':'list-scrollable',
            'style':{'height':(windowHeight==0 ? '285px' : '${windowHeight}px')},
            'ref':'${windowId}',
            'onWheel':(ev) => onWheel(ev,scrollStep)},[
@@ -76,7 +76,7 @@ class ScrollbarComponent extends Component {
       ])
     ]);
   }
-  
+
   recalculateBorders() {
     var content = ref('$contentId');
     window = ref('$windowId');
@@ -91,7 +91,7 @@ class ScrollbarComponent extends Component {
     } else {
       barHeight = 100;
     }
-    
+
     if (barTop + barHeightPx > windowHeight) {
       barTop = windowHeight - barHeightPx;
     }
@@ -99,18 +99,18 @@ class ScrollbarComponent extends Component {
     if (barTop < 0) {
       barTop = 0;
     }
-    
-    contentTop = -(barTop*contentHeight/windowHeight).round();
+
+    contentTop = -(windowHeight == 0 ? 0 : barTop*contentHeight/windowHeight).round();
     //print('Recalculated: bar height: $barHeight');
 
   }
-  
+
   componentDidMount(root) {
     recalculateBorders();
     redrawInvoked = true;
     redraw();
   }
-  
+
   componentDidUpdate(prevProps, prevState, rootNode) {
    if (!redrawInvoked) {
       recalculateBorders();
@@ -120,14 +120,14 @@ class ScrollbarComponent extends Component {
       redrawInvoked = false;
     }
   }
-  
+
   onWheel(ev,step) {
+    if (barHeight == 100) return;
     if (ev is SyntheticMouseEvent) {
       ev.nativeEvent.preventDefault();
     } else {
       ev.preventDefault();
     }
-    if (barHeight == 100) return;
     var newCntTop;
     var newBarTop;
     if (ev.deltaY > 0) {
@@ -152,26 +152,26 @@ class ScrollbarComponent extends Component {
     redrawInvoked = true;
     redraw();
   }
-  
+
   mouseDown(ev) {
     if (ev is SyntheticMouseEvent) {
-      ev.nativeEvent.preventDefault();      
-      startY = ev.pageY;  
+      ev.nativeEvent.preventDefault();
+      startY = ev.pageY;
     } else {
       ev.preventDefault();
       startY = ev.page.y;
     }
     startTop = barTop;
-    
+
     ssMouseMove = htmlWindow.onMouseMove.listen(mouseMove);
     ssMouseUp = htmlWindow.onMouseUp.listen(mouseUp);
-  
+
   }
-  
+
   mouseMove(ev) {
     var diffY;
     if (ev is SyntheticMouseEvent) {
-      diffY = ev.pageY - startY;    
+      diffY = ev.pageY - startY;
     } else {
       diffY = ev.page.y - startY;
     }
@@ -186,7 +186,7 @@ class ScrollbarComponent extends Component {
     redrawInvoked = true;
     redraw();
   }
-  
+
   mouseUp(ev) {
     ssMouseMove.cancel();
     ssMouseUp.cancel();
