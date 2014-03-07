@@ -6,6 +6,7 @@ dependencies:
   clean_backend: any
   clean_data: '>=0.3.8'
   clean_sync: any
+  intl: any
   js: any
   logging: any
   react: '>=0.3.0'
