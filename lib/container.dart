@@ -4,14 +4,12 @@ import 'package:react/react.dart';
 import 'scrollbar_example.dart';
 import 'selector_example.dart';
 import 'slider_example.dart';
-import 'userinfo_example.dart';
 
 // add new component examples here
 var componentExamples = {
   'selector': selectorExample,
   'scrollbar': scrollbarExample,
   'slider': sliderExample,
-  'userInfo' : userInfoExample
 };
 
 var container = registerComponent(() => new ComponentContainer());
