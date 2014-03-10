@@ -8,7 +8,7 @@ import 'dart:async';
 
 
 
-typedef UserInfoType(DataReference selectedRoundRef, {String key});
+typedef UserInfoType(DataSet user, DataReference selectedRoundRef, {String key});
 
 class UserInfoComponent extends Component{
 
@@ -27,7 +27,7 @@ class UserInfoComponent extends Component{
   final iACCOUNT_PREMIUM_UNTIL = Intl.message('do', name : 'ACCOUNT_PREMIUM_UNTIL');
   final iREGISTER_TEAM = Intl.message('Prihlásiť tím', name : 'REGISTER_TEAM');
 
-  DataSet user;
+  DataSet get user => props['user'];
 
   DataReference get selectedRound => props['selectedRoundRef'];
   String get selectedRoundId => selectedRound.value==null?null:selectedRound.value['_id']; //ID
@@ -36,18 +36,17 @@ class UserInfoComponent extends Component{
 
   StreamSubscription ssSelectedRound;
 
-  static UserInfoType register(DataSet user) {
-    var _registeredComponent = registerComponent(() => new UserInfoComponent(user));
-    return (DataReference selectedRoundRef, {String key : 'userInfo'}) {
+  static UserInfoType register() {
+    var _registeredComponent = registerComponent(() => new UserInfoComponent());
+    return (DataSet user, DataReference selectedRoundRef, {String key : 'userInfo'}) {
 
         return _registeredComponent({
+          'user' : user,
           'selectedRoundRef' : selectedRoundRef,
           'key' : key,
         });
       };
   }
-
-  UserInfoComponent(this.user);
 
   componentWillMount() {
     ssSelectedRound = selectedRound.onChange.listen((_) => redraw());
