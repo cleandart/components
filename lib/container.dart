@@ -9,7 +9,7 @@ import 'slider_example.dart';
 var componentExamples = {
   'selector': selectorExample,
   'scrollbar': scrollbarExample,
-  'slider': sliderExample
+  'slider': sliderExample,
 };
 
 var container = registerComponent(() => new ComponentContainer());
