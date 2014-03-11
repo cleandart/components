@@ -25,7 +25,7 @@ class ScrollbarComponent extends Component {
   get children => props['children'];
   get scrollStep => props['scrollStep'];
   get containerClass => props['containerClass'];
-  get barHeightPx => (windowHeight*windowHeight/contentHeight).round();
+  get barHeightPx => (contentHeight == 0? windowHeight : windowHeight*windowHeight/contentHeight).round();
 
   ScrollbarComponent(_htmlWindow) {
     htmlWindow = _htmlWindow;
@@ -81,9 +81,6 @@ class ScrollbarComponent extends Component {
     window = ref('$windowId');
     windowHeight = window.clientHeight;
     contentHeight = content.scrollHeight;
-   // print('Content Height: ${contentHeight}');
-   // print('Window Height: ${windowHeight}');
-
     if (contentHeight > 0) {
       barHeight = 100*(windowHeight/contentHeight);
       if (barHeight > 100) barHeight = 100;
@@ -99,8 +96,7 @@ class ScrollbarComponent extends Component {
       barTop = 0;
     }
 
-    contentTop = -(barTop*contentHeight/windowHeight).round();
-    //print('Recalculated: bar height: $barHeight');
+    contentTop = -(windowHeight == 0 ? 0 : barTop*contentHeight/windowHeight).round();
 
   }
 
@@ -121,12 +117,12 @@ class ScrollbarComponent extends Component {
   }
 
   onWheel(ev,step) {
+    if (barHeight == 100) return;
     if (ev is SyntheticMouseEvent) {
       ev.nativeEvent.preventDefault();
     } else {
       ev.preventDefault();
     }
-    if (barHeight == 100) return;
     var newCntTop;
     var newBarTop;
     if (contentHeight > 0) {
