@@ -67,16 +67,16 @@ class SliderComponent extends Component {
                         'ref': '${leftHandleId}',
                         'style' : {'border-style':'none'},
                         'onMouseDown': (ev)=>mouseDown(ev,true)
-                        },'${lowValueDisplayed}'),
+                        }),
                       button({'className':'right-handle',
                         'style' : {'border-style':'none'},
                         'onMouseDown': (ev)=>mouseDown(ev,false),
-                        },'${highValueDisplayed}')
+                        })
                   ])
                ]),
                div({'className':'form-range-legend'},[
-                  span({'className':'form-range-min-value'},minValue.toString()),
-                  span({'className':'form-range-max-value'},maxValue.toString())
+                  span({'className':'form-range-min-value'},'${lowValueDisplayed}'),
+                  span({'className':'form-range-max-value'},'${highValueDisplayed}')
                ])
            ]);
   }
