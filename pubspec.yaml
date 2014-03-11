@@ -12,4 +12,5 @@ dependencies:
   js: '>=0.2.2 <0.3.0'
   logging: '>=0.9.1+1 <0.10.0'
   react: '>=0.3.0'
+dev_dependencies:
   unittest: '>=0.10.0 <0.11.0'
