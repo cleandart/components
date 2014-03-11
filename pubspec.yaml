@@ -1,13 +1,15 @@
 name: components
 version: 1.1.0
-description: A sample web application
+author: Clean Team <clean@vacuumlabs.com>
+description: Simple components for React
+homepage: https://github.com/cleandart/components
 dependencies:
-  browser: any
-  clean_backend: any
+  browser: '>=0.9.1 <0.9.2'
+  clean_backend: '>=0.2.1 <0.3.0'
   clean_data: '>=0.3.8'
-  clean_sync: any
-  intl: any
-  js: any
-  logging: any
+  clean_sync: '>=0.3.10 <0.4.0'
+  intl: '>=0.9.7 <0.10.0'
+  js: '>=0.2.2 <0.3.0'
+  logging: '>=0.9.1+1 <0.10.0'
   react: '>=0.3.0'
-  unittest: any
+  unittest: '>=0.10.0 <0.11.0'
