@@ -85,31 +85,23 @@ class SelectorComponent extends Component {
   render() {
     var _items = [];
     for (var item in items) {
+      var className = '';
       if (selected.value == item) {
-        _items.add(span({'ref' : '$item', 'key': item,
-          'onMouseDown': (ev) => mouseDown(ev, item),
-          'className' : 'selected'}, item));
+        className = 'selected';
+      } else if (active.value == item) {
+        className = 'active';
+      } else if (loading.value == item) {
+        className = 'loading';
       }
-      else if (active.value == item) {
-        _items.add(span({'ref' : '$item', 'key': item,
-          'onMouseDown': (ev) => mouseDown(ev, item),
-          'className' : 'active'}, item));
-      }
-      else if (loading.value == item) {
-        _items.add(span({'ref' : '$item', 'key': item,
-          'onMouseDown': (ev) => mouseDown(ev, item),
-          'className' : 'loading'}, item));
-      }
-      else {
-        _items.add(span({'ref' : '$item', 'key': item,
-          'onMouseDown': (ev) => mouseDown(ev, item)}, item));
-      }
+      _items.add(span({'ref' : '$item', 'key': item,
+        'onMouseDown': (ev) => mouseDown(ev, item),
+        'className' : '$className'}, item));
     }
 
     var leftArrowButton = div({'key': 'leftArrowButton', 'onMouseDown': (ev) =>
-        arrowLeftRightMouseDown(ev, true)}, '<');
+        scroll(toLeft: true)}, '<');
     var rightArrowButton = div({'key': 'rightArrowButton', 'onMouseDown': (ev) =>
-        arrowLeftRightMouseDown(ev, false)}, '>');
+        scroll(toLeft: false)}, '>');
 
     var textSpan = span({'key': selectorText,
       'className' : 'round-selector-text'}, selectorText);
@@ -152,7 +144,7 @@ class SelectorComponent extends Component {
     loading.value = item;
   }
 
-  arrowLeftRightMouseDown(ev,isLeft) {
+  scroll({toLeft: true}) {
     var _itemSpan = ref(items[0].toString());
     var _scrollListDiv = ref('round-list');
     var _visibleItemsWindowSize = scrollStep * _itemSpan.marginEdge.width;
@@ -168,7 +160,7 @@ class SelectorComponent extends Component {
     _scrollStep = _scrollStep.replaceAll('px','');
     _scrollStep = num.parse(_scrollStep).round();
 
-    if (isLeft) {
+    if (toLeft) {
       _scrollStep += _visibleItemsWindowSize;
     }
     else {
