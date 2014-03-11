@@ -22,6 +22,9 @@ class SelectorComponent extends Component {
   num scrollStep;
   var browserWindow;
 
+  static const String VALUE = 'value';
+  static const String TEXT = 'text';
+
   List<StreamSubscription> subscriptions;
 
   SelectorComponent(this.browserWindow);
@@ -59,7 +62,7 @@ class SelectorComponent extends Component {
     setScrollStepSize();
 
     var _scrollListDiv = ref('round-list');
-    var _itemSpan = ref(items[0].toString());
+    var _itemSpan = ref(items[0][VALUE].toString());
     var _spanWidth = _itemSpan.marginEdge.width;
     var _visibleItemsWindowSize = scrollStep * _spanWidth;
     var selectedItemOrder = 0;
@@ -67,8 +70,8 @@ class SelectorComponent extends Component {
     if (items.length > 40){ //hack due to testing 100 items in rounds, causing troubles with css width of round-list div
       _scrollListDiv.style.width = '4000px';
     }
+    selectedItemOrder = items.map((e) => e[VALUE]).toList().indexOf(selected.value);
 
-    selectedItemOrder = items.indexOf(selected.value);
 
     var _scrollStep = (0 - (selectedItemOrder *
                             _spanWidth - _visibleItemsWindowSize * 0.8)).round();
@@ -85,17 +88,14 @@ class SelectorComponent extends Component {
   render() {
     var _items = [];
     for (var item in items) {
+      var classes = [];
       var className = '';
-      if (selected.value == item) {
-        className = 'selected';
-      } else if (active.value == item) {
-        className = 'active';
-      } else if (loading.value == item) {
-        className = 'loading';
-      }
-      _items.add(span({'ref' : '$item', 'key': item,
-        'onMouseDown': (ev) => mouseDown(ev, item),
-        'className' : '$className'}, item));
+      if (selected.value == item[VALUE]) classes.add('selected');
+      if (active.value == item[VALUE]) classes.add('active');
+      if (loading.value == item[VALUE]) classes.add('loading');
+      _items.add(span({'ref' : '${item[VALUE]}', 'key': '${item[VALUE]}',
+        'onMouseDown': (ev) => mouseDown(item),
+        'className' : '${classes.join(" ")}'}, '${item[TEXT]}'));
     }
 
     var leftArrowButton = div({'key': 'leftArrowButton', 'onMouseDown': (ev) =>
@@ -140,12 +140,12 @@ class SelectorComponent extends Component {
     checkSetScrollStepRedraw(_scrollStep, _scrollListDiv);
   }
 
-  mouseDown(ev, item) {
-    loading.value = item;
+  mouseDown(item) {
+    loading.value = item[VALUE];
   }
 
   scroll({toLeft: true}) {
-    var _itemSpan = ref(items[0].toString());
+    var _itemSpan = ref(items[0][VALUE].toString());
     var _scrollListDiv = ref('round-list');
     var _visibleItemsWindowSize = scrollStep * _itemSpan.marginEdge.width;
     var _scrollStep = _scrollListDiv.style.marginLeft;
@@ -171,7 +171,7 @@ class SelectorComponent extends Component {
   }
 
   num getMinMarginLeft() {
-    var _itemSpan = ref(items[0].toString());
+    var _itemSpan = ref(items[0][VALUE].toString());
     var _spanWidth = _itemSpan.marginEdge.width;
     var _visibleItemsWindowSize = scrollStep * _spanWidth;
 
@@ -200,6 +200,9 @@ class SelectorComponent extends Component {
     if (_scrollStep < getMinMarginLeft()) {
       _scrollStep = getMinMarginLeft();
     }
+
+    if (scrollStep >= items.length) _scrollStep = 0;
+
     _scrollListDiv.style.marginLeft = '${_scrollStep}px';
     redraw();
   }

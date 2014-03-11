@@ -13,17 +13,21 @@ class SelectorExample extends Component {
   DataReference selected;
   DataReference active;
   DataReference loading;
+  List items = new List();
 
   componentWillMount() {
-    selected = new DataReference(null);
-    active = new DataReference(15);
+    selected = new DataReference(1000);
+    active = new DataReference(2);
     loading = new DataReference(null);
     loading.onChange.listen(load);
+    for (var i = 0; i < 17; i++) {
+      items.add({'text':'${i}a', 'value':i});
+    }
   }
 
   load(_) {
     var selectorLastSelected = loading.value;
-    return new Future.delayed(new Duration(seconds: 2), () {
+    return new Future.delayed(new Duration(seconds: 1), () {
       if (loading.value == selectorLastSelected) {
         selected.value = selectorLastSelected;
       }
@@ -34,7 +38,7 @@ class SelectorExample extends Component {
     return
         div({'key': 'widgetSelector',
              'className' :'widget widget-dark widget-full'},
-               selector(_items, selected, active, loading,
+               selector(items, selected, active, loading,
                    selectorText: 'CHOOSE ROUND', fullSize: true));
   }
 }
