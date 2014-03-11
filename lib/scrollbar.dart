@@ -66,7 +66,6 @@ class ScrollbarComponent extends Component {
              'height':'${barHeight}%'}, 'onMouseDown': mouseDown},[])
       ]),
       div({'className':'list-scrollable',
-           'style':{'height':(windowHeight==0 ? '285px' : '${windowHeight}px')},
            'ref':'${windowId}',
            'onWheel':(ev) => onWheel(ev,scrollStep)},[
         div({'className':'list-content','ref':'${contentId}',
@@ -82,9 +81,6 @@ class ScrollbarComponent extends Component {
     window = ref('$windowId');
     windowHeight = window.clientHeight;
     contentHeight = content.scrollHeight;
-   // print('Content Height: ${contentHeight}');
-   // print('Window Height: ${windowHeight}');
-
     if (contentHeight > 0) {
       barHeight = 100*(windowHeight/contentHeight);
       if (barHeight > 100) barHeight = 100;
@@ -101,7 +97,6 @@ class ScrollbarComponent extends Component {
     }
 
     contentTop = -(windowHeight == 0 ? 0 : barTop*contentHeight/windowHeight).round();
-    //print('Recalculated: bar height: $barHeight');
 
   }
 
@@ -130,22 +125,27 @@ class ScrollbarComponent extends Component {
     }
     var newCntTop;
     var newBarTop;
-    if (ev.deltaY > 0) {
-      // Scroll up
-      newCntTop = contentTop + step;
-      newBarTop = barTop - windowHeight*(step/contentHeight);
-      if (newBarTop < 0) {
-        newBarTop = 0;
-        newCntTop = 0;
+    if (contentHeight > 0) {
+      if (ev.deltaY > 0) {
+        // Scroll up
+        newCntTop = contentTop + step;
+        newBarTop = barTop - windowHeight*(step/contentHeight);
+        if (newBarTop < 0) {
+          newBarTop = 0;
+          newCntTop = 0;
+        }
+      } else {
+        // Scroll down
+        newCntTop = contentTop - step;
+        newBarTop = barTop + windowHeight*(step/contentHeight);
+        if (newBarTop + barHeightPx > windowHeight) {
+          newBarTop = windowHeight - barHeightPx;
+          newCntTop = windowHeight - contentHeight;
+        }
       }
     } else {
-      // Scroll down
-      newCntTop = contentTop - step;
-      newBarTop = barTop + windowHeight*(step/contentHeight);
-      if (newBarTop + barHeightPx > windowHeight) {
-        newBarTop = windowHeight - barHeightPx;
-        newCntTop = windowHeight - contentHeight;
-      }
+      newBarTop = 0;
+      newCntTop = 0;
     }
     barTop = newBarTop;
     contentTop = newCntTop;
@@ -182,7 +182,7 @@ class ScrollbarComponent extends Component {
       newTop = windowHeight - barHeightPx;
     }
     barTop = newTop;
-    contentTop = -(barTop*contentHeight/windowHeight).round();
+    contentTop = -(windowHeight == 0 ? 0 :barTop*contentHeight/windowHeight).round();
     redrawInvoked = true;
     redraw();
   }
