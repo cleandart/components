@@ -1,6 +1,6 @@
 name: components
 author: Clean Team <clean@vacuumlabs.com>
-version: 1.1.1
+version: 1.1.2
 homepage: https://github.com/cleandart/components
 description: Simple components for React
 dependencies:
