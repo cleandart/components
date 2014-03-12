@@ -2,7 +2,7 @@ library selector_example;
 
 import 'package:react/react.dart';
 import 'package:clean_data/clean_data.dart';
-import 'components.dart';
+import 'package:components/components.dart';
 import 'dart:async';
 
 var selectorExample = registerComponent(() => new SelectorExample());

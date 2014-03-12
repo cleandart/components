@@ -1,7 +1,7 @@
 library scrollbar_example;
 
 import 'package:react/react.dart';
-import 'components.dart';
+import '../lib/components.dart';
 
 var scrollbarExample = registerComponent(() => new ScrollbarExample());
 
