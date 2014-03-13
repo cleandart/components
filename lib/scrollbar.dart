@@ -63,7 +63,9 @@ class ScrollbarComponent extends Component {
       div({'className':'list-scrollbar'+(barHeight == 100 ? ' hide' : ''),
            'style':{'height':'${windowHeight}px'}},[
         div({'className':'dragger', 'style':{'top':'${barTop}px',
-             'height':'${barHeight}%'}, 'onMouseDown': mouseDown},[])
+             'height':'${barHeight}%'},
+             'onMouseDown': mouseDown,
+             'onTouchStart': mouseDown},[])
       ]),
       div({'className':'list-scrollable',
            'ref':'${windowId}',
@@ -157,21 +159,29 @@ class ScrollbarComponent extends Component {
     if (ev is SyntheticMouseEvent) {
       ev.nativeEvent.preventDefault();
       startY = ev.pageY;
+    } else if (ev is SyntheticTouchEvent) {
+      startY = ev.targetTouches[0].pageY;
     } else {
       ev.preventDefault();
       startY = ev.page.y;
     }
     startTop = barTop;
 
-    ssMouseMove = htmlWindow.onMouseMove.listen(mouseMove);
-    ssMouseUp = htmlWindow.onMouseUp.listen(mouseUp);
-
+    if (ev is SyntheticTouchEvent) {
+      ssMouseMove = htmlWindow.onTouchMove.listen(mouseMove);
+      ssMouseUp = htmlWindow.onTouchEnd.listen(mouseUp);
+    } else {
+      ssMouseMove = htmlWindow.onMouseMove.listen(mouseMove);
+      ssMouseUp = htmlWindow.onMouseUp.listen(mouseUp);
+    }
   }
 
   mouseMove(ev) {
     var diffY;
     if (ev is SyntheticMouseEvent) {
       diffY = ev.pageY - startY;
+    } else if (ev is SyntheticTouchEvent) {
+      diffY = ev.targetTouches[0].pageY - startY;
     } else {
       diffY = ev.page.y - startY;
     }

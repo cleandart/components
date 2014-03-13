@@ -66,11 +66,13 @@ class SliderComponent extends Component {
                       button({'className':'left-handle',
                         'ref': '${leftHandleId}',
                         'style' : {'border-style':'none'},
-                        'onMouseDown': (ev)=>mouseDown(ev,true)
+                        'onMouseDown': (ev)=>mouseDown(ev,true),
+                        'onTouchStart': (ev)=>mouseDown(ev,true)
                         }),
                       button({'className':'right-handle',
                         'style' : {'border-style':'none'},
                         'onMouseDown': (ev)=>mouseDown(ev,false),
+                        'onTouchStart': (ev)=>mouseDown(ev,false)
                         })
                   ])
                ]),
@@ -109,6 +111,8 @@ class SliderComponent extends Component {
   mouseDown(ev,isLeft) {
     if (ev is SyntheticMouseEvent) {
       startX = ev.pageX;
+    } else if (ev is SyntheticTouchEvent) {
+      startX = ev.targetTouches[0].pageX;
     } else {
       startX = ev.page.x;
     }
@@ -130,16 +134,21 @@ class SliderComponent extends Component {
         value = (maxValue - right*(maxValue-minValue)/(sliderWidth-barWidth)).round();
       }
     }
-
-    ssMouseMove = htmlWindow.onMouseMove.listen(mouseMove);
-    ssMouseUp = htmlWindow.onMouseUp.listen(mouseUp);
-
+    if (ev is SyntheticTouchEvent) {
+      ssMouseMove = htmlWindow.onTouchMove.listen(mouseMove);
+      ssMouseUp = htmlWindow.onTouchEnd.listen(mouseUp);
+    } else {
+      ssMouseMove = htmlWindow.onMouseMove.listen(mouseMove);
+      ssMouseUp = htmlWindow.onMouseUp.listen(mouseUp);
+    }
   }
 
   mouseMove(ev) {
     if (down) {
       if (ev is SyntheticMouseEvent) {
         diffX = ev.pageX - startX;
+      } else if (ev is SyntheticTouchEvent) {
+        diffX = ev.targetTouches[0].pageX - startX;
       } else {
         diffX = ev.page.x - startX;
       }
