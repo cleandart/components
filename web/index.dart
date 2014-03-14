@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:logging/logging.dart';
 import 'package:react/react.dart';
 import 'package:react/react_client.dart';
-import '../examples/container.dart';
+import '../example/container.dart';
 
 void main() {
   setClientConfiguration();
