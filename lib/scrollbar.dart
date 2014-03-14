@@ -88,13 +88,11 @@ class ScrollbarComponent extends Component {
       barHeight = 100;
     }
 
-    if (barTop + barHeightPx > windowHeight) {
-      barTop = windowHeight - barHeightPx;
+    if (contentTop + contentHeight < windowHeight) {
       contentTop = windowHeight - contentHeight;
     }
 
-    if (barTop < 0) {
-      barTop = 0;
+    if (contentTop > 0) {
       contentTop = 0;
     }
 
