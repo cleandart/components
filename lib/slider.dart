@@ -4,6 +4,7 @@ import 'package:react/react.dart';
 import 'dart:async';
 import 'package:clean_data/clean_data.dart';
 import 'dart:math';
+import 'dart:mirrors';
 
 typedef SliderType(int minValue, int maxValue,
   DataReference lowValue, DataReference highValue);
@@ -28,8 +29,13 @@ class SliderComponent extends Component {
   var highValueDisplayed;
   var down = false;
   var movedIsLeft;
+
+  var console;
+
   StreamSubscription ssMouseUp;
   StreamSubscription ssMouseMove;
+  StreamSubscription ssTouchEnd;
+  StreamSubscription ssTouchMove;
 
   SliderComponent(_htmlWindow){
     htmlWindow = _htmlWindow;
@@ -66,11 +72,13 @@ class SliderComponent extends Component {
                       button({'className':'left-handle',
                         'ref': '${leftHandleId}',
                         'style' : {'border-style':'none'},
-                        'onMouseDown': (ev)=>mouseDown(ev,true)
+                        'onMouseDown': (ev)=>mouseDown(ev,true),
+                        'onTouchStart': (ev)=>touchStart(ev,true)
                         }),
                       button({'className':'right-handle',
                         'style' : {'border-style':'none'},
                         'onMouseDown': (ev)=>mouseDown(ev,false),
+                        'onTouchStart': (ev)=>touchStart(ev,false)
                         })
                   ])
                ]),
@@ -106,19 +114,117 @@ class SliderComponent extends Component {
     redraw();
   }
 
-  mouseDown(ev,isLeft) {
-    if (ev is SyntheticMouseEvent) {
-      startX = ev.pageX;
-    } else {
-      startX = ev.page.x;
+  preventDefaultBehaviour(ev) {
+    print('Preventing default behaviour');
+    try {
+      ev.nativeEvent.preventDefault();
+    } catch (e) {
+      try {
+        ev.preventDefault();
+      } catch (e) {
+        print('Could not prevent default behaviour, error: $e');
+      }
     }
-    down = true;
+  }
+
+  mouseDown(ev,isLeft) {
+    preventDefaultBehaviour(ev);
+    var pos = null;
+    if (ev is SyntheticMouseEvent) {
+      pos = ev.pageX;
+    } else {
+      try {
+        pos = ev.page.x;
+      } catch (e) {
+        print('Cannot get position, error: $e');
+      }
+    }
     movedIsLeft = isLeft;
+    downEventOn(pos);
+    if (ssMouseMove != null) ssMouseMove.cancel();
+    if (ssMouseUp != null) ssMouseUp.cancel();
+    ssMouseMove = htmlWindow.onMouseMove.listen(mouseMove);
+    ssMouseUp = htmlWindow.onMouseUp.listen(mouseUp);
+
+  }
+
+  mouseMove(ev) {
+    var pos = null;
+    if (down) {
+      if (ev is SyntheticMouseEvent) {
+        print('Synthetic move');
+        pos = ev.pageX;
+      } else {
+        print('normal move');
+        try {
+          pos = ev.page.x;
+        } catch (e) {
+          print('Cannot get mouse position, error: $e');
+        }
+      }
+    }
+    moveEventOn(pos);
+  }
+
+  mouseUp(ev) {
+    if (ssMouseMove != null) ssMouseMove.cancel();
+    if (ssMouseUp != null) ssMouseUp.cancel();
+    upEvent();
+  }
+
+  touchStart(ev, isLeft) {
+    print('TOUCH START !');
+    var pos = null;
+    preventDefaultBehaviour(ev);
+    try {
+      pos = ev.nativeEvent.touches[0].page.x;
+    } catch (e) {
+      try {
+        pos = ev.touches[0].page.x;
+      } catch (e) {
+        print('Cannot get touch position, error: $e');
+      }
+    }
+    movedIsLeft = isLeft;
+    downEventOn(pos);
+    if (ssTouchMove != null) ssTouchMove.cancel();
+    if (ssTouchEnd != null) ssTouchEnd.cancel();
+    ssTouchMove = htmlWindow.onTouchMove.listen(touchMove);
+    ssTouchEnd = htmlWindow.onTouchEnd.listen(touchEnd);
+  }
+
+  touchMove(ev) {
+    if (down) {
+      print('TOUCH MOVE !');
+      var pos = null;
+      try {
+        pos = ev.nativeEvent.touches[0].page.x;
+      } catch (e) {
+        try {
+          pos = ev.touches[0].page.x;
+        } catch (e) {
+          print('Could not get touch position, error: $e');
+        }
+      }
+      moveEventOn(pos);
+    }
+  }
+
+  touchEnd(ev) {
+    print('TOUCH END !');
+    if (ssTouchMove != null) ssTouchMove.cancel();
+    if (ssTouchEnd != null) ssTouchEnd.cancel();
+    upEvent();
+  }
+
+  downEventOn(pos) {
+    down = true;
+    startX = pos;
     var value;
     if (movedIsLeft) {
       startPos = left;
       if (sliderWidth - barWidth == 0) {
-        value = minValue;
+          value = minValue;
       } else {
         value = (minValue + left*(maxValue-minValue)/(sliderWidth-barWidth)).round();
       }
@@ -130,64 +236,47 @@ class SliderComponent extends Component {
         value = (maxValue - right*(maxValue-minValue)/(sliderWidth-barWidth)).round();
       }
     }
-
-    ssMouseMove = htmlWindow.onMouseMove.listen(mouseMove);
-    ssMouseUp = htmlWindow.onMouseUp.listen(mouseUp);
-
   }
 
-  mouseMove(ev) {
-    if (down) {
-      if (ev is SyntheticMouseEvent) {
-        diffX = ev.pageX - startX;
-      } else {
-        diffX = ev.page.x - startX;
-      }
-      var leftCorner = startPos + diffX - barWidth/2;
-      var rightCorner = startPos + diffX + barWidth/2;
+  moveEventOn(pos) {
+    diffX = pos - startX;
+    if (movedIsLeft) {
+       var middle = startPos + diffX;
+       if (middle < 0) {
+         middle = 0;
+       }
+       if (middle + right > sliderWidth - barWidth) {
+         middle = sliderWidth-barWidth-right;
+       }
+       left = middle;
+       if (sliderWidth - barWidth == 0) {
+         lowValueDisplayed = minValue;
+       } else {
+         lowValueDisplayed = (minValue + left*(maxValue-minValue)/(sliderWidth-barWidth)).round();
+       }
 
-      if (movedIsLeft) {
+     } else {
 
-        var middle = startPos + diffX;
-        if (middle < 0) {
-          middle = 0;
-        }
-        if (middle + right > sliderWidth - barWidth) {
-          middle = sliderWidth-barWidth-right;
-        }
-        left = middle;
-        if (sliderWidth - barWidth == 0) {
-          lowValueDisplayed = minValue;
-        } else {
-          lowValueDisplayed = (minValue + left*(maxValue-minValue)/(sliderWidth-barWidth)).round();
-        }
+       var middle = startPos - diffX;
+       if (middle < 0) {
+         middle = 0;
+       }
+       if (middle + left > sliderWidth - barWidth) {
+         middle = sliderWidth - barWidth - left;
+       }
+       right = middle;
+       if (sliderWidth - barWidth == 0) {
+         highValueDisplayed = maxValue;
+       } else {
+         highValueDisplayed = (maxValue - right*(maxValue-minValue)/(sliderWidth-barWidth)).round();
+       }
+     }
 
-      } else {
-
-        var middle = startPos - diffX;
-        if (middle < 0) {
-          middle = 0;
-        }
-        if (middle + left > sliderWidth - barWidth) {
-          middle = sliderWidth - barWidth - left;
-        }
-        right = middle;
-        if (sliderWidth - barWidth == 0) {
-          highValueDisplayed = maxValue;
-        } else {
-          highValueDisplayed = (maxValue - right*(maxValue-minValue)/(sliderWidth-barWidth)).round();
-        }
-      }
-
-      this.redraw();
-    }
+     this.redraw();
   }
 
-  mouseUp(ev) {
+  upEvent() {
     down = false;
-
-    ssMouseMove.cancel();
-    ssMouseUp.cancel();
 
     if (movedIsLeft) {
       (lowValue as DataReference).changeValue(lowValueDisplayed);
