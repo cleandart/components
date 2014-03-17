@@ -33,7 +33,7 @@ class ScrollbarComponent extends Component {
 
   static ScrollbarType register(window) {
     var _registeredComponent = registerComponent(() => new ScrollbarComponent(window));
-    return (children, {String containerClass : '', int scrollStep: 60}) {
+    return (children, {String containerClass : '', int scrollStep: 60 }) {
 
       return _registeredComponent({
         'containerClass':containerClass,
@@ -88,16 +88,15 @@ class ScrollbarComponent extends Component {
       barHeight = 100;
     }
 
-    if (barTop + barHeightPx > windowHeight) {
-      barTop = windowHeight - barHeightPx;
+    if (contentTop + contentHeight < windowHeight) {
+      contentTop = windowHeight - contentHeight;
     }
 
-    if (barTop < 0) {
-      barTop = 0;
+    if (contentTop > 0) {
+      contentTop = 0;
     }
 
-    contentTop = -(windowHeight == 0 ? 0 : barTop*contentHeight/windowHeight).round();
-
+    barTop = -(contentHeight == 0 ? 0 : contentTop*windowHeight/contentHeight).round();
   }
 
   componentDidMount(root) {
@@ -115,6 +114,7 @@ class ScrollbarComponent extends Component {
       redrawInvoked = false;
     }
   }
+
 
   onWheel(ev,step) {
     if (barHeight == 100) return;
