@@ -163,6 +163,8 @@ class ScrollbarComponent extends Component {
     }
     startTop = barTop;
 
+    if (ssMouseMove != null) ssMouseMove.cancel();
+    if (ssMouseUp != null) ssMouseUp.cancel();
     ssMouseMove = htmlWindow.onMouseMove.listen(mouseMove);
     ssMouseUp = htmlWindow.onMouseUp.listen(mouseUp);
 
