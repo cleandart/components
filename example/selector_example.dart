@@ -16,11 +16,11 @@ class SelectorExample extends Component {
   List items = new List();
 
   componentWillMount() {
-    selected = new DataReference(1000);
-    active = new DataReference(2);
+    selected = new DataReference(31);
+    active = new DataReference(31);
     loading = new DataReference(null);
     loading.onChange.listen(load);
-    for (var i = 0; i < 17; i++) {
+    for (var i = 0; i < 32; i++) {
       items.add({'text':'${i}a', 'value':i});
     }
   }
