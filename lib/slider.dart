@@ -4,7 +4,6 @@ import 'package:react/react.dart';
 import 'dart:async';
 import 'package:clean_data/clean_data.dart';
 import 'dart:math';
-import 'dart:mirrors';
 
 typedef SliderType(int minValue, int maxValue,
   DataReference lowValue, DataReference highValue);
@@ -27,7 +26,6 @@ class SliderComponent extends Component {
   var startPos;
   var lowValueDisplayed;
   var highValueDisplayed;
-  var down = false;
   var movedIsLeft;
 
   var console;
@@ -115,7 +113,6 @@ class SliderComponent extends Component {
   }
 
   preventDefaultBehaviour(ev) {
-    print('Preventing default behaviour');
     try {
       ev.nativeEvent.preventDefault();
     } catch (e) {
@@ -127,20 +124,38 @@ class SliderComponent extends Component {
     }
   }
 
-  mouseDown(ev,isLeft) {
-    preventDefaultBehaviour(ev);
-    var pos = null;
-    if (ev is SyntheticMouseEvent) {
-      pos = ev.pageX;
-    } else {
+  getPointFromTouch(ev) {
+    var posX, posY;
+    try {
+      posX = ev.nativeEvent.touches[0].page.x;
+      posY = ev.nativeEvent.touches[0].page.y;
+    } catch (e) {
       try {
-        pos = ev.page.x;
+        posX = ev.touches[0].page.x;
+        posY = ev.touches[0].page.y;
       } catch (e) {
-        print('Cannot get position, error: $e');
+        print('Cannot get touch position, error: $e');
       }
     }
+    return new Point(posX,posY);
+  }
+
+  getPointFromMouse(ev) {
+    var posX, posY;
+    if (ev is SyntheticMouseEvent) {
+      posX = ev.pageX;
+      posY = ev.pageY;
+    } else {
+      posX = ev.page.x;
+      posY = ev.page.y;
+    }
+    return new Point(posX, posY);
+  }
+
+  mouseDown(ev,isLeft) {
+    preventDefaultBehaviour(ev);
     movedIsLeft = isLeft;
-    downEventOn(pos);
+    downEventOn(getPointFromMouse(ev));
     if (ssMouseMove != null) ssMouseMove.cancel();
     if (ssMouseUp != null) ssMouseUp.cancel();
     ssMouseMove = htmlWindow.onMouseMove.listen(mouseMove);
@@ -149,21 +164,7 @@ class SliderComponent extends Component {
   }
 
   mouseMove(ev) {
-    var pos = null;
-    if (down) {
-      if (ev is SyntheticMouseEvent) {
-        print('Synthetic move');
-        pos = ev.pageX;
-      } else {
-        print('normal move');
-        try {
-          pos = ev.page.x;
-        } catch (e) {
-          print('Cannot get mouse position, error: $e');
-        }
-      }
-    }
-    moveEventOn(pos);
+    moveEventOn(getPointFromMouse(ev));
   }
 
   mouseUp(ev) {
@@ -173,20 +174,9 @@ class SliderComponent extends Component {
   }
 
   touchStart(ev, isLeft) {
-    print('TOUCH START !');
-    var pos = null;
     preventDefaultBehaviour(ev);
-    try {
-      pos = ev.nativeEvent.touches[0].page.x;
-    } catch (e) {
-      try {
-        pos = ev.touches[0].page.x;
-      } catch (e) {
-        print('Cannot get touch position, error: $e');
-      }
-    }
     movedIsLeft = isLeft;
-    downEventOn(pos);
+    downEventOn(getPointFromTouch(ev));
     if (ssTouchMove != null) ssTouchMove.cancel();
     if (ssTouchEnd != null) ssTouchEnd.cancel();
     ssTouchMove = htmlWindow.onTouchMove.listen(touchMove);
@@ -194,32 +184,17 @@ class SliderComponent extends Component {
   }
 
   touchMove(ev) {
-    if (down) {
-      print('TOUCH MOVE !');
-      var pos = null;
-      try {
-        pos = ev.nativeEvent.touches[0].page.x;
-      } catch (e) {
-        try {
-          pos = ev.touches[0].page.x;
-        } catch (e) {
-          print('Could not get touch position, error: $e');
-        }
-      }
-      moveEventOn(pos);
-    }
+    moveEventOn(getPointFromTouch(ev));
   }
 
   touchEnd(ev) {
-    print('TOUCH END !');
     if (ssTouchMove != null) ssTouchMove.cancel();
     if (ssTouchEnd != null) ssTouchEnd.cancel();
     upEvent();
   }
 
   downEventOn(pos) {
-    down = true;
-    startX = pos;
+    startX = pos.x;
     var value;
     if (movedIsLeft) {
       startPos = left;
@@ -239,7 +214,7 @@ class SliderComponent extends Component {
   }
 
   moveEventOn(pos) {
-    diffX = pos - startX;
+    diffX = pos.x - startX;
     if (movedIsLeft) {
        var middle = startPos + diffX;
        if (middle < 0) {
@@ -276,8 +251,6 @@ class SliderComponent extends Component {
   }
 
   upEvent() {
-    down = false;
-
     if (movedIsLeft) {
       (lowValue as DataReference).changeValue(lowValueDisplayed);
     } else {

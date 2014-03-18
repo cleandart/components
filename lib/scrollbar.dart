@@ -20,8 +20,11 @@ class ScrollbarComponent extends Component {
   var window;
   var htmlWindow;
   var redrawInvoked;
+  var dragOnWindow;
   StreamSubscription ssMouseMove;
   StreamSubscription ssMouseUp;
+  StreamSubscription ssTouchMove;
+  StreamSubscription ssTouchEnd;
   get children => props['children'];
   get scrollStep => props['scrollStep'];
   get containerClass => props['containerClass'];
@@ -45,6 +48,7 @@ class ScrollbarComponent extends Component {
   componentWillMount() {
     barTop = 0;
     contentTop = 0;
+    dragOnWindow = false;
     redrawInvoked = false;
     print('Number of children '+children.length.toString());
     print('Scroll step: $scrollStep');
@@ -63,11 +67,15 @@ class ScrollbarComponent extends Component {
       div({'className':'list-scrollbar'+(barHeight == 100 ? ' hide' : ''),
            'style':{'height':'${windowHeight}px'}},[
         div({'className':'dragger', 'style':{'top':'${barTop}px',
-             'height':'${barHeight}%'}, 'onMouseDown': mouseDown},[])
+             'height':'${barHeight}%'},
+             'onMouseDown': mouseDown,
+             'onTouchStart': (ev) => touchStart(ev, onWindow: false)},[])
       ]),
       div({'className':'list-scrollable',
            'ref':'${windowId}',
-           'onWheel':(ev) => onWheel(ev,scrollStep)},[
+           'onWheel':(ev) => onWheel(ev,scrollStep),
+           'onClick': (ev) => print('CLICKED !'),
+           'onTouchStart': (ev) => touchStart(ev, onWindow: true)},[
         div({'className':'list-content','ref':'${contentId}',
              'style':{'top':contentTop.toString()+'px'}},
           children
@@ -115,6 +123,45 @@ class ScrollbarComponent extends Component {
     }
   }
 
+  preventDefaultBehaviour(ev) {
+    try {
+      ev.nativeEvent.preventDefault();
+    } catch (e) {
+      try {
+        ev.preventDefault();
+      } catch (e) {
+        print('Could not prevent default behaviour, error: $e');
+      }
+    }
+  }
+
+  getPointFromTouch(ev) {
+    var posX, posY;
+    try {
+      posX = ev.nativeEvent.touches[0].page.x;
+      posY = ev.nativeEvent.touches[0].page.y;
+    } catch (e) {
+      try {
+        posX = ev.touches[0].page.x;
+        posY = ev.touches[0].page.y;
+      } catch (e) {
+        print('Cannot get touch position, error: $e');
+      }
+    }
+    return new Point(posX,posY);
+  }
+
+  getPointFromMouse(ev) {
+    var posX, posY;
+    if (ev is SyntheticMouseEvent) {
+      posX = ev.pageX;
+      posY = ev.pageY;
+    } else {
+      posX = ev.page.x;
+      posY = ev.page.y;
+    }
+    return new Point(posX, posY);
+  }
 
   onWheel(ev,step) {
     if (barHeight == 100) return;
@@ -153,15 +200,30 @@ class ScrollbarComponent extends Component {
     redraw();
   }
 
+  touchStart(ev, {onWindow: false}) {
+    dragOnWindow = onWindow;
+    preventDefaultBehaviour(ev);
+    downEventOn(getPointFromTouch(ev));
+    if (ssTouchMove != null) ssTouchMove.cancel();
+    if (ssTouchEnd != null) ssTouchEnd.cancel();
+    ssTouchMove = htmlWindow.onTouchMove.listen(touchMove);
+    ssTouchEnd = htmlWindow.onTouchEnd.listen(touchEnd);
+  }
+
+  touchMove(ev) {
+    moveEventOn(getPointFromTouch(ev));
+  }
+
+  touchEnd(ev) {
+    dragOnWindow = false;
+    if (ssTouchMove != null) ssTouchMove.cancel();
+    if (ssTouchEnd != null) ssTouchEnd.cancel();
+  }
+
   mouseDown(ev) {
-    if (ev is SyntheticMouseEvent) {
-      ev.nativeEvent.preventDefault();
-      startY = ev.pageY;
-    } else {
-      ev.preventDefault();
-      startY = ev.page.y;
-    }
-    startTop = barTop;
+    preventDefaultBehaviour(ev);
+    downEventOn(getPointFromMouse(ev));
+    dragOnWindow = false;
 
     if (ssMouseMove != null) ssMouseMove.cancel();
     if (ssMouseUp != null) ssMouseUp.cancel();
@@ -171,26 +233,47 @@ class ScrollbarComponent extends Component {
   }
 
   mouseMove(ev) {
-    var diffY;
-    if (ev is SyntheticMouseEvent) {
-      diffY = ev.pageY - startY;
+    moveEventOn(getPointFromMouse(ev));
+  }
+
+  mouseUp(ev) {
+    if (ssMouseMove != null) ssMouseMove.cancel();
+    if (ssMouseUp != null) ssMouseUp.cancel();
+  }
+
+  downEventOn(pos) {
+    startY = pos.y;
+    if (dragOnWindow) {
+      startTop = contentTop;
     } else {
-      diffY = ev.page.y - startY;
+      startTop = barTop;
     }
+  }
+
+  moveEventOn(pos) {
+    var diffY = pos.y - startY;
     var newTop = startTop + diffY;
-    if (newTop < 0) {
-      newTop = 0;
-    } else if (newTop + barHeightPx > windowHeight) {
-      newTop = windowHeight - barHeightPx;
+    if (dragOnWindow) {
+      if (newTop + contentHeight < windowHeight) {
+        newTop = windowHeight - contentHeight;
+      }
+      if (newTop > 0) {
+        newTop = 0;
+      }
+      contentTop = newTop;
+      barTop = -(contentHeight == 0 ? 0 : contentTop*windowHeight/contentHeight).round();
+    } else {
+      if (newTop + barHeightPx > windowHeight) {
+        newTop = windowHeight - barHeightPx;
+      }
+      if (newTop < 0) {
+        newTop = 0;
+      }
+      barTop = newTop;
+      contentTop = -(windowHeight == 0 ? 0 :barTop*contentHeight/windowHeight).round();
     }
-    barTop = newTop;
-    contentTop = -(windowHeight == 0 ? 0 :barTop*contentHeight/windowHeight).round();
     redrawInvoked = true;
     redraw();
   }
 
-  mouseUp(ev) {
-    ssMouseMove.cancel();
-    ssMouseUp.cancel();
-  }
 }
