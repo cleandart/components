@@ -142,7 +142,7 @@ class SelectorComponent extends Component {
     var mostLeftItem = (-_leftMargin / _spanWidth).round();
     var mostRightItem =  ((-_leftMargin + _visibleItemsWindowSize) / _spanWidth).round();
 
-    if (selectedItemOrder <= mostLeftItem || selectedItemOrder >= mostRightItem) {
+    if (selectedItemOrder < mostLeftItem || selectedItemOrder >= mostRightItem) {
       checkSetScrollStepRedraw(_scrollStep, _scrollListDiv);
     }
     else {
