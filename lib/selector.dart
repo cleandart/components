@@ -50,7 +50,7 @@ class SelectorComponent extends Component {
   componentWillMount() {
     subscriptions = new List();
 
-    subscriptions.add(selected.onChange.listen((_) => redraw()));
+    subscriptions.add(selected.onChange.listen((_) => scrollToSelectedIfNotVisible()));
     subscriptions.add(loading.onChange.listen((_) => redraw()));
     subscriptions.add(active.onChange.listen((_) => redraw()));
     subscriptions.add(browserWindow.onResize.listen(checkAndSetScrollStep));
@@ -71,7 +71,6 @@ class SelectorComponent extends Component {
       _scrollListDiv.style.width = '4000px';
     }
     selectedItemOrder = items.map((e) => e[VALUE]).toList().indexOf(selected.value);
-
 
     var _scrollStep = (0 - (selectedItemOrder *
                             _spanWidth - _visibleItemsWindowSize * 0.8)).round();
@@ -121,6 +120,34 @@ class SelectorComponent extends Component {
 
     return div({'className' : _cssSelectorClass},
         [textSpan, leftArrowDiv, selectorItemsListDiv, rightArrowDiv]);
+  }
+
+  scrollToSelectedIfNotVisible() {
+    setScrollStepSize();
+
+    var _scrollListDiv = ref('round-list');
+    var _itemSpan = ref(items[0][VALUE].toString());
+    var _spanWidth = _itemSpan.marginEdge.width;
+    var _visibleItemsWindowSize = scrollStep * _spanWidth;
+    var selectedItemOrder = 0;
+
+    selectedItemOrder = items.map((e) => e[VALUE]).toList().indexOf(selected.value);
+
+    var _scrollStep = (0 - (selectedItemOrder *
+                            _spanWidth - _visibleItemsWindowSize * 0.8)).round();
+
+    var _leftMargin = _scrollListDiv.style.marginLeft.replaceAll('px','');
+    _leftMargin = num.parse(_leftMargin).round();
+
+    var mostLeftItem = (-_leftMargin / _spanWidth).round();
+    var mostRightItem =  ((-_leftMargin + _visibleItemsWindowSize) / _spanWidth).round();
+
+    if (selectedItemOrder <= mostLeftItem || selectedItemOrder >= mostRightItem) {
+      checkSetScrollStepRedraw(_scrollStep, _scrollListDiv);
+    }
+    else {
+      redraw();
+    }
   }
 
   checkAndSetScrollStep(_){
