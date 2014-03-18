@@ -144,7 +144,6 @@ class SelectorComponent extends Component {
 
     if (selectedItemOrder <= mostLeftItem || selectedItemOrder >= mostRightItem) {
       checkSetScrollStepRedraw(_scrollStep, _scrollListDiv);
-      print('mooovin stuff to be visible');
     }
     else {
       redraw();
