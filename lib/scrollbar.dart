@@ -123,46 +123,6 @@ class ScrollbarComponent extends Component {
     }
   }
 
-  preventDefaultBehaviour(ev) {
-    try {
-      ev.nativeEvent.preventDefault();
-    } catch (e) {
-      try {
-        ev.preventDefault();
-      } catch (e) {
-        print('Could not prevent default behaviour, error: $e');
-      }
-    }
-  }
-
-  getPointFromTouch(ev) {
-    var posX, posY;
-    try {
-      posX = ev.nativeEvent.touches[0].page.x;
-      posY = ev.nativeEvent.touches[0].page.y;
-    } catch (e) {
-      try {
-        posX = ev.touches[0].page.x;
-        posY = ev.touches[0].page.y;
-      } catch (e) {
-        print('Cannot get touch position, error: $e');
-      }
-    }
-    return new Point(posX,posY);
-  }
-
-  getPointFromMouse(ev) {
-    var posX, posY;
-    if (ev is SyntheticMouseEvent) {
-      posX = ev.pageX;
-      posY = ev.pageY;
-    } else {
-      posX = ev.page.x;
-      posY = ev.page.y;
-    }
-    return new Point(posX, posY);
-  }
-
   onWheel(ev,step) {
     if (barHeight == 100) return;
     if (ev is SyntheticMouseEvent) {
@@ -201,9 +161,11 @@ class ScrollbarComponent extends Component {
   }
 
   touchStart(ev, {onWindow: false}) {
+    // Always a React event -> SyntheticTouchEvent
+    if (barHeight == 100) return;
     dragOnWindow = onWindow;
-    preventDefaultBehaviour(ev);
-    downEventOn(getPointFromTouch(ev));
+    ev.preventDefault();
+    downEventOn(new Point(ev.nativeEvent.touches[0].page.x,ev.nativeEvent.touches[0].page.y));
     if (ssTouchMove != null) ssTouchMove.cancel();
     if (ssTouchEnd != null) ssTouchEnd.cancel();
     ssTouchMove = htmlWindow.onTouchMove.listen(touchMove);
@@ -211,7 +173,9 @@ class ScrollbarComponent extends Component {
   }
 
   touchMove(ev) {
-    moveEventOn(getPointFromTouch(ev));
+    /* As we are listening on window, the events passed here are not from React,
+     but the former events from Dart */
+    moveEventOn(new Point(ev.touches[0].page.x,ev.touches[0].page.y));
   }
 
   touchEnd(ev) {
@@ -221,8 +185,9 @@ class ScrollbarComponent extends Component {
   }
 
   mouseDown(ev) {
-    preventDefaultBehaviour(ev);
-    downEventOn(getPointFromMouse(ev));
+    // Always a React event -> SyntheticMouseEvent
+    ev.preventDefault();
+    downEventOn(new Point(ev.pageX,ev.pageY));
     dragOnWindow = false;
 
     if (ssMouseMove != null) ssMouseMove.cancel();
@@ -233,7 +198,8 @@ class ScrollbarComponent extends Component {
   }
 
   mouseMove(ev) {
-    moveEventOn(getPointFromMouse(ev));
+    // Listening on window -> Dart MouseEvent
+    moveEventOn(new Point(ev.page.x, ev.page.y));
   }
 
   mouseUp(ev) {
