@@ -112,50 +112,11 @@ class SliderComponent extends Component {
     redraw();
   }
 
-  preventDefaultBehaviour(ev) {
-    try {
-      ev.nativeEvent.preventDefault();
-    } catch (e) {
-      try {
-        ev.preventDefault();
-      } catch (e) {
-        print('Could not prevent default behaviour, error: $e');
-      }
-    }
-  }
-
-  getPointFromTouch(ev) {
-    var posX, posY;
-    try {
-      posX = ev.nativeEvent.touches[0].page.x;
-      posY = ev.nativeEvent.touches[0].page.y;
-    } catch (e) {
-      try {
-        posX = ev.touches[0].page.x;
-        posY = ev.touches[0].page.y;
-      } catch (e) {
-        print('Cannot get touch position, error: $e');
-      }
-    }
-    return new Point(posX,posY);
-  }
-
-  getPointFromMouse(ev) {
-    var posX, posY;
-    if (ev is SyntheticMouseEvent) {
-      posX = ev.pageX;
-      posY = ev.pageY;
-    } else {
-      posX = ev.page.x;
-      posY = ev.page.y;
-    }
-    return new Point(posX, posY);
-  }
-
   mouseDown(ev,isLeft) {
-    preventDefaultBehaviour(ev);
+    // Always a React event -> SyntheticMouseEvent
+    ev.preventDefault();
     movedIsLeft = isLeft;
-    downEventOn(getPointFromMouse(ev));
+    downEventOn(new Point(ev.pageX, ev.pageY));
     if (ssMouseMove != null) ssMouseMove.cancel();
     if (ssMouseUp != null) ssMouseUp.cancel();
     ssMouseMove = htmlWindow.onMouseMove.listen(mouseMove);
@@ -164,7 +125,8 @@ class SliderComponent extends Component {
   }
 
   mouseMove(ev) {
-    moveEventOn(getPointFromMouse(ev));
+    // As we listen on window, this is not React event, but just MouseEvent
+    moveEventOn(new Point(ev.page.x, ev.page.y));
   }
 
   mouseUp(ev) {
@@ -174,9 +136,10 @@ class SliderComponent extends Component {
   }
 
   touchStart(ev, isLeft) {
-    preventDefaultBehaviour(ev);
+    // React event -> SyntheticTouchEvent
+    ev.preventDefault();
     movedIsLeft = isLeft;
-    downEventOn(getPointFromTouch(ev));
+    downEventOn(new Point(ev.nativeEvent.touches[0].page.x, ev.nativeEvent.touches[0].page.y));
     if (ssTouchMove != null) ssTouchMove.cancel();
     if (ssTouchEnd != null) ssTouchEnd.cancel();
     ssTouchMove = htmlWindow.onTouchMove.listen(touchMove);
@@ -184,7 +147,8 @@ class SliderComponent extends Component {
   }
 
   touchMove(ev) {
-    moveEventOn(getPointFromTouch(ev));
+    // Listening on window -> former dart TouchEvent
+    moveEventOn(new Point(ev.touches[0].page.x, ev.touches[0].page.y));
   }
 
   touchEnd(ev) {
