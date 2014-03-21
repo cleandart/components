@@ -50,6 +50,7 @@ class ScrollbarComponent extends Component {
     contentTop = 0;
     dragOnWindow = false;
     redrawInvoked = false;
+    pendingRedraw = false;
     print('Number of children '+children.length.toString());
     print('Scroll step: $scrollStep');
     var start = 97;
@@ -117,7 +118,7 @@ class ScrollbarComponent extends Component {
    if (!redrawInvoked) {
       recalculateBorders();
       redrawInvoked = true;
-      redraw();
+      myRedraw();
     } else {
       redrawInvoked = false;
     }
@@ -239,7 +240,15 @@ class ScrollbarComponent extends Component {
       contentTop = -(windowHeight == 0 ? 0 :barTop*contentHeight/windowHeight).round();
     }
     redrawInvoked = true;
-    redraw();
+    myRedraw();
+  }
+
+  bool pendingRedraw = false;
+  myRedraw() {
+    if(!pendingRedraw) {
+      Timer.run(() { pendingRedraw = false; redraw(); });
+      pendingRedraw = true;
+    }
   }
 
 }
