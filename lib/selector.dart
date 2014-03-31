@@ -6,7 +6,8 @@ import 'dart:async';
 
 typedef SelectorType(List items, DataReference selected,
                     DataReference active, DataReference loading,
-                    {String key, String selectorText, bool fullSize});
+                    {String key, String selectorText, bool fullSize,
+                      onChange});
 
 
 class SelectorComponent extends Component {
@@ -18,6 +19,7 @@ class SelectorComponent extends Component {
   List get items => props['items'];
   String get selectorText => props['selectorText'];
   bool get fullSize => props['fullSize'];
+  get _onChange => props['onChange'] != null ? props['onChange'] : _defaultOnChange;
 
   num scrollStep;
   var browserWindow;
@@ -33,7 +35,8 @@ class SelectorComponent extends Component {
     var _registeredComponent = registerComponent(() => new SelectorComponent(window));
     return (List items, DataReference selected,
         DataReference active, DataReference loading,
-        {String key : 'selector', String selectorText : '', bool fullSize : true}) {
+        {String key : 'selector', String selectorText : '', bool fullSize : true,
+          onChange}) {
 
       return _registeredComponent({
         'key' : key,
@@ -42,7 +45,8 @@ class SelectorComponent extends Component {
         'loading' : loading,
         'items' : items,
         'selectorText' : selectorText,
-        'fullSize' : fullSize
+        'fullSize' : fullSize,
+        'onChange': onChange,
       });
     };
   }
@@ -84,6 +88,10 @@ class SelectorComponent extends Component {
     }
   }
 
+  _defaultOnChange(item) {
+    loading.value = item[VALUE];
+  }
+
   render() {
     var _items = [];
     for (var item in items) {
@@ -93,7 +101,7 @@ class SelectorComponent extends Component {
       if (active.value == item[VALUE]) classes.add('active');
       if (loading.value == item[VALUE]) classes.add('loading');
       _items.add(span({'ref' : '${item[VALUE]}', 'key': '${item[VALUE]}',
-        'onMouseDown': (ev) => mouseDown(item),
+        'onMouseDown': (ev) => _onChange(item),
         'className' : '${classes.join(" ")}'}, '${item[TEXT]}'));
     }
 
@@ -165,10 +173,6 @@ class SelectorComponent extends Component {
     _scrollStep = num.parse(_scrollStep).round();
 
     checkSetScrollStepRedraw(_scrollStep, _scrollListDiv);
-  }
-
-  mouseDown(item) {
-    loading.value = item[VALUE];
   }
 
   scroll({toLeft: true}) {

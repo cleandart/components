@@ -34,11 +34,15 @@ class SelectorExample extends Component {
     });
   }
 
+  onChange(item) {
+    loading.value = item['value'];
+    print((item['text']));
+  }
   render() {
     return
         div({'key': 'widgetSelector',
              'className' :'widget widget-dark widget-full'},
                selector(items, selected, active, loading,
-                   selectorText: 'CHOOSE ROUND', fullSize: true));
+                   selectorText: 'CHOOSE ROUND', fullSize: true, onChange: onChange));
   }
 }
