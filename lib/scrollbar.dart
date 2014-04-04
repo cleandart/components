@@ -75,7 +75,6 @@ class ScrollbarComponent extends Component {
       div({'className':'list-scrollable',
            'ref':'${windowId}',
            'onWheel':(ev) => onWheel(ev,scrollStep),
-           'onClick': (ev) => print('CLICKED !'),
            'onTouchStart': (ev) => touchStart(ev, onWindow: true)},[
         div({'className':'list-content','ref':'${contentId}',
              'style':{'top':contentTop.toString()+'px'}},
