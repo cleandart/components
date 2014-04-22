@@ -36,7 +36,7 @@ h1, p {
 
   .form-range {
     position: relative;
-    width: 500px; 
+    width: 500px;
     margin-bottom: 16px; }
   .form-range .rail {
     -webkit-border-radius: 10px;
@@ -82,7 +82,7 @@ h1, p {
 .form-range-legend {
   position: absolute;
   font-size: 12px;
-  bottom: -16px; 
+  bottom: -16px;
   left: 0;
   right: 0;
 }
@@ -95,4 +95,8 @@ h1, p {
     position: absolute;
     right: 15px;
     top: 20px;
+}
+
+.list-scrollable {
+  height: 200px;
 }

@@ -6,6 +6,21 @@ import 'dart:math';
 
 typedef ScrollbarType(List children, {String containerClass, int scrollStep});
 
+
+class _UpdateOnChildrenChange extends Component {
+  static register() {
+     var r = registerComponent(() => new _UpdateOnChildrenChange());
+     return (children) => r({}, children);
+  }
+
+  shouldComponentUpdate(nextProps, nextState) =>
+    (nextProps['children'] != props['children']);
+
+  render() => div({}, props['children']);
+}
+
+var _updateOnChildrenChange = _UpdateOnChildrenChange.register();
+
 class ScrollbarComponent extends Component {
 
   var barTop;
@@ -78,7 +93,7 @@ class ScrollbarComponent extends Component {
            'onTouchStart': (ev) => touchStart(ev, onWindow: true)},[
         div({'className':'list-content','ref':'${contentId}',
              'style':{'top':contentTop.toString()+'px'}},
-          children
+          _updateOnChildrenChange(children)
         )
       ])
     ]);
