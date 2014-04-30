@@ -174,7 +174,6 @@ class SelectorComponent extends Component {
   showFirst() =>
       checkSetScrollStepRedraw(0, ref('round-list'));
 
-
   showLast() =>
       checkSetScrollStepRedraw(getMinMarginLeft(), ref('round-list'));
 
