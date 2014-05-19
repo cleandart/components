@@ -1,5 +1,5 @@
 name: components
-version: 2.0.0
+version: 2.1.0
 author: Clean Team <clean@vacuumlabs.com>
 description: Simple components for React
 homepage: https://github.com/cleandart/components
@@ -8,6 +8,7 @@ dependencies:
   clean_data: '>=0.4.0 <0.5.0'
   intl: '>=0.9.7 <0.10.0'
   logging: '>=0.9.1 <0.10.0'
+  mock: any
   react: '>=0.3.5 <0.4.0'
 dev_dependencies:
   clean_backend: '>=0.2.1 <0.3.0'

@@ -3,11 +3,8 @@ library selector;
 import 'package:react/react.dart';
 import 'package:clean_data/clean_data.dart';
 import 'dart:async';
+import 'package:components/componentsTypes.dart';
 
-typedef SelectorType(List items, DataReference selected,
-                    DataReference active, DataReference loading,
-                    {String key, String selectorText, bool showFirstLast,
-                      String className, onChange});
 
 
 class SelectorComponent extends Component {

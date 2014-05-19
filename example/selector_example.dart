@@ -43,6 +43,6 @@ class SelectorExample extends Component {
         div({'key': 'widgetSelector',
              'className' :'widget widget-dark widget-full'},
                selector(items, selected, active, loading,
-                   selectorText: 'CHOOSE ROUND', fullSize: true, onChange: onChange));
+                   selectorText: 'CHOOSE ROUND', className: 'round-selector round-selector-full', onChange: onChange));
   }
 }
