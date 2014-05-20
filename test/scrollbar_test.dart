@@ -1,7 +1,7 @@
 import 'package:unittest/unittest.dart';
 import 'package:react/react_test.dart';
 import 'package:components/scrollbar.dart';
-import 'package:unittest/mock.dart';
+import 'package:mock/mock.dart';
 import 'package:clean_data/clean_data.dart';
 import 'package:react/react.dart';
 import 'dart:async';

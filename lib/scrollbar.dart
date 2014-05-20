@@ -3,8 +3,10 @@ library scrollbar;
 import 'package:react/react.dart';
 import 'dart:async';
 import 'dart:math';
+import 'dart:html';
+import 'package:components/componentsTypes.dart';
 
-typedef ScrollbarType(List children, {String containerClass, int scrollStep});
+
 
 
 class _UpdateOnChildrenChange extends Component {
@@ -22,18 +24,14 @@ class _UpdateOnChildrenChange extends Component {
 var _updateOnChildrenChange = _UpdateOnChildrenChange.register();
 
 class ScrollbarComponent extends Component {
-
   var barTop;
   var contentTop;
   var barHeight;
   var startY;
   var startTop;
-  var contentId;
-  var windowId;
   var contentHeight;
   var windowHeight;
-  var window;
-  var htmlWindow;
+  Window htmlWindow;
   var redrawInvoked;
   var dragOnWindow;
   StreamSubscription ssMouseMove;
@@ -45,11 +43,9 @@ class ScrollbarComponent extends Component {
   get containerClass => props['containerClass'];
   get barHeightPx => (contentHeight == 0? windowHeight : windowHeight*windowHeight/contentHeight).round();
 
-  ScrollbarComponent(_htmlWindow) {
-    htmlWindow = _htmlWindow;
-  }
+  ScrollbarComponent(this.htmlWindow);
 
-  static ScrollbarType register(window) {
+  static ScrollbarType register(Window window) {
     var _registeredComponent = registerComponent(() => new ScrollbarComponent(window));
     return (children, {String containerClass : '', int scrollStep: 60 }) {
 
@@ -66,42 +62,31 @@ class ScrollbarComponent extends Component {
     dragOnWindow = false;
     redrawInvoked = false;
     pendingRedraw = false;
-    print('Number of children '+children.length.toString());
-    print('Scroll step: $scrollStep');
+    //print('Number of children '+children.length.toString());
+    //print('Scroll step: $scrollStep');
     var start = 97;
-    var rnd = new Random();
-    contentId = 'Scrollbar${rnd.nextInt(100000)}';
-    windowId = 'Window${rnd.nextInt(100000)}';
-    print('Scrollbar content Id is: $contentId');
-    print('Scrollbar window Id is: $windowId');
   }
 
-  render() {
-  // print('Render');
-  return
+  render() =>
     div({'className':'${containerClass}','style':{'position':'relative'}},[
       div({'className':'list-scrollbar'+(barHeight == 100 ? ' hide' : ''),
            'style':{'height':'${windowHeight}px'}},[
         div({'className':'dragger', 'style':{'top':'${barTop}px',
              'height':'${barHeight}%'},
-             'onMouseDown': mouseDown,
-             'onTouchStart': (ev) => touchStart(ev, onWindow: false)},[])
+             'ref': 'dragger'})
       ]),
-      div({'className':'list-scrollable',
-           'ref':'${windowId}',
-           'onWheel':(ev) => onWheel(ev,scrollStep),
-           'onTouchStart': (ev) => touchStart(ev, onWindow: true)},[
-        div({'className':'list-content','ref':'${contentId}',
+      div({'className':'list-scrollable', 'ref': 'contentContainer'},[
+        div({'className':'list-content','ref':'content',
              'style':{'top':contentTop.toString()+'px'}},
           _updateOnChildrenChange(children)
         )
       ])
     ]);
-  }
+
 
   recalculateBorders() {
-    var content = ref('$contentId');
-    window = ref('$windowId');
+    var content = ref('content');
+    var window = ref('contentContainer');
     windowHeight = window.clientHeight;
     contentHeight = content.scrollHeight;
     if (contentHeight > 0) {
@@ -122,10 +107,23 @@ class ScrollbarComponent extends Component {
     barTop = -(contentHeight == 0 ? 0 : contentTop*windowHeight/contentHeight).round();
   }
 
-  componentDidMount(root) {
+  List<StreamSubscription> reactionsToScrolling;
+  componentDidMount(HtmlElement root) {
+    var dragger = ref('dragger') as HtmlElement;
+    var contentContainer = ref('contentContainer') as HtmlElement;
+    reactionsToScrolling = [
+       dragger.onMouseDown.listen(mouseDown),
+       dragger.onTouchStart.listen((ev) => touchStart(ev, onWindow: false)),
+       contentContainer.onMouseWheel.listen((ev) => onWheel(ev,scrollStep)),
+       contentContainer.onTouchStart.listen((ev) => touchStart(ev, onWindow: true))
+    ];
     recalculateBorders();
     redrawInvoked = true;
     redraw();
+  }
+
+  componentWillUnmount() {
+    reactionsToScrolling.forEach((ss) => ss.cancel());
   }
 
   componentDidUpdate(prevProps, prevState, rootNode) {
@@ -138,17 +136,13 @@ class ScrollbarComponent extends Component {
     }
   }
 
-  onWheel(ev,step) {
+  onWheel(WheelEvent ev,step) {
     if (barHeight == 100) return;
-    if (ev is SyntheticMouseEvent) {
-      ev.nativeEvent.preventDefault();
-    } else {
-      ev.preventDefault();
-    }
+    ev.preventDefault();
     var newCntTop;
     var newBarTop;
     if (contentHeight > 0) {
-      if (ev.deltaY > 0) {
+      if (ev.deltaY < 0) {
         // Scroll up
         newCntTop = contentTop + step;
         newBarTop = barTop - windowHeight*(step/contentHeight);
@@ -175,12 +169,12 @@ class ScrollbarComponent extends Component {
     redraw();
   }
 
-  touchStart(ev, {onWindow: false}) {
-    // Always a React event -> SyntheticTouchEvent
+  touchStart(TouchEvent ev, {onWindow: false}) {
+    // Always dart event
     if (barHeight == 100) return;
     dragOnWindow = onWindow;
     ev.preventDefault();
-    downEventOn(new Point(ev.nativeEvent.touches[0].page.x,ev.nativeEvent.touches[0].page.y));
+    downEventOn(new Point(ev.touches[0].page.x,ev.touches[0].page.y));
     if (ssTouchMove != null) ssTouchMove.cancel();
     if (ssTouchEnd != null) ssTouchEnd.cancel();
     ssTouchMove = htmlWindow.onTouchMove.listen(touchMove);
@@ -199,17 +193,15 @@ class ScrollbarComponent extends Component {
     if (ssTouchEnd != null) ssTouchEnd.cancel();
   }
 
-  mouseDown(ev) {
-    // Always a React event -> SyntheticMouseEvent
+  mouseDown(MouseEvent ev) {
     ev.preventDefault();
-    downEventOn(new Point(ev.pageX,ev.pageY));
+    downEventOn(new Point(ev.page.x,ev.page.y));
     dragOnWindow = false;
 
     if (ssMouseMove != null) ssMouseMove.cancel();
     if (ssMouseUp != null) ssMouseUp.cancel();
     ssMouseMove = htmlWindow.onMouseMove.listen(mouseMove);
     ssMouseUp = htmlWindow.onMouseUp.listen(mouseUp);
-
   }
 
   mouseMove(ev) {

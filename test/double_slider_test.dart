@@ -5,7 +5,7 @@
 import 'package:unittest/unittest.dart';
 import 'package:react/react_test.dart';
 import 'package:components/slider.dart';
-import 'package:unittest/mock.dart';
+import 'package:mock/mock.dart';
 import 'package:clean_data/clean_data.dart';
 import 'package:react/react.dart';
 import 'dart:async';
@@ -26,10 +26,12 @@ void main() {
     DataReference lowValue, highValue;
     int minValue;
     int maxValue;
-    setUp( () {
+    setUp(() {
       window = new Mock()
-        ..when(callsTo('get onMouseMove')).alwaysReturn(new StreamController.broadcast().stream)
-        ..when(callsTo('get onMouseUp')).alwaysReturn(new StreamController.broadcast().stream);
+          ..when(callsTo('get onMouseMove')).alwaysReturn(
+              new StreamController.broadcast().stream)
+          ..when(callsTo('get onMouseUp')).alwaysReturn(
+              new StreamController.broadcast().stream);
       slider = new SliderComponent(window);
       slider.sliderWidth = 501;
       slider.barWidth = 30;
@@ -39,14 +41,18 @@ void main() {
       maxValue = 1000;
       lowValue = new DataReference(minValue);
       highValue = new DataReference(maxValue);
-      initializeComponent(slider, {'minValue':minValue, 'maxValue':maxValue,
-          'lowValue': lowValue, 'highValue': highValue}, []);
+      initializeComponent(slider, {
+        'minValue': minValue,
+        'maxValue': maxValue,
+        'lowValue': lowValue,
+        'highValue': highValue
+      }, []);
     });
 
     test('Shall not slide below minimum', () {
 
-      slider.left = (slider.sliderWidth-slider.barWidth)/2;
-      lowValue.value = (maxValue+minValue)/2;
+      slider.left = (slider.sliderWidth - slider.barWidth) / 2;
+      lowValue.value = (maxValue + minValue) / 2;
 
       EventMock ev = new EventMock();
       ev.pageX = 500;
@@ -61,8 +67,8 @@ void main() {
 
     test('Shall not slide above maximum', () {
 
-      slider.right = (slider.sliderWidth-slider.barWidth)/2;
-      highValue.value = (maxValue+minValue)/2;
+      slider.right = (slider.sliderWidth - slider.barWidth) / 2;
+      highValue.value = (maxValue + minValue) / 2;
 
       EventMock ev = new EventMock();
       ev.pageX = 100;
@@ -76,8 +82,8 @@ void main() {
 
     test('Shall not slide left handle above right handle', () {
 
-      slider.right = (slider.sliderWidth-slider.barWidth)/2;
-      highValue.value = (maxValue+minValue)/2;
+      slider.right = (slider.sliderWidth - slider.barWidth) / 2;
+      highValue.value = (maxValue + minValue) / 2;
 
       EventMock ev = new EventMock();
       ev.pageX = 50;
@@ -87,13 +93,14 @@ void main() {
       slider.mouseUp(ev);
 
       expect(lowValue.value, equals(highValue.value));
-      expect(slider.left, equals(slider.sliderWidth-slider.right-slider.barWidth));
+      expect(slider.left, equals(slider.sliderWidth - slider.right -
+          slider.barWidth));
     });
 
     test('Shall not slide right handle below left handle', () {
 
-      slider.left = (slider.sliderWidth-slider.barWidth)/2;
-      lowValue.value = (maxValue+minValue)/2;
+      slider.left = (slider.sliderWidth - slider.barWidth) / 2;
+      lowValue.value = (maxValue + minValue) / 2;
 
       EventMock ev = new EventMock();
       ev.pageX = 800;
@@ -103,31 +110,38 @@ void main() {
       slider.mouseUp(ev);
 
       expect(highValue.value, equals(lowValue.value));
-      expect(slider.right, equals(slider.sliderWidth-slider.left-slider.barWidth));
+      expect(slider.right, equals(slider.sliderWidth - slider.left -
+          slider.barWidth));
     });
 
-    test('Slides to the position if it\'s possible (moved by 1/3 of width)', () {
+    test('Slides to the position if it\'s possible (moved by 1/3 of width)', ()
+        {
 
       EventMock ev = new EventMock();
       ev.pageX = 200;
       slider.mouseDown(ev, true);
-      ev.pageX = ev.pageX + ((slider.sliderWidth-slider.barWidth)/3).round();
+      ev.pageX = ev.pageX + ((slider.sliderWidth - slider.barWidth) / 3).round(
+          );
       slider.mouseMove(ev);
       slider.mouseUp(ev);
 
-      expect(lowValue.value, closeTo(minValue+((maxValue-minValue)/3).round(),1));
+      expect(lowValue.value, closeTo(minValue + ((maxValue - minValue) /
+          3).round(), 1));
     });
 
-    test('Slides to the position if it\'s possible (moved by 1/19 of width)', () {
+    test('Slides to the position if it\'s possible (moved by 1/19 of width)', ()
+        {
 
       EventMock ev = new EventMock();
       ev.pageX = 500;
       slider.mouseDown(ev, false);
-      ev.pageX = ev.pageX - ((slider.sliderWidth-slider.barWidth)/19).round();
+      ev.pageX = ev.pageX - ((slider.sliderWidth - slider.barWidth) / 19).round(
+          );
       slider.mouseMove(ev);
       slider.mouseUp(ev);
 
-      expect(highValue.value, closeTo(maxValue-((maxValue-minValue)/19).round(),1));
+      expect(highValue.value, closeTo(maxValue - ((maxValue - minValue) /
+          19).round(), 1));
     });
   });
- }
+}
