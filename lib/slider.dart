@@ -6,6 +6,7 @@ import 'package:clean_data/clean_data.dart';
 import 'dart:math';
 import 'dart:html';
 import 'package:components/componentsTypes.dart';
+import 'package:intl/intl.dart';
 
 class SliderComponent extends Component {
 
@@ -34,13 +35,13 @@ class SliderComponent extends Component {
 
   static SliderType register(window) {
     var _registeredComponent = registerComponent(() => new SliderComponent(window));
-    return (int minValue, int maxValue, DataReference lowValue, DataReference highValue) {
-
+    return (int minValue, int maxValue, DataReference lowValue, DataReference highValue, {NumberFormat formater}) {
       return _registeredComponent({
         'minValue':minValue,
         'maxValue':maxValue,
         'lowValue':lowValue,
-        'highValue':highValue
+        'highValue':highValue,
+        'formater': formater
       });
     };
   }
@@ -68,11 +69,17 @@ class SliderComponent extends Component {
                   ])
                ]),
                div({'className':'form-range-legend'},[
-                  span({'className':'form-range-min-value'},'${lowValueDisplayed}'),
-                  span({'className':'form-range-max-value'},'${highValueDisplayed}')
+                  span({'className':'form-range-min-value'},'${formatValues(lowValueDisplayed)}'),
+                  span({'className':'form-range-max-value'},'${formatValues(highValueDisplayed)}')
                ])
            ]);
   }
+
+  formatValues(val) =>
+    val == null?
+        val
+      :
+        (props['formater'] == null? val : props['formater'].format(val));
 
   List<StreamSubscription> reactionsOnTouchClick;
   componentDidMount(root) {
