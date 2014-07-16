@@ -164,7 +164,7 @@ class SelectorComponent extends Component {
 
   num checkBoundaries(num margin) {
     var scroll = false;
-    if (margin > 0) {
+    if (margin >= 0) {
       return 0;
     } else if (margin < getMinMarginLeft()) {
       return getMinMarginLeft();
