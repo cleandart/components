@@ -12,6 +12,7 @@ class SelectorComponent extends Component {
   DataReference get selected => props['selected'];
   DataReference get loading => props['loading'];
   DataReference get active => props['active'];
+  bool get fixedWidth => props['fixedWidth'];
 
   List get items => props['items'];
   String get selectorText => props['selectorText'];
@@ -21,6 +22,9 @@ class SelectorComponent extends Component {
 
   get _visibleItemsWindowSize => ref('itemsDiv') != null ? ref('itemsDiv').marginEdge.width : null;
   get _spanWidth => ref('${items[0][VALUE]}') != null ? ref('${items[0][VALUE]}').marginEdge.width : null;
+
+  get shouldDrawRight => ref('round-list').style.marginLeft > getMinMarginLeft();
+  get shouldDrawLeft => ref('round-list').style.marginLeft < 0;
 
   var browserWindow;
 
@@ -112,12 +116,12 @@ class SelectorComponent extends Component {
     var textSpan = span({'key': selectorText,
       'className' : 'round-selector-text'}, selectorText);
     var leftArrowDiv = div({'key': 'leftArrow',
-      'className' : 'left-arrow'}, leftArrowButton);
+      'className' : 'left-arrow${shouldDrawLeft?'':' disabled'}'}, leftArrowButton);
     var selectorItemsListDiv = div({'ref' : 'itemsDiv',
       'className' : 'round-list-fixed-width'},
         div({'ref' : 'round-list', 'className' : 'round-list'}, _items));
     var rightArrowDiv = div({'key': 'rightArrow',
-      'className' : 'right-arrow'}, rightArrowButton);
+      'className' : 'right-arrow${shouldDrawRight?'':' disabled'}'}, rightArrowButton);
 
     List children = [textSpan, leftArrowDiv, selectorItemsListDiv, rightArrowDiv];
     if (_showFirstLast) {
