@@ -22,8 +22,13 @@ class SelectorComponent extends Component {
   get _visibleItemsWindowSize => ref('itemsDiv') != null ? ref('itemsDiv').marginEdge.width : null;
   get _spanWidth => ref('${items[0][VALUE]}') != null ? ref('${items[0][VALUE]}').marginEdge.width : null;
 
-  get _shouldDrawRight => _scrollListDiv == null? true : _scrollListDiv.style.marginLeft > getMinMarginLeft();
-  get _shouldDrawLeft => _scrollListDiv == null? true: _scrollListDiv.style.marginLeft < 0;
+  get _shouldDrawRight => _scrollListDiv == null? true : marginToNum(_scrollListDiv.style.marginLeft) > getMinMarginLeft();
+  get _shouldDrawLeft => _scrollListDiv == null? true: marginToNum(_scrollListDiv.style.marginLeft) < 0;
+
+  marginToNum(String margin) {
+    if (margin == '') return -5;
+    return num.parse(margin.replaceAll('px', '')).round();
+  }
 
   var browserWindow;
   var _scrollListDiv = null;
@@ -62,7 +67,7 @@ class SelectorComponent extends Component {
     subscriptions.add(selected.onChange.listen((_) => scrollToSelectedIfNotVisible()));
     subscriptions.add(loading.onChange.listen((_) => redraw()));
     subscriptions.add(active.onChange.listen((_) => redraw()));
-    subscriptions.add(browserWindow.onResize.listen(checkAndSetScrollStep));
+    subscriptions.add(browserWindow.onResize.listen((_) => scrollToSelectedIfNotVisible()));
 
   }
 
@@ -91,6 +96,7 @@ class SelectorComponent extends Component {
   _defaultOnChange(item) {
     loading.value = item[VALUE];
   }
+
 
   render() {
     var _items = [];
@@ -151,13 +157,24 @@ class SelectorComponent extends Component {
       checkSetScrollStepRedraw(_scrollStep);
     }
     else {
+      _scrollListDiv.style.marginLeft = '${checkBoundaries(marginToNum(_scrollListDiv.style.marginLeft))}px';
       redraw();
+    }
+  }
+
+  num checkBoundaries(num margin) {
+    var scroll = false;
+    if (margin > 0) {
+      return 0;
+    } else if (margin < getMinMarginLeft()) {
+      return getMinMarginLeft();
+    } else {
+      return margin;
     }
   }
 
   checkAndSetScrollStep(_){
 
-    var _scrollListDiv = ref('round-list');
     var _scrollStep = _scrollListDiv.style.marginLeft;
 
     if (_scrollStep == '') {
@@ -203,13 +220,7 @@ class SelectorComponent extends Component {
       (0 - _spanWidth * items.length + ref('itemsDiv').marginEdge.width);
 
   checkSetScrollStepRedraw(_scrollStep){
-    if (_scrollStep > 0){
-      _scrollStep = 0;
-    }
-
-    if (_scrollStep < getMinMarginLeft()) {
-      _scrollStep = getMinMarginLeft();
-    }
+    _scrollStep = checkBoundaries(_scrollStep);
 
     if (_visibleItemsWindowSize ~/_spanWidth >= items.length) _scrollStep = 0;
 
