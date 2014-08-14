@@ -5,8 +5,6 @@ import 'package:clean_data/clean_data.dart';
 import 'dart:async';
 import 'package:components/componentsTypes.dart';
 
-
-
 class SelectorComponent extends Component {
 
   DataReference get selected => props['selected'];

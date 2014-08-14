@@ -14,3 +14,4 @@ typedef SelectorType(List items, DataReference selected,
                     DataReference active, DataReference loading,
                     {String key, String selectorText, bool showFirstLast,
                       String className, onChange});
+typedef SelectorNewType(List items, String selectorClass, String selectorText, bool showFirstLast, Function onChange);
