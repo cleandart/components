@@ -103,7 +103,7 @@ class SelectorNewComponent extends Component {
 
   _calculateCentroid() {
     var selectedIndices = enumerate(items).where((e) => e.value[SELECTED]).map((e) => e.index).toList();
-    return selectedIndices.reduce((v,e) => v + e) ~/ selectedIndices.length;
+    return selectedIndices.length == 0 ? 0 : selectedIndices.reduce((v,e) => v + e) ~/ selectedIndices.length;
   }
 
   _scrollToCentroid() =>
