@@ -3,10 +3,12 @@ import 'package:react/react.dart';
 import 'package:components/componentsTypes.dart';
 import 'dart:html';
 import 'dart:async';
+import "package:quiver/iterables.dart";
 
 const VALUE = "value";
 const TEXT = "text";
 const CLASSNAME = "className";
+const SELECTED = "selected";
 
 class SelectorNewComponent extends Component {
 
@@ -62,12 +64,21 @@ class SelectorNewComponent extends Component {
   bool clickAllowed = true;
 
   min(num a, num b) => a < b ? a : b;
+  max(num a, num b) => -min(-a,-b);
 
   adjustIndexes() {
     if (_firstIndex < 0) {
       _firstIndex = 0;
     }
     if (_lastIndex > items.length) _lastIndex = items.length;
+  }
+
+  _moveScrollDivToFirstShown(num firstShownIndex) {
+    firstIndex = firstShownIndex - _shownItemCount;
+    lastIndex = firstShownIndex + 2*_shownItemCount;
+    useAnimation = false;
+    _scrollListDiv.style.marginLeft = '${(firstIndex - firstShownIndex)*_spanWidth}px';
+    redraw();
   }
 
   _adjustScrollDiv() {
@@ -79,23 +90,37 @@ class SelectorNewComponent extends Component {
       // Moved right, last _shownItemCount items up to lastIndex are currently shown
       firstShownIndex = lastIndex - _shownItemCount;
     }
-    firstIndex = firstShownIndex - _shownItemCount;
-    lastIndex = firstShownIndex + 2*_shownItemCount;
-    useAnimation = false;
-
-    _scrollListDiv.style.marginLeft = '${(firstIndex - firstShownIndex)*_spanWidth}px';
-    redraw();
+    _moveScrollDivToFirstShown(firstShownIndex);
   }
+
+  _scrollToIndex(num index, {num relativePos: 0.4}) {
+    if (index < 0 || index > items.length) {
+      throw new RangeError("Cannot scroll to index $index, out of range [0, ${items.length})");
+    }
+    var firstShownIndex = min(max(index - (_shownItemCount*relativePos as num).floor(), 0), items.length - _shownItemCount);
+    _moveScrollDivToFirstShown(firstShownIndex);
+  }
+
+  _calculateCentroid() {
+    var selectedIndices = enumerate(items).where((e) => e.value[SELECTED]).map((e) => e.index).toList();
+    return selectedIndices.reduce((v,e) => v + e) ~/ selectedIndices.length;
+  }
+
+  _scrollToCentroid() =>
+    _scrollToIndex(_calculateCentroid());
+
+  _reevaluateSpanWidth() => _spanWidth = ref('${items[firstIndex][VALUE]}').marginEdge.width;
 
   componentDidMount(root) {
     _scrollListDiv = ref('round-list');
-    _spanWidth = ref('${items[firstIndex][VALUE]}').marginEdge.width;
+    _reevaluateSpanWidth();
     ss = [];
     ss.add(_scrollListDiv.onTransitionEnd.where((t) => t.target is DivElement && (t.target as DivElement).className.contains("round-list")).listen((_) {
       clickAllowed = true;
       _adjustScrollDiv();
     }));
-    lastIndex = 2*_shownItemCount;
+    ss.add(window.onResize.listen((_) => _scrollToCentroid()));
+    _scrollToCentroid();
     redraw();
   }
 
