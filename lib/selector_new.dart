@@ -16,14 +16,14 @@ class SelectorNewComponent extends Component {
 
   static SelectorNewType register() {
     var _registeredComponent = registerComponent(() => new SelectorNewComponent());
-    return (List items, String selectorClass, String selectorText, bool showFirstLast, Function onChange) {
+    return (List items, Function onChange, {String selectorClass: "", String selectorText: "", bool showFirstLast: false, key: null}) {
       return _registeredComponent({
         "items": items,
         "selectorClass": selectorClass,
         "selectorText" : selectorText,
         "showFirstLast" : showFirstLast,
         "onChange": onChange,
-      });
+      }..addAll(key == null ? {} : {"key": key}));
     };
   }
 
@@ -36,28 +36,38 @@ class SelectorNewComponent extends Component {
   get _visibleItemsWindowSize => ref('itemsDiv') != null ? ref('itemsDiv').marginEdge.width : null;
   get _shownItemCount => _visibleItemsWindowSize ~/ _spanWidth;
   get _minMarginLeft => _visibleItemsWindowSize - (items.length * _spanWidth);
-  get _shouldDrawLeft => true;
-  get _shouldDrawRight => true;
+  get _shouldDrawLeft => firstShownIndex != 0;
+  get _shouldDrawRight => _scrollListDiv == null ? true : items.length > _shownItemCount && items.length - _shownItemCount > firstShownIndex;
   get _scrollListWidth => _spanWidth*(lastIndex-firstIndex);
+  List get selectedIndices => _selectedIndices(items);
 
   get noAnimationClass => "transition-disabled";
 
   var _firstIndex = 0; // inclusive
   var _lastIndex = 1;  // exclusive
+  var _firstShownIndex = 0;
   var _spanWidth;
 
+  static const READY = "ready";
+  static const BEFORE_ADJUST = "before_adjust";
+  static const AFTER_ADJUST = "after_adjust";
+  static const SCROLLING = "scrolling";
+
+  var _state = READY;
+
+  get firstShownIndex => _firstShownIndex;
+  set firstShownIndex(val) => _firstShownIndex = max(val, firstIndex);
   get lastIndex => _lastIndex;
   set lastIndex(val) {
     _lastIndex = val;
-    adjustIndexes();
+    adjustIndexes(items);
   }
 
   get firstIndex => _firstIndex;
   set firstIndex(val) {
     _firstIndex = val;
-    adjustIndexes();
+    adjustIndexes(items);
   }
-
 
   DivElement _scrollListDiv;
   List<StreamSubscription> ss;
@@ -67,23 +77,25 @@ class SelectorNewComponent extends Component {
   min(num a, num b) => a < b ? a : b;
   max(num a, num b) => -min(-a,-b);
 
-  adjustIndexes() {
+  List _selectedIndices(items) => enumerate(items).where((e) => e.value[SELECTED]).map((e) => e.index).toList();
+
+  adjustIndexes(items) {
     if (_firstIndex < 0) {
       _firstIndex = 0;
     }
     if (_lastIndex > items.length) _lastIndex = items.length;
   }
 
-  _moveScrollDivToFirstShown(num firstShownIndex) {
+  _moveScrollDivToFirstShown() {
     firstIndex = firstShownIndex - _shownItemCount;
     lastIndex = firstShownIndex + 2*_shownItemCount;
-    useAnimation = false;
+    print("F: $firstIndex, FS: $firstShownIndex, L: $lastIndex");
     _scrollListDiv.style.marginLeft = '${(firstIndex - firstShownIndex)*_spanWidth}px';
+    _state = AFTER_ADJUST;
     redraw();
   }
 
   _adjustScrollDiv() {
-    var firstShownIndex;
     if (marginToNum(_scrollListDiv.style.marginLeft) == 0) {
       // Moved left, first _shownItemCount items from firstIndex are currently shown
       firstShownIndex = firstIndex;
@@ -91,7 +103,7 @@ class SelectorNewComponent extends Component {
       // Moved right, last _shownItemCount items up to lastIndex are currently shown
       firstShownIndex = lastIndex - _shownItemCount;
     }
-    _moveScrollDivToFirstShown(firstShownIndex);
+    _moveScrollDivToFirstShown();
   }
 
 //  Index can be double !
@@ -99,14 +111,13 @@ class SelectorNewComponent extends Component {
     if (index < 0 || index > items.length) {
       throw new RangeError("Cannot scroll to index $index, out of range [0, ${items.length})");
     }
-    var firstShownIndex = min(max((index - _shownItemCount*relativePos).ceil(), 0), items.length - _shownItemCount);
-    _moveScrollDivToFirstShown(firstShownIndex);
+    firstShownIndex = min(max((index - _shownItemCount*relativePos).ceil(), 0), items.length - _shownItemCount);
+    _moveScrollDivToFirstShown();
   }
 
 // Returns index of a centroid in [items]. If it's not exactly on an item, it returns a double representing relative pos
 // That said, if centroid is between indices 6 and 7, it returns 6.5
   num _calculateCentroid() {
-    var selectedIndices = enumerate(items).where((e) => e.value[SELECTED]).map((e) => e.index).toList();
     return selectedIndices.length == 0 ? 0 : selectedIndices.reduce((v,e) => v + e) / selectedIndices.length;
   }
 
@@ -121,16 +132,35 @@ class SelectorNewComponent extends Component {
     ss = [];
     ss.add(_scrollListDiv.onTransitionEnd.where((t) => t.target is DivElement && (t.target as DivElement).className.contains("round-list")).listen((_) {
       clickAllowed = true;
-      _adjustScrollDiv();
+      _state = BEFORE_ADJUST;
+      useAnimation = false;
+      redraw();
     }));
     ss.add(window.onResize.listen((_) => _scrollToCentroid()));
     _scrollToCentroid();
     redraw();
   }
 
-  // So that selecting items is animated
-  componentDidUpdate(_,__,___) {
-    useAnimation = true;
+  componentWillUpdate(nextProps, nextState) {
+    adjustIndexes(nextProps["items"]);
+  }
+
+  componentDidUpdate(prevProps,__,___) {
+    checkIfSelectedChanged() {
+      List oldSel = _selectedIndices(prevProps["items"]);
+      if (!(new Set.from(oldSel).containsAll(selectedIndices) && new Set.from(selectedIndices).containsAll(oldSel))
+          || (items.length < prevProps["items"].length)) {
+        var centroid = _calculateCentroid();
+        if ((centroid < firstShownIndex) || (centroid > firstShownIndex + _shownItemCount)) {
+          _scrollToCentroid();
+        }
+      }
+    }
+    switch(_state) {
+      case READY: checkIfSelectedChanged(); break;
+      case BEFORE_ADJUST: useAnimation = false; _adjustScrollDiv(); break;
+      case AFTER_ADJUST: useAnimation = true; _state = READY; redraw(); break;
+    }
   }
 
   componentWillUnmount() {
@@ -146,15 +176,15 @@ class SelectorNewComponent extends Component {
       toLeft ?
           _scrollListDiv.style.marginLeft != "0px"
         :
-          _scrollListDiv.style.marginLeft != "${_visibleItemsWindowSize - _scrollListWidth}px";
+          _visibleItemsWindowSize < _scrollListWidth && _scrollListDiv.style.marginLeft != "${_visibleItemsWindowSize - _scrollListWidth}px";
 
   scroll({toLeft: true}) {
-    if (clickAllowed) {
-      clickAllowed = !transitionWillHappen(toLeft: toLeft);
-      useAnimation = true;
+    if (_state == READY) {
+      _state = transitionWillHappen(toLeft: toLeft) ? SCROLLING : READY;
+      print("scrolling ! ");
       if (toLeft) {
         _scrollListDiv.style.marginLeft = "0px";
-      } else {
+      } else if(_visibleItemsWindowSize < _scrollListWidth) {
         _scrollListDiv.style.marginLeft = "${_visibleItemsWindowSize - _scrollListWidth}px";
       }
       redraw();
@@ -162,21 +192,25 @@ class SelectorNewComponent extends Component {
   }
 
   showFirst() {
-    if (clickAllowed) {
+    if (_state == READY) {
       useAnimation = false;
       firstIndex = 0;
+      firstShownIndex = 0;
       lastIndex = 2*_shownItemCount;
       _scrollListDiv.style.marginLeft = "0px";
+      _state = AFTER_ADJUST;
       redraw();
     }
   }
 
   showLast() {
-    if (clickAllowed) {
+    if (_state == READY) {
       useAnimation = false;
       lastIndex = items.length;
+      firstShownIndex = lastIndex - _shownItemCount;
       firstIndex = lastIndex - 2*_shownItemCount;
       _scrollListDiv.style.marginLeft = "${_visibleItemsWindowSize - _scrollListWidth}px";
+      _state = AFTER_ADJUST;
       redraw();
     }
   }
@@ -206,8 +240,10 @@ class SelectorNewComponent extends Component {
   _renderFastRightArrow() =>
       div({'className' : _getArrowClass(false), 'onMouseDown' : (ev) => showLast()},'>>');
 
-  render() =>
-     div({'className': selectorClass}, [
+  render() {
+    print("items $items");
+    print("F: $firstIndex, L: $lastIndex");
+    return div({'className': selectorClass}, [
         span({"className": "round-selector-text"}, selectorText),
         showFirstLast ? _renderFastLeftArrow() : div({}),
         _renderArrow(true),
@@ -226,5 +262,6 @@ class SelectorNewComponent extends Component {
         _renderArrow(false),
         showFirstLast ? _renderFastRightArrow() : div({})
       ]);
+  }
 
 }
