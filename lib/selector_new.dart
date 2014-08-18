@@ -35,6 +35,7 @@ class SelectorNewComponent extends Component {
 
   get _visibleItemsWindowSize => ref('itemsDiv') != null ? ref('itemsDiv').marginEdge.width : null;
   get _shownItemCount => _visibleItemsWindowSize ~/ _spanWidth;
+  get _minMarginLeft => _visibleItemsWindowSize - (items.length * _spanWidth);
   get _shouldDrawLeft => true;
   get _shouldDrawRight => true;
   get _scrollListWidth => _spanWidth*(lastIndex-firstIndex);
@@ -93,17 +94,20 @@ class SelectorNewComponent extends Component {
     _moveScrollDivToFirstShown(firstShownIndex);
   }
 
-  _scrollToIndex(num index, {num relativePos: 0.4}) {
+//  Index can be double !
+  _scrollToIndex(num index, {num relativePos: 0.8}) {
     if (index < 0 || index > items.length) {
       throw new RangeError("Cannot scroll to index $index, out of range [0, ${items.length})");
     }
-    var firstShownIndex = min(max(index - (_shownItemCount*relativePos as num).floor(), 0), items.length - _shownItemCount);
+    var firstShownIndex = min(max((index - _shownItemCount*relativePos).ceil(), 0), items.length - _shownItemCount);
     _moveScrollDivToFirstShown(firstShownIndex);
   }
 
-  _calculateCentroid() {
+// Returns index of a centroid in [items]. If it's not exactly on an item, it returns a double representing relative pos
+// That said, if centroid is between indices 6 and 7, it returns 6.5
+  num _calculateCentroid() {
     var selectedIndices = enumerate(items).where((e) => e.value[SELECTED]).map((e) => e.index).toList();
-    return selectedIndices.length == 0 ? 0 : selectedIndices.reduce((v,e) => v + e) ~/ selectedIndices.length;
+    return selectedIndices.length == 0 ? 0 : selectedIndices.reduce((v,e) => v + e) / selectedIndices.length;
   }
 
   _scrollToCentroid() =>
@@ -122,6 +126,11 @@ class SelectorNewComponent extends Component {
     ss.add(window.onResize.listen((_) => _scrollToCentroid()));
     _scrollToCentroid();
     redraw();
+  }
+
+  // So that selecting items is animated
+  componentDidUpdate(_,__,___) {
+    useAnimation = true;
   }
 
   componentWillUnmount() {
@@ -200,7 +209,7 @@ class SelectorNewComponent extends Component {
   render() =>
      div({'className': selectorClass}, [
         span({"className": "round-selector-text"}, selectorText),
-        showFirstLast ? _renderFastLeftArrow() : div(),
+        showFirstLast ? _renderFastLeftArrow() : div({}),
         _renderArrow(true),
         div({"ref": "itemsDiv", "className": "round-list-fixed-width"},
             div({
@@ -209,13 +218,13 @@ class SelectorNewComponent extends Component {
 
                 },  items.getRange(firstIndex, lastIndex).map((item) => span({
                       'ref' : '${item[VALUE]}',
-                      'onMouseDown': (_) => onChange(item),
-                      'className': item[CLASSNAME],
+                      'onMouseDown': (_) => onChange(item[VALUE]),
+                      'className': "${item[CLASSNAME]} ${useAnimation ? "" : noAnimationClass}",
                     }, item[TEXT])).toList()
             )
         ),
         _renderArrow(false),
-        showFirstLast ? _renderFastRightArrow() : div()
+        showFirstLast ? _renderFastRightArrow() : div({})
       ]);
 
 }
