@@ -89,7 +89,6 @@ class SelectorNewComponent extends Component {
   _moveScrollDivToFirstShown() {
     firstIndex = firstShownIndex - _shownItemCount;
     lastIndex = firstShownIndex + 2*_shownItemCount;
-    print("F: $firstIndex, FS: $firstShownIndex, L: $lastIndex");
     _scrollListDiv.style.marginLeft = '${(firstIndex - firstShownIndex)*_spanWidth}px';
     _state = AFTER_ADJUST;
     redraw();
@@ -181,7 +180,6 @@ class SelectorNewComponent extends Component {
   scroll({toLeft: true}) {
     if (_state == READY) {
       _state = transitionWillHappen(toLeft: toLeft) ? SCROLLING : READY;
-      print("scrolling ! ");
       if (toLeft) {
         _scrollListDiv.style.marginLeft = "0px";
       } else if(_visibleItemsWindowSize < _scrollListWidth) {
@@ -241,8 +239,6 @@ class SelectorNewComponent extends Component {
       div({'className' : _getArrowClass(false), 'onMouseDown' : (ev) => showLast()},'>>');
 
   render() {
-    print("items $items");
-    print("F: $firstIndex, L: $lastIndex");
     return div({'className': selectorClass}, [
         span({"className": "round-selector-text"}, selectorText),
         showFirstLast ? _renderFastLeftArrow() : div({}),
