@@ -1,230 +1,244 @@
 library selector;
-
 import 'package:react/react.dart';
-import 'package:clean_data/clean_data.dart';
-import 'dart:async';
 import 'package:components/componentsTypes.dart';
-
-
+import 'dart:html';
+import 'dart:async';
+import "package:quiver/iterables.dart";
 
 class SelectorComponent extends Component {
 
-  DataReference get selected => props['selected'];
-  DataReference get loading => props['loading'];
-  DataReference get active => props['active'];
+  static SelectorType register() {
+    var _registeredComponent = registerComponent(() => new SelectorComponent());
+    return (List items, Function onChange, {String selectorClass: "", String selectorText: "", bool showFirstLast: false, key: null}) {
+      return _registeredComponent({
+        "items": items,
+        "selectorClass": selectorClass,
+        "selectorText" : selectorText,
+        "showFirstLast" : showFirstLast,
+        "onChange": onChange,
+      }..addAll(key == null ? {} : {"key": key}));
+    };
+  }
 
-  List get items => props['items'];
-  String get selectorText => props['selectorText'];
-  get _onChange => props['onChange'] != null ? props['onChange'] : _defaultOnChange;
-  get _cssSelectorClass => props['className'] != null ? props['className'] : 'round-selector';
-  get _showFirstLast => props['showFirstLast'];
+  List get items => props["items"];
+  Function get onChange => props["onChange"];
+  String get selectorClass => props["selectorClass"];
+  String get selectorText => props["selectorText"];
+  bool get showFirstLast => props["showFirstLast"];
 
   get _visibleItemsWindowSize => ref('itemsDiv') != null ? ref('itemsDiv').marginEdge.width : null;
-  get _spanWidth => ref('${items[0][VALUE]}') != null ? ref('${items[0][VALUE]}').marginEdge.width : null;
+  get _shownItemCount => _visibleItemsWindowSize ~/ _spanWidth;
+  get _minMarginLeft => _visibleItemsWindowSize - (items.length * _spanWidth);
+  get _shouldDrawLeft => firstShownIndex != 0;
+  get _shouldDrawRight => _scrollListDiv == null ? true : items.length > _shownItemCount && items.length - _shownItemCount > firstShownIndex;
+  get _scrollListWidth => _spanWidth*(lastIndex-firstIndex);
+  List get selectedIndices => _selectedIndices(items);
 
-  get _shouldDrawRight => _scrollListDiv == null? true : marginToNum(_scrollListDiv.style.marginLeft) > getMinMarginLeft();
-  get _shouldDrawLeft => _scrollListDiv == null? true: marginToNum(_scrollListDiv.style.marginLeft) < 0;
+  get noAnimationClass => "transition-disabled";
+
+  var _firstIndex = 0; // inclusive
+  var _lastIndex = 1;  // exclusive
+  var _firstShownIndex = 0;
+  var _spanWidth;
+
+  static const READY = "ready";
+  static const BEFORE_ADJUST = "before_adjust";
+  static const AFTER_ADJUST = "after_adjust";
+  static const SCROLLING = "scrolling";
+// READY -> SCROLLING -> BEFORE_ADJUST -> AFTER_ADJUST -> READY
+// READY -> AFTER_ADJUST -> READY
+
+  var _state = READY;
+
+  get firstShownIndex => _firstShownIndex;
+  set firstShownIndex(val) => _firstShownIndex = max(val, firstIndex);
+  get lastIndex => _lastIndex;
+  set lastIndex(val) {
+    _lastIndex = val;
+    adjustIndexes(items);
+  }
+
+  get firstIndex => _firstIndex;
+  set firstIndex(val) {
+    _firstIndex = val;
+    adjustIndexes(items);
+  }
+
+  DivElement _scrollListDiv;
+  List<StreamSubscription> ss;
+  bool useAnimation = false;
+
+  min(num a, num b) => a < b ? a : b;
+  max(num a, num b) => -min(-a,-b);
+
+  List _selectedIndices(items) => enumerate(items).where((e) => e.value[SELECTED]).map((e) => e.index).toList();
+
+  adjustIndexes(items) {
+    if (_firstIndex < 0) {
+      _firstIndex = 0;
+    }
+    if (_lastIndex > items.length) _lastIndex = items.length;
+  }
+
+  _moveScrollDivToFirstShown() {
+    firstIndex = firstShownIndex - _shownItemCount;
+    lastIndex = firstShownIndex + 2*_shownItemCount;
+    _scrollListDiv.style.marginLeft = '${(firstIndex - firstShownIndex)*_spanWidth}px';
+    _state = AFTER_ADJUST;
+    redraw();
+  }
+
+  _adjustScrollDiv() {
+    if (marginToNum(_scrollListDiv.style.marginLeft) == 0) {
+      // Moved left, first _shownItemCount items from firstIndex are currently shown
+      firstShownIndex = firstIndex;
+    } else {
+      // Moved right, last _shownItemCount items up to lastIndex are currently shown
+      firstShownIndex = lastIndex - _shownItemCount;
+    }
+    _moveScrollDivToFirstShown();
+  }
+
+//  Index can be double !
+  _scrollToIndex(num index, {num relativePos: 0.8}) {
+    if (index < 0 || index > items.length) {
+      throw new RangeError("Cannot scroll to index $index, out of range [0, ${items.length})");
+    }
+    firstShownIndex = min(max((index - _shownItemCount*relativePos).ceil(), 0), items.length - _shownItemCount);
+    _moveScrollDivToFirstShown();
+  }
+
+// Returns index of a centroid in [items]. If it's not exactly on an item, it returns a double representing relative pos
+// That said, if centroid is between indices 6 and 7, it returns 6.5
+  num _calculateCentroid() {
+    return selectedIndices.length == 0 ? 0 : selectedIndices.reduce((v,e) => v + e) / selectedIndices.length;
+  }
+
+  _scrollToCentroid() =>
+    _scrollToIndex(_calculateCentroid());
+
+  _reevaluateSpanWidth() => _spanWidth = ref('${items[firstIndex][VALUE]}').marginEdge.width;
+
+  componentDidMount(root) {
+    _scrollListDiv = ref('round-list');
+    _reevaluateSpanWidth();
+    ss = [];
+    ss.add(_scrollListDiv.onTransitionEnd.where((t) => t.target is DivElement && (t.target as DivElement).className.contains("round-list")).listen((_) {
+      _state = BEFORE_ADJUST;
+      useAnimation = false;
+      redraw();
+    }));
+    ss.add(window.onResize.listen((_) => _scrollToCentroid()));
+    _scrollToCentroid();
+    redraw();
+  }
+
+  componentWillUpdate(nextProps, nextState) {
+    adjustIndexes(nextProps["items"]);
+  }
+
+  componentDidUpdate(prevProps,__,___) {
+    checkIfSelectedChanged() {
+      List oldSel = _selectedIndices(prevProps["items"]);
+      if (!(new Set.from(oldSel).containsAll(selectedIndices) && new Set.from(selectedIndices).containsAll(oldSel))
+          || (items.length < prevProps["items"].length)) {
+        var centroid = _calculateCentroid();
+        if ((centroid < firstShownIndex) || (centroid > firstShownIndex + _shownItemCount)) {
+          _scrollToCentroid();
+        }
+      }
+    }
+    switch(_state) {
+      case READY: checkIfSelectedChanged(); break;
+      case BEFORE_ADJUST: useAnimation = false; _adjustScrollDiv(); break;
+      case AFTER_ADJUST: useAnimation = true; _state = READY; redraw(); break;
+    }
+  }
+
+  componentWillUnmount() {
+    ss.forEach((s) => s.cancel());
+  }
 
   marginToNum(String margin) {
     if (margin == '') return -5;
     return num.parse(margin.replaceAll('px', '')).round();
   }
 
-  var browserWindow;
-  var _scrollListDiv = null;
+  bool transitionWillHappen({toLeft: true}) =>
+      toLeft ?
+          _scrollListDiv.style.marginLeft != "0px"
+        :
+          _visibleItemsWindowSize < _scrollListWidth && _scrollListDiv.style.marginLeft != "${_visibleItemsWindowSize - _scrollListWidth}px";
 
-  static const String VALUE = 'value';
-  static const String TEXT = 'text';
-
-  List<StreamSubscription> subscriptions;
-
-  SelectorComponent(this.browserWindow);
-
-  static SelectorType register(window) {
-    var _registeredComponent = registerComponent(() => new SelectorComponent(window));
-    return (List items, DataReference selected,
-        DataReference active, DataReference loading,
-        {String key : 'selector', String selectorText : '', bool showFirstLast: false, String className,
-          onChange}) {
-
-      return _registeredComponent({
-        'key' : key,
-        'selected' : selected,
-        'active' : active,
-        'loading' : loading,
-        'items' : items,
-        'selectorText' : selectorText,
-        'className' : className,
-        'onChange': onChange,
-        'showFirstLast' : showFirstLast,
-      });
-    };
-  }
-
-  componentWillMount() {
-    subscriptions = new List();
-
-    subscriptions.add(selected.onChange.listen((_) => scrollToSelectedIfNotVisible()));
-    subscriptions.add(loading.onChange.listen((_) => redraw()));
-    subscriptions.add(active.onChange.listen((_) => redraw()));
-    subscriptions.add(browserWindow.onResize.listen((_) => scrollToSelectedIfNotVisible()));
-
-  }
-
-  componentDidMount(_) {
-
-    _scrollListDiv = ref('round-list');
-    var selectedItemOrder = 0;
-
-    if (items.length > 40){ //hack due to testing 100 items in rounds, causing troubles with css width of round-list div
-      _scrollListDiv.style.width = '4000px';
-    }
-    selectedItemOrder = items.map((e) => e[VALUE]).toList().indexOf(selected.value);
-
-    var _scrollStep = (0 - (selectedItemOrder *
-                            _spanWidth - _visibleItemsWindowSize * 0.8)).round();
-
-    checkSetScrollStepRedraw(_scrollStep);
-  }
-
-  componentWillUnmount(){
-    for (StreamSubscription subscr in subscriptions) {
-      subscr.cancel();
-    }
-  }
-
-  _defaultOnChange(item) {
-    loading.value = item[VALUE];
-  }
-
-
-  render() {
-    var _items = [];
-    for (var item in items) {
-      var classes = [];
-      var className = '';
-      if (selected.value == item[VALUE]) classes.add('selected');
-      if (active.value == item[VALUE]) classes.add('active');
-      if (loading.value == item[VALUE]) classes.add('loading');
-      _items.add(span({'ref' : '${item[VALUE]}', 'key': '${item[VALUE]}',
-        'onMouseDown': (ev) => _onChange(item),
-        'className' : '${classes.join(" ")}'}, '${item[TEXT]}'));
-    }
-
-    var leftArrowButton = div({'key': 'leftArrowButton', 'onMouseDown': (ev) =>
-        scroll(toLeft: true)}, '<');
-    var rightArrowButton = div({'key': 'rightArrowButton', 'onMouseDown': (ev) =>
-        scroll(toLeft: false)}, '>');
-
-    var showFirstDiv = div({'className' : 'left-arrow', 'onMouseDown' : (ev) => showFirst()},'<<');
-    var showLastDiv = div({'className' : 'right-arrow', 'onMouseDown' : (ev) => showLast()}, '>>');
-
-    var textSpan = span({'key': selectorText,
-      'className' : 'round-selector-text'}, selectorText);
-    var leftArrowDiv = div({'key': 'leftArrow',
-      'className' : 'left-arrow${_shouldDrawLeft?'':' disabled'}'}, leftArrowButton);
-    var selectorItemsListDiv = div({'ref' : 'itemsDiv',
-      'className' : 'round-list-fixed-width'},
-        div({'ref' : 'round-list', 'className' : 'round-list'}, _items));
-    var rightArrowDiv = div({'key': 'rightArrow',
-      'className' : 'right-arrow${_shouldDrawRight?'':' disabled'}'}, rightArrowButton);
-
-    List children = [textSpan, leftArrowDiv, selectorItemsListDiv, rightArrowDiv];
-    if (_showFirstLast) {
-      children.insert(1, showFirstDiv);
-      children.add(showLastDiv);
-    }
-
-    return div({'className' : _cssSelectorClass},children);
-  }
-
-  scrollToSelectedIfNotVisible() {
-
-    var selectedItemOrder = 0;
-
-    selectedItemOrder = items.map((e) => e[VALUE]).toList().indexOf(selected.value);
-
-    var _scrollStep = (0 - (selectedItemOrder *
-                            _spanWidth - _visibleItemsWindowSize * 0.8)).round();
-
-    var _leftMargin = _scrollListDiv.style.marginLeft.replaceAll('px','');
-    _leftMargin = num.parse(_leftMargin).round();
-
-    var mostLeftItem = (-_leftMargin / _spanWidth).round();
-    var mostRightItem =  ((-_leftMargin + _visibleItemsWindowSize) / _spanWidth).round();
-
-    if (selectedItemOrder < mostLeftItem || selectedItemOrder >= mostRightItem) {
-      checkSetScrollStepRedraw(_scrollStep);
-    }
-    else {
-      _scrollListDiv.style.marginLeft = '${checkBoundaries(marginToNum(_scrollListDiv.style.marginLeft))}px';
+  scroll({toLeft: true}) {
+    if (_state == READY) {
+      _state = transitionWillHappen(toLeft: toLeft) ? SCROLLING : READY;
+      if (toLeft) {
+        _scrollListDiv.style.marginLeft = "0px";
+      } else if(_visibleItemsWindowSize < _scrollListWidth) {
+        _scrollListDiv.style.marginLeft = "${_visibleItemsWindowSize - _scrollListWidth}px";
+      }
       redraw();
     }
   }
 
-  num checkBoundaries(num margin) {
-    var scroll = false;
-    if (margin >= 0) {
-      return 0;
-    } else if (margin < getMinMarginLeft()) {
-      return getMinMarginLeft();
-    } else {
-      return margin;
+  showFirst() {
+    if (_state == READY) {
+      useAnimation = false;
+      firstIndex = 0;
+      firstShownIndex = 0;
+      lastIndex = 2*_shownItemCount;
+      _scrollListDiv.style.marginLeft = "0px";
+      _state = AFTER_ADJUST;
+      redraw();
     }
   }
 
-  checkAndSetScrollStep(_){
-
-    var _scrollStep = _scrollListDiv.style.marginLeft;
-
-    if (_scrollStep == '') {
-      _scrollListDiv.style.marginLeft = '-5px';
-      _scrollStep = '-5px';
+  showLast() {
+    if (_state == READY) {
+      useAnimation = false;
+      lastIndex = items.length;
+      firstShownIndex = lastIndex - _shownItemCount;
+      firstIndex = lastIndex - 2*_shownItemCount;
+      _scrollListDiv.style.marginLeft = "${_visibleItemsWindowSize - _scrollListWidth}px";
+      _state = AFTER_ADJUST;
+      redraw();
     }
-
-    _scrollStep = _scrollStep.replaceAll('px','');
-    _scrollStep = num.parse(_scrollStep).round();
-
-    checkSetScrollStepRedraw(_scrollStep);
   }
 
-  showFirst() =>
-      checkSetScrollStepRedraw(0);
+  _getArrowClass(isLeft) =>
+      " ${isLeft ? "left" : "right"}-arrow "
+      " ${(isLeft ? _shouldDrawLeft : _shouldDrawRight) ? "" : "disabled"} ";
 
-  showLast() =>
-      checkSetScrollStepRedraw(getMinMarginLeft());
+  _renderArrow(isLeft) =>
+      div({"className": _getArrowClass(isLeft)},
+          div({"onMouseDown": (ev) => scroll(toLeft: isLeft)}, isLeft?"<":">"));
 
-  scroll({toLeft: true}) {
-    var _itemSpan = ref(items[0][VALUE].toString());
-    var _scrollStep = _scrollListDiv.style.marginLeft;
+  _renderFastLeftArrow() =>
+      div({'className' : _getArrowClass(true), 'onMouseDown' : (ev) => showFirst()},'<<');
+  _renderFastRightArrow() =>
+      div({'className' : _getArrowClass(false), 'onMouseDown' : (ev) => showLast()},'>>');
 
-    if (_scrollStep == '') {
-      _scrollListDiv.style.marginLeft = '-5px';
-      _scrollStep = '-5px';
-    }
+  render() {
+    return div({'className': selectorClass}, [
+        span({"className": "round-selector-text"}, selectorText),
+        showFirstLast ? _renderFastLeftArrow() : div({}),
+        _renderArrow(true),
+        div({"ref": "itemsDiv", "className": "round-list-fixed-width"},
+            div({
+                  "ref":"round-list",
+                  "className" : "round-list ${useAnimation ? "" : noAnimationClass}",
 
-    _scrollStep = _scrollStep.replaceAll('px','');
-    _scrollStep = num.parse(_scrollStep).round();
-
-    if (toLeft) {
-      _scrollStep += _visibleItemsWindowSize;
-    }
-    else {
-      _scrollStep -= _visibleItemsWindowSize;
-    }
-
-    checkSetScrollStepRedraw(_scrollStep);
+                },  items.getRange(firstIndex, lastIndex).map((item) => span({
+                      'ref' : '${item[VALUE]}',
+                      'onMouseDown': (_) => onChange(item[VALUE]),
+                      'className': "${item[CLASSNAME]} ${useAnimation ? "" : noAnimationClass}",
+                    }, item[TEXT])).toList()
+            )
+        ),
+        _renderArrow(false),
+        showFirstLast ? _renderFastRightArrow() : div({})
+      ]);
   }
 
-  num getMinMarginLeft() =>
-      (0 - _spanWidth * items.length + ref('itemsDiv').marginEdge.width);
-
-  checkSetScrollStepRedraw(_scrollStep){
-    _scrollStep = checkBoundaries(_scrollStep);
-
-    if (_visibleItemsWindowSize ~/_spanWidth >= items.length) _scrollStep = 0;
-
-    _scrollListDiv.style.marginLeft = '${_scrollStep}px';
-    redraw();
-  }
 }

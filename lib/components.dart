@@ -8,4 +8,4 @@ import 'package:components/componentsTypes.dart';
 
 SliderType doubleSlider = SliderComponent.register(window);
 ScrollbarType scrollableWindow = ScrollbarComponent.register(window);
-SelectorType selector = SelectorComponent.register(window);
+SelectorType selector = SelectorComponent.register();
