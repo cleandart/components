@@ -16,7 +16,7 @@ class SelectorComponent extends Component {
         "selectorText" : selectorText,
         "showFirstLast" : showFirstLast,
         "onChange": onChange,
-      }..addAll(key == null ? {} : {"key": "${key}-${items.length}"}));
+      }..addAll({"key": key == null ? "__length-only${items.length}" : "${key}-length${items.length}"}));
     };
   }
 
