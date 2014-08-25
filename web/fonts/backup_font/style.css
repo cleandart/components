@@ -1,0 +1,181 @@
+@font-face {
+	font-family: 'icomoon';
+	src:url('fonts/icomoon.eot?-52rvi0');
+	src:url('fonts/icomoon.eot?#iefix-52rvi0') format('embedded-opentype'),
+		url('fonts/icomoon.woff?-52rvi0') format('woff'),
+		url('fonts/icomoon.ttf?-52rvi0') format('truetype'),
+		url('fonts/icomoon.svg?-52rvi0#icomoon') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+	font-family: 'icomoon';
+	speak: none;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1;
+
+	/* Better Font Rendering =========== */
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+.icon-lopta:before {
+	content: "\e631";
+}
+.icon-zapasy-inverse:before {
+	content: "\e630";
+}
+.icon-blokovanie:before {
+	content: "\e600";
+}
+.icon-dashboard:before {
+	content: "\e601";
+}
+.icon-dve-zostavy:before {
+	content: "\e602";
+}
+.icon-error-octa:before {
+	content: "\e603";
+}
+.icon-forma-teamu:before {
+	content: "\e604";
+}
+.icon-ihrisko:before {
+	content: "\e605";
+}
+.icon-info:before {
+	content: "\e606";
+}
+.icon-info-i:before {
+	content: "\e607";
+}
+.icon-info-octa:before {
+	content: "\e608";
+}
+.icon-kapitan:before {
+	content: "\e609";
+}
+.icon-kluc:before {
+	content: "\e60a";
+}
+.icon-link:before {
+	content: "\e60b";
+}
+.icon-live-vysielanie:before {
+	content: "\e60c";
+}
+.icon-moj-team:before {
+	content: "\e60d";
+}
+.icon-nahodna-zostava:before {
+	content: "\e60e";
+}
+.icon-obalka:before {
+	content: "\e60f";
+}
+.icon-obalka-plna:before {
+	content: "\e610";
+}
+.icon-ok:before {
+	content: "\e611";
+}
+.icon-osobny-ucet:before {
+	content: "\e612";
+}
+.icon-penazenka:before {
+	content: "\e613";
+}
+.icon-plus-40:before {
+	content: "\e614";
+}
+.icon-pohar:before {
+	content: "\e615";
+}
+.icon-poistka:before {
+	content: "\e616";
+}
+.icon-pozvat-priatela:before {
+	content: "\e617";
+}
+.icon-predat:before {
+	content: "\e618";
+}
+.icon-predat-plus:before {
+	content: "\e619";
+}
+.icon-rebricky:before {
+	content: "\e61a";
+}
+.icon-select-sipka-dole:before {
+	content: "\e61b";
+}
+.icon-select-sipka-hore:before {
+	content: "\e61c";
+}
+.icon-sipka-vlavo:before {
+	content: "\e61d";
+}
+.icon-sipka-vpravo:before {
+	content: "\e61e";
+}
+.icon-skaut:before {
+	content: "\e61f";
+}
+.icon-skry-widget:before {
+	content: "\e620";
+}
+.icon-sledovanie:before {
+	content: "\e621";
+}
+.icon-striedacka:before {
+	content: "\e622";
+}
+.icon-striedat:before {
+	content: "\e623";
+}
+.icon-uzivatelia:before {
+	content: "\e624";
+}
+.icon-vyhladavanie:before {
+	content: "\e625";
+}
+.icon-warning-octa:before {
+	content: "\e626";
+}
+.icon-zamknuty-predaj:before {
+	content: "\e627";
+}
+.icon-zamok:before {
+	content: "\e628";
+}
+.icon-zamok-maly:before {
+	content: "\e629";
+}
+.icon-zapasy:before {
+	content: "\e62a";
+}
+.icon-zavriet:before {
+	content: "\e62b";
+}
+.icon-zobraz-widget:before {
+	content: "\e62c";
+}
+.icon-zona:before {
+	content: "\e62d";
+}
+.icon-zoznam:before {
+	content: "\e62e";
+}
+.icon-plus-20:before {
+	content: "\e62f";
+}
+.icon-twitter:before {
+	content: "\f099";
+}
+.icon-facebook:before {
+	content: "\f09a";
+}

@@ -28,7 +28,7 @@ class SelectorComponent extends Component {
 
   get _visibleItemsWindowSize => ref('itemsDiv') != null ? ref('itemsDiv').marginEdge.width : null;
   get _shownItemCount => _visibleItemsWindowSize ~/ _spanWidth;
-  get _minMarginLeft => _visibleItemsWindowSize - (items.length * _spanWidth);
+  get _minMarginLeft => min(_visibleItemsWindowSize - _scrollListWidth, 0);
   get _shouldDrawLeft => firstShownIndex != 0;
   get _shouldDrawRight => _scrollListDiv == null ? true : items.length > _shownItemCount && items.length - _shownItemCount > firstShownIndex;
   get _scrollListWidth => _spanWidth*(lastIndex-firstIndex);
@@ -200,7 +200,7 @@ class SelectorComponent extends Component {
       lastIndex = items.length;
       firstShownIndex = lastIndex - _shownItemCount;
       firstIndex = lastIndex - 2*_shownItemCount;
-      _scrollListDiv.style.marginLeft = "${_visibleItemsWindowSize - _scrollListWidth}px";
+      _scrollListDiv.style.marginLeft = "${_minMarginLeft}px";
       _state = AFTER_ADJUST;
       redraw();
     }
