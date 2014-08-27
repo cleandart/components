@@ -48,13 +48,13 @@ class ScrollbarComponent extends Component {
 
   static ScrollbarType register(Window window) {
     var _registeredComponent = registerComponent(() => new ScrollbarComponent(window));
-    return (children, {String containerClass : '', int scrollStep: 60 , scrollToPercent: null}) {
+    return (children, {String containerClass : '', int scrollStep: 60 , scrollToPercent: null, key:null}) {
 
       return _registeredComponent({
         'containerClass':containerClass,
         'scrollStep':scrollStep,
         'scrollToPercent': scrollToPercent
-      }, children);
+      }..addAll(key == null? {} : {'key': key}), children);
     };
   }
 

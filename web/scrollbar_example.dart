@@ -37,7 +37,10 @@ class ScrollbarExample extends Component {
 
     return
         div({'style':{"margin":"0 auto", "width":"800px"}},[
-
+          input({'value': scrollItem.toString(), 'onChange': (e) {
+            scrollItem = num.parse(e.target.value);
+            redraw();
+          }}),
           div({"className":"widget-row"},
             div({"className":"widget-column col-1-1"},[
                button({'style': {'position': 'absolute', 'left':400},

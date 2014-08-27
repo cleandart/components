@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 
 //typedefs must be here so you can import it and dont get dart:html import
 
-typedef ScrollbarType(List children, {String containerClass, int scrollStep, num scrollToPercent});
+typedef ScrollbarType(List children, {String containerClass, int scrollStep, num scrollToPercent, key});
 
 typedef SliderType(int minValue, int maxValue,
   DataReference lowValue, DataReference highValue, {NumberFormat formater});
