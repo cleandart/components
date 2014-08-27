@@ -41,17 +41,19 @@ class ScrollbarComponent extends Component {
   get children => props['children'];
   get scrollStep => props['scrollStep'];
   get containerClass => props['containerClass'];
+
   get barHeightPx => (contentHeight == 0? windowHeight : windowHeight*windowHeight/contentHeight).round();
 
   ScrollbarComponent(this.htmlWindow);
 
   static ScrollbarType register(Window window) {
     var _registeredComponent = registerComponent(() => new ScrollbarComponent(window));
-    return (children, {String containerClass : '', int scrollStep: 60 }) {
+    return (children, {String containerClass : '', int scrollStep: 60 , scrollToPercent: null}) {
 
       return _registeredComponent({
         'containerClass':containerClass,
-        'scrollStep':scrollStep
+        'scrollStep':scrollStep,
+        'scrollToPercent': scrollToPercent
       }, children);
     };
   }
@@ -118,6 +120,7 @@ class ScrollbarComponent extends Component {
        contentContainer.onTouchStart.listen((ev) => touchStart(ev, onWindow: true))
     ];
     recalculateBorders();
+    if (props['scrollToPercent'] != null) moveToScrollPercent(props['scrollToPercent']);
     redrawInvoked = true;
     redraw();
   }
@@ -134,6 +137,27 @@ class ScrollbarComponent extends Component {
     } else {
       redrawInvoked = false;
     }
+  }
+
+  moveToScrollPercent(scrollPercent) {
+    if (barHeight == 100) return;
+    var newCntTop;
+     var newBarTop;
+     if (contentHeight > 0) {
+       //scrollTo percena
+         // Scroll down
+         newCntTop = -scrollPercent * contentHeight;
+         newBarTop = windowHeight*scrollPercent;
+         if (newBarTop + barHeightPx > windowHeight) {
+           newBarTop = windowHeight - barHeightPx;
+           newCntTop = windowHeight - contentHeight;
+       }
+     } else {
+       newBarTop = 0;
+       newCntTop = 0;
+     }
+     barTop = newBarTop;
+     contentTop = newCntTop;
   }
 
   onWheel(WheelEvent ev,step) {
