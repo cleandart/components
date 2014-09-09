@@ -144,7 +144,6 @@ class SelectorComponent extends Component {
   }
 
   componentWillUpdate(nextProps, nextState) {
-    print("Current: ${items.length}, Next: ${nextProps["items"].length}");
     adjustIndexes(nextProps["items"].length);
   }
 
@@ -231,7 +230,6 @@ class SelectorComponent extends Component {
       div({'className' : _getArrowClass(false), 'onMouseDown' : (ev) => showLast()},'>>');
 
   render() {
-    print("First: $firstIndex, Last: $lastIndex");
     return div({'className': selectorClass}, [
         span({"className": "round-selector-text"}, selectorText),
         showFirstLast ? _renderFastLeftArrow() : div({}),
